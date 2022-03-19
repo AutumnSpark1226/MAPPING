@@ -1,6 +1,6 @@
 #!/usr/bin/env pybricks-micropython
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import Motor
+from pybricks.ev3devices import Motor  # TODO not found by PyCharm; tests required
 from pybricks.parameters import Port
 
 # Initialize the EV3 brick.
