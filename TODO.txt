@@ -1,0 +1,8 @@
+1. microSD flash
+2. microPython + PyCharm
+(scheiss auf nummerierung) Steuerungs PC
+3. Roboter bauen (Ultraschall, Gyro, ALLES!!!)
+4. datenbank!
+5. koordinatensystem
+6. Verbindung: WIFI + netzwerk
+7. zwei bricks oder mehr
