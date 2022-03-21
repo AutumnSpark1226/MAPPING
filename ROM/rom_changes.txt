@@ -1,0 +1,7 @@
+The ROM is not available on github because it's too big (1,9GB).
+
+robot + root password: ROBOTIK $y$j9T$dJ41dn.xecwGg6f6Is2.k0$ZPW8KDH/xywt2LRNToJIpF0im8LSCEPFC2Bgb5bL6rA
+/etc/ssh/sshd_conf: port 22022
+/etc/hostname mappingX
+added my zsh configuration
+installed zsh
