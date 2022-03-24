@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-import threading
+
 import socket
+import threading
 from time import sleep
 
 import resources.communication.server as server
@@ -17,35 +18,39 @@ class EV3Connect(threading.Thread):
         print(self.thread_name + ' initialized')
 
     def run(self):
+        # save connections of the robots to the variables (They are separated by their hostnames.)
         server.start(6666)
         print('server started')
         while True:
             con, address = server.accept_client()
             print('connection request (' + str(address) + ')')
-            address = socket.gethostbyaddr(address[0])[0]
-            if address == 'localhost':
+            address = socket.gethostbyaddr(address[0])[0]  # get hostname
+            if address == 'mapping0':
                 global mapping0_connection
                 mapping0_connection = con
                 print(address + ' connected')
-            elif address == 'localhost':
+            elif address == 'mapping1':
                 global mapping1_connection
                 mapping1_connection = con
                 print(address + ' connected')
             else:
                 con.close()
                 print(address + ' tried to connect')
+            while mapping0_connection and mapping1_connection:
+                # sleep while both robots are connected
+                sleep(2)
 
 
 def start():
     global ev3_connect_thread
     ev3_connect_thread = EV3Connect()
     ev3_connect_thread.start()
-    # connect to database WIP
+    # TODO connect to database
 
     wait_for_connections()
     print('all clients connected')
     while True:
-        print('WIP')
+        print('WIP')  # TODO WIP
         break
 
 
