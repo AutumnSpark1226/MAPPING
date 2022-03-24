@@ -9,6 +9,10 @@ def connect(host, port):
     client_socket.connect((host, port))
 
 
+def disconnect():
+    client_socket.close()
+
+
 def send_text(text):
     client_socket.send(text.encode())
 
@@ -28,4 +32,4 @@ if __name__ == '__main__':
         send_text(test_message)
         test_message = receive_text()
         print('received: ' + test_message)
-    client_socket.close()
+    disconnect()

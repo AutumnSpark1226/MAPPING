@@ -3,12 +3,16 @@ import socket
 server_socket = None
 
 
-def server_start(port):
+def start(port):
     global server_socket
     host = socket.gethostname()
     server_socket = socket.socket()
     server_socket.bind((host, port))
     server_socket.listen()
+
+
+def stop():
+    server_socket.close()
 
 
 def accept_client():
@@ -28,7 +32,7 @@ def receive_text(connection, size=1024):
 
 if __name__ == '__main__':
     # simple echo server to test the communication
-    server_start(6666)
+    start(6666)
     conn, address = accept_client()
     while True:
         test_message = receive_text(conn)
@@ -37,3 +41,4 @@ if __name__ == '__main__':
         print("received: " + test_message)
         send_text(conn, test_message)
     conn.close()
+    stop()
