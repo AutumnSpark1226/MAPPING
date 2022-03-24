@@ -1,5 +1,0 @@
-1. microSD flash
-2. Steuerungs PC
-3. Roboter bauen (Ultraschall, Gyro, ALLES!!!)
-4. datenbank!
-5. Verbindung: WIFI + netzwerk
