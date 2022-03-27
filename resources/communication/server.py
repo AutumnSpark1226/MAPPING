@@ -6,23 +6,27 @@ from Crypto.Cipher import AES
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Util import Padding
 
-server_socket = None
+_server_socket = None
 
 
 def start(port):
-    global server_socket
+    global _server_socket
     host = socket.gethostname()
-    server_socket = socket.socket()
-    server_socket.bind((host, port))
-    server_socket.listen()
+    _server_socket = socket.socket()
+    _server_socket.bind((host, port))
+    _server_socket.listen()
 
 
 def stop():
-    server_socket.close()
+    if not _server_socket:
+        raise Exception("server not running")
+    _server_socket.close()
 
 
 def accept_client():
-    connection, client_address = server_socket.accept()
+    if not _server_socket:
+        raise Exception("server not running")
+    connection, client_address = _server_socket.accept()
     # generate rsa key
     key = RSA.generate(2048)
     # save private_key
@@ -63,6 +67,8 @@ def accept_client():
 
 
 def send_text(secure_connection, text):
+    if not _server_socket:
+        raise Exception("server not running")
     padded_text = Padding.pad(text.encode(), 16)
     cipher = AES.new(secure_connection[1], AES.MODE_CBC, secure_connection[2])
     encrypted_text = cipher.encrypt(padded_text)
@@ -70,6 +76,8 @@ def send_text(secure_connection, text):
 
 
 def receive_text(secure_connection, size=1024):
+    if not _server_socket:
+        raise Exception("server not running")
     cipher = AES.new(secure_connection[1], AES.MODE_CBC, secure_connection[2])
     encrypted_text = secure_connection[0].recv(size)
     text = str(Padding.unpad(cipher.decrypt(encrypted_text), 16).decode())

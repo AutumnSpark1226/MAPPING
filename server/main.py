@@ -5,6 +5,7 @@ import threading
 from time import sleep
 
 import resources.communication.server as server
+from resources import database
 
 ev3_connect_thread = None
 mapping0_connection = None
@@ -45,8 +46,9 @@ def start():
     global ev3_connect_thread
     ev3_connect_thread = EV3Connect()
     ev3_connect_thread.start()
-    # TODO connect to database
-
+    password = open('DBPassword.txt', 'r').read()
+    database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
+    print('connected to database')
     wait_for_connections()
     print('all clients connected')
     while True:
