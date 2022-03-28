@@ -1,8 +1,8 @@
 import hashlib
 import socket
 
-import Cryptodome.Cipher.PKCS1_OAEP
-from Crypto.Cipher import AES
+import Cryptodome.Cipher.PKCS1_OAEP  # pip install cryptodomex
+from Crypto.Cipher import AES  # pip install cryptodome
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Util import Padding
 

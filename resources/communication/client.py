@@ -2,8 +2,8 @@ import hashlib
 import os
 import socket
 
-from Crypto.Cipher import AES
-from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.Cipher import AES  # pip install cryptodome
+from Cryptodome.Cipher import PKCS1_OAEP  # pip install cryptodomex
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Util import Padding
 
@@ -42,6 +42,7 @@ def connect(host, port):
     # hash public key
     hashed_public_key2 = hashlib.sha512(public_key).hexdigest()
     # encrypt hashed_public_key2
+    cipher = AES.new(_aes_key, AES.MODE_CBC, _iv)
     encrypted_hashed_public_key2 = cipher.encrypt(hashed_public_key2)
     # send encrypted_hashed_public_key2
     _client_socket.send(encrypted_hashed_public_key2)
@@ -77,7 +78,7 @@ def receive_text(size=1024):
 
 if __name__ == '__main__':
     # simple echo client to test the communication
-    connect('bestPCEver', 6666)
+    connect('laptop', 6666)
     while True:
         test_message = input("> ")
         if test_message == 'disconnect':
