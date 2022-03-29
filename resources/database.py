@@ -6,10 +6,9 @@ _cursor = None
 
 def connect(address, username, user_password, use_database):
     # connect to the database and initialize it
-
-        global _db, _cursor
-        _db = mariadb.connect(host=address, user=username, password=user_password, database=use_database)
-        _cursor = _db.cursor()
+    global _db, _cursor
+    _db = mariadb.connect(host=address, user=username, password=user_password, database=use_database)
+    _cursor = _db.cursor()
 
 
 def disconnect():
