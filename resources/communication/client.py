@@ -2,8 +2,8 @@ import hashlib
 import os
 import socket
 
-from Cryptodome.Cipher import AES  # pip install cryptodome
-from Cryptodome.Cipher import PKCS1_OAEP  # pip install cryptodomex
+from Cryptodome.Cipher import AES  # pip install pycryptodomex
+from Cryptodome.Cipher import PKCS1_OAEP
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Util import Padding
 
@@ -40,14 +40,14 @@ def connect(host, port):
     # decrypt hashed_public_key
     hashed_public_key = cipher.decrypt(encrypted_hashed_public_key).decode()
     # hash public key
-    hashed_public_key2 = hashlib.sha512(public_key).hexdigest()
+    hashed_public_key2 = hashlib.sha512(public_key).hexdigest().encode()
     # encrypt hashed_public_key2
     cipher = AES.new(_aes_key, AES.MODE_CBC, _iv)
     encrypted_hashed_public_key2 = cipher.encrypt(hashed_public_key2)
     # send encrypted_hashed_public_key2
     _client_socket.send(encrypted_hashed_public_key2)
     # check if hashed_public_key and hashed_public_key2 are equal (they should be)
-    if hashed_public_key2 != hashed_public_key:
+    if hashed_public_key2.decode() != hashed_public_key:
         _client_socket.close()
         raise Exception("encryption or server error")
 
@@ -78,12 +78,13 @@ def receive_text(size=1024):
 
 if __name__ == '__main__':
     # simple echo client to test the communication
-    connect('laptop', 6666)
+    host = socket.gethostname()
+    connect(host, 6666)
     while True:
         test_message = input("> ")
+        send_text(test_message)
         if test_message == 'disconnect':
             break
-        send_text(test_message)
         test_message = receive_text()
         print('received: ' + test_message)
     disconnect()

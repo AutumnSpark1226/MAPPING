@@ -1,8 +1,8 @@
 import hashlib
 import socket
 
-import Cryptodome.Cipher.PKCS1_OAEP  # pip install cryptodomex
-from Crypto.Cipher import AES  # pip install cryptodome
+import Cryptodome.Cipher.PKCS1_OAEP  # pip install pycryptodomex
+from Cryptodome.Cipher import AES
 from Cryptodome.PublicKey import RSA
 from Cryptodome.Util import Padding
 
@@ -36,7 +36,7 @@ def accept_client():
     # save public_key
     public_key = key.publickey().exportKey('PEM')
     # hash public key
-    hashed_public_key = hashlib.sha512(public_key).hexdigest()
+    hashed_public_key = hashlib.sha512(public_key).hexdigest().encode()
     # send public_key
     connection.send(public_key)
     # receive encrypted aes_key
@@ -56,9 +56,10 @@ def accept_client():
     # receive encrypted_hashed_public_key2
     encrypted_hashed_public_key2 = connection.recv(1024)
     # decrypt hashed_public_key2
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
     hashed_public_key2 = cipher.decrypt(encrypted_hashed_public_key2).decode()
     # check if hashed_public_key and hashed_public_key2 are equal (they should be)
-    if hashed_public_key2 == hashed_public_key:
+    if hashed_public_key2 == hashed_public_key.decode():
         secure_connection = tuple((connection, aes_key, iv))
         return secure_connection, client_address
     else:
@@ -90,7 +91,7 @@ if __name__ == '__main__':
     conn, address = accept_client()
     while True:
         test_message = receive_text(conn)
-        if not test_message:
+        if test_message == 'disconnect':
             break
         print("received: " + test_message)
         send_text(conn, test_message)
