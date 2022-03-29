@@ -51,9 +51,6 @@ def start():
     print('connected to database')
     wait_for_connections()
     print('all clients connected')
-    while True:
-        print('WIP')  # TODO WIP
-        break
 
 
 def wait_for_connections():
@@ -62,4 +59,7 @@ def wait_for_connections():
 
 
 if __name__ == '__main__':
+    print('starting...')
     start()
+    print('ready')
+    # TODO WIP
