@@ -9,6 +9,7 @@ def connect(address, username, user_password, use_database):
     global _db, _cursor
     _db = mariadb.connect(host=address, user=username, password=user_password, database=use_database)
     _cursor = _db.cursor()
+    _db.autocommit = True
 
 
 def disconnect():
@@ -17,7 +18,6 @@ def disconnect():
 
 def execute(sql_statement):
     _cursor.execute(sql_statement)
-    _cursor.commit()
 
 
 def fetch(sql_statement):
