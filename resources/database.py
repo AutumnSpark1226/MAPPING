@@ -17,6 +17,7 @@ def disconnect():
 
 def execute(sql_statement):
     _cursor.execute(sql_statement)
+    _cursor.commit()
 
 
 def fetch(sql_statement):
