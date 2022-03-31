@@ -6,5 +6,9 @@ def start():
     client.connect('server', 6666)
 
 
-if __name__ == '__main__':
+def run():
     start()
+
+
+if __name__ == '__main__':
+    run()

@@ -16,30 +16,28 @@ class EV3Connect(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'EV3ConnectThread'
-        print(self.thread_name + ' initialized')
+        print('[server/main.py] ' + self.thread_name + ' initialized')
 
     def run(self):
         # save connections of the robots to the variables (They are separated by their hostnames.)
         server.start(6666)
-        print('server started')
+        print('[server/main.py] server started')
         while True:
             con, address = server.accept_client()
-            print('connection request (' + str(address) + ')')
+            print('[server/main.py] connection request (' + str(address) + ')')
             address = socket.gethostbyaddr(address[0])[0]  # get hostname
             if address == 'mapping0':
                 global mapping0_connection
                 mapping0_connection = con
-                print(address + ' connected')
+                print('[server/main.py] ' + address + ' connected')
             elif address == 'mapping1':
                 global mapping1_connection
                 mapping1_connection = con
-                print(address + ' connected')
+                print('[server/main.py] ' + address + ' connected')
             else:
                 con.close()
-                print(address + ' tried to connect')
-            while mapping0_connection and mapping1_connection:
-                # sleep while both robots are connected
-                sleep(2)
+                print('[server/main.py] ' + address + ' tried to connect')
+                sleep(0.5)
 
 
 def wait_for_connections():
@@ -55,6 +53,7 @@ def setup_database():
         database.execute(
             "INSERT INTO GENERAL (NAME, VALUE, CHANGED) VALUES ('created', '-> CHANGED', " + datetime.now().strftime(
                 "%Y-%m-%d %H:%M:%S") + ")")
+        print("[server/main.py] created table 'GENERAL'")
 
 
 def start():
@@ -63,15 +62,19 @@ def start():
     ev3_connect_thread.start()
     password = open('DBPassword.txt', 'r').read()
     database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
-    print('connected to database')
+    print('[server/main.py] connected to database')
     setup_database()
-    print('database ready')
+    print('[server/main.py] database ready')
     wait_for_connections()
-    print('all clients connected')
+    print('[server/main.py] all clients connected')
+
+
+def run():
+    print('[server/main.py] starting...')
+    start()
+    print('[server/main.py] ready')
+    # TODO WIP
 
 
 if __name__ == '__main__':
-    print('starting...')
-    start()
-    print('ready')
-    # TODO WIP
+    run()
