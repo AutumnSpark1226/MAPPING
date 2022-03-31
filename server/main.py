@@ -60,7 +60,7 @@ def start():
     global ev3_connect_thread
     ev3_connect_thread = EV3Connect()
     ev3_connect_thread.start()
-    password = open('DBPassword.txt', 'r').read()
+    password = open('DBPassword.txt', 'r').readline().rstrip()
     database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
     print('[server/main.py] connected to database')
     setup_database()
