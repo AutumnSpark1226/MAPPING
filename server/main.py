@@ -52,6 +52,8 @@ def setup_database():
             'CHANGED timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
         database.execute(
             "INSERT INTO GENERAL (NAME, VALUE) VALUES ('created', '-> CHANGED')")
+        database.execute(
+            "INSERT INTO GENERAL (NAME, VALUE) VALUES ('created', '-> CHANGED')")
         print("[server/main.py] created table 'GENERAL'")
 
 
