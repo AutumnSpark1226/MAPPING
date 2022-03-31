@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-
 import socket
 import threading
+from datetime import datetime
 from time import sleep
 
 import resources.communication.server as server
@@ -42,6 +42,21 @@ class EV3Connect(threading.Thread):
                 sleep(2)
 
 
+def wait_for_connections():
+    while not (mapping0_connection and mapping1_connection):
+        sleep(0.5)
+
+
+def setup_database():
+    if not database.does_table_exist('GENERAL'):
+        database.execute(
+            'CREATE TABLE GENERAL (ID int NOT NULL AUTO_INCREMENT, NAME varchar(100) NOT NULL, VALUE varchar(255), '
+            'CHANGED timestamp NOT NULL, PRIMARY_KEY (ID))')
+        database.execute(
+            "INSERT INTO GENERAL (NAME, VALUE, CHANGED) VALUES ('created', '-> CHANGED', " + datetime.now().strftime(
+                "%Y-%m-%d %H:%M:%S") + ")")
+
+
 def start():
     global ev3_connect_thread
     ev3_connect_thread = EV3Connect()
@@ -49,13 +64,10 @@ def start():
     password = open('DBPassword.txt', 'r').read()
     database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
     print('connected to database')
+    setup_database()
+    print('database ready')
     wait_for_connections()
     print('all clients connected')
-
-
-def wait_for_connections():
-    while not (mapping0_connection and mapping1_connection):
-        sleep(0.5)
 
 
 if __name__ == '__main__':
