@@ -1,7 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import socket
 import threading
-from datetime import datetime
 from time import sleep
 
 import resources.communication.server as server
@@ -65,6 +64,14 @@ def start():
     print('[server/main.py] database ready')
     wait_for_connections()
     print('[server/main.py] all clients connected')
+    server.send_text(mapping0_connection, 'ready')
+    server.send_text(mapping1_connection, 'ready')
+    mapping0_ready = server.receive_text(mapping0_connection)
+    mapping1_ready = server.receive_text(mapping1_connection)
+    if not (mapping0_ready == 'ready' and mapping1_ready == 'ready'):
+        print('[server/main.py] mapping0: ' + mapping0_ready)
+        print('[server/main.py] mapping1: ' + mapping1_ready)
+        raise Exception('[server/main.py] robots not ready')
 
 
 def run():
