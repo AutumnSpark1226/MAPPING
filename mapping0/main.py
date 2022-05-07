@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from time import sleep
 
-from resources.communication import client
+from lib.communication import client
 
 
 def measure_at_current_location():

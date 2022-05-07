@@ -3,8 +3,8 @@ import socket
 import threading
 from time import sleep
 
-import resources.communication.server as server
-from resources import database
+import lib.communication.server as server
+from lib import database
 
 ev3_connect_thread = None
 mapping0_connection = None
