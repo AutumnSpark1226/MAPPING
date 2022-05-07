@@ -6,10 +6,10 @@
 import math
 import random
 
-from pybricks.hubs import EV3Brick
-from pybricks.parameters import Port
-from pybricks.ev3devices import Motor  # TODO not found by PyCharm; maybe: from ._common import Motor
+from pybricks.ev3devices import Motor  # not found by PyCharm; seems to be working on the robot
 from pybricks.ev3devices import UltrasonicSensor
+from pybricks.hubs import EV3Brick  # pip install pybricks
+from pybricks.parameters import Port
 
 # Initialize the EV3 brick.
 ev3 = EV3Brick()
