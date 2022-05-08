@@ -1,4 +1,4 @@
-The ROM is not available on github because it's too big (1,9GB).
+## This is no longer required
 
 - robot password: ROBOTIK4everOderSo
 - /etc/ssh/sshd_conf: port 22022
