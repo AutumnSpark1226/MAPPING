@@ -1,14 +1,11 @@
 #!/usr/bin/env python3
 
-# example program
-
-
 import math
 import random
 
-from pybricks.ev3devices import Motor  # not found by PyCharm; seems to be working on the robot
+from pybricks.ev3devices import Motor  # not found by PyCharm; pip install pybricks
 from pybricks.ev3devices import UltrasonicSensor
-from pybricks.hubs import EV3Brick  # pip install pybricks
+from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
 
 # Initialize the EV3 brick.

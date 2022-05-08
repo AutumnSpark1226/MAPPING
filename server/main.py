@@ -17,27 +17,26 @@ class EV3Connect(threading.Thread):
         self.thread_name = 'EV3ConnectThread'
         print('[server/main.py] ' + self.thread_name + ' initialized')
 
-
-def run():
-    # save connections of the robots to the variables (They are separated by their hostnames.)
-    server.start(6666)
-    print('[server/main.py] server started')
-    while True:
-        con, address = server.accept_client()
-        print('[server/main.py] connection request (' + str(address) + ')')
-        address = socket.gethostbyaddr(address[0])[0]  # get hostname
-        if address == 'mapping0':
-            global mapping0_connection
-            mapping0_connection = con
-            print('[server/main.py] ' + address + ' connected')
-        elif address == 'mapping1':
-            global mapping1_connection
-            mapping1_connection = con
-            print('[server/main.py] ' + address + ' connected')
-        else:
-            con.close()
-            print('[server/main.py] ' + address + ' tried to connect')
-            sleep(0.5)
+    def run(self):
+        # save connections of the robots to the variables (They are separated by their hostnames.)
+        server.start(6666)
+        print('[server/main.py] server started')
+        while True:
+            con, address = server.accept_client()
+            hostname = socket.gethostbyaddr(address[0])[0]  # get hostname
+            print('[server/main.py] connection request (' + hostname + ')')
+            if hostname == 'mapping0':
+                global mapping0_connection
+                mapping0_connection = con
+                print('[server/main.py] ' + hostname + ' connected')
+            elif hostname == 'mapping1':
+                global mapping1_connection
+                mapping1_connection = con
+                print('[server/main.py] ' + hostname + ' connected')
+            else:
+                con.close()
+                print('[server/main.py] ' + hostname + ' tried to connect')
+                sleep(0.5)
 
 
 def wait_for_connections():
@@ -75,11 +74,19 @@ def start():
         raise Exception('[server/main.py] robots not ready')
 
 
+def stop():
+    server.send_text(mapping0_connection, 'exit')
+    server.send_text(mapping1_connection, 'exit')
+    server.stop()
+    database.disconnect()
+
+
 def run():
     print('[server/main.py] starting...')
     start()
     print('[server/main.py] ready')
     # TODO WIP
+    stop()
 
 
 if __name__ == '__main__':
