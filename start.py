@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import socket
+import sys
 
 import mapping1
 import server
@@ -7,7 +8,9 @@ import mapping0
 
 host = socket.gethostname()
 program = '?'
-if host == 'laptop':
+if len(sys.argv) == 2:
+    program = sys.argv[1]
+elif host == 'laptop':
     program = 'server'
 elif host == 'mapping0':
     program = 'mapping0'

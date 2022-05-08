@@ -9,7 +9,7 @@ def drive_forward(length):
 
 
 def start():
-    client.connect('server', 6666)
+    client.connect('laptop', 6666)
     while client.receive_text() != 'ready':
         sleep(0.5)
     client.send_text('ready')
