@@ -1,6 +1,7 @@
 # Custom ROM
 
 ### Status: `not tested`
+### Version: `-1`
 
 ## TODO
 - enable: deb http://ftp.debian.org/debian stretch main contrib non-free
@@ -19,6 +20,7 @@
 - sshd configuration: port 22022; some security settings
 - clone this repo
 - install required python libraries
+- set standard hostname (mappingX)
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
