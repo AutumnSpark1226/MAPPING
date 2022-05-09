@@ -28,11 +28,11 @@ Add these lines:
 Update and upgrade the system (this might take some time)
 
     sudo apt update
-    sudo apt full-upgrade
+    sudo apt full-upgrade -y
 
 Install `pybricks-micropython` and `pip` (required for controlling the robot with python)
 
-    sudo apt install pybricks-micropython pip
+    sudo apt install pybricks-micropython pip -y
 
 Install the python library pybricks
 
