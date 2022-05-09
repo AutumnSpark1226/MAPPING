@@ -1,7 +1,7 @@
 # Custom ROM
 
 ### Status: `not tested`
-### Version: `-1`
+### Version: `20220509`
 
 ## TODO
 - install apt-utils
@@ -19,7 +19,7 @@
 - clone this repo
 - install libmariadb-dev
 - install required python libraries
-- set standard hostname (mappingX)
+- set standard hostname (mappingX) in `/brickstrap/_tar-only/etc/hostname`
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
