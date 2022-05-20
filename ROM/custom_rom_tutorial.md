@@ -8,39 +8,32 @@
 ### Steps
 Get an official image
 
-    sudo docker pull ev3dev/ev3dev-bullseye-ev3-generic
+    sudo docker pull ev3dev/ev3dev-stretch-ev3-generic
 
 Start a shell as the `robot` user
 
-    sudo docker run -it ev3dev/ev3dev-bullseye-ev3-generic su -l robot
-
-Edit the `/etc/apt/sources.list` file
-
-    sudo nano /etc/apt/sources.list
+    sudo docker run -it ev3dev/ev3dev-stretch-ev3-generic su -l robot
 
 The default password is `maker`
-
-Add these lines:
-
-    deb http://ftp.debian.org/debian stretch main contrib non-free
-    deb http://security.debian.org/ bullseye-security/updates main contrib non-free
 
 Update and upgrade the system (this might take some time)
 
     sudo apt update
     sudo apt full-upgrade -y
 
-Install `pybricks-micropython` and `pip` (required for controlling the robot with python)
+Install `pip`
 
-    sudo apt install pybricks-micropython pip -y
+    sudo apt install python-pip -y
 
-Install the python library pybricks
+Test it (did not work for me) and install `pybricks`
 
     pip install pybricks
 
-The brickstrap tool will overwrite `/etc/apt/sources.list`. If you want to keep the current configuration (I recommend this) execute the following command:
+If it installed pybricks, skip this step
 
-    sudo cp /etc/apt/sources.list /brickstrap/_tar-only/etc/apt/sources.list
+    curl https://bootstrap.pypa.io/pip/3.5/get-pip.py > get-pip.py
+    python3 get-pip.py
+    python3 -m pip install pybricks
 
 Now you can customize the rom  
 
@@ -55,7 +48,7 @@ Find the container you just created. You need the container id or name
 Example output:
 
     CONTAINER ID   IMAGE                                COMMAND         CREATED             STATUS                      PORTS     NAMES
-    c06d57b783bf   ev3dev/ev3dev-bullseye-ev3-generic   "su -l robot"   About an hour ago   Exited (0) 17 seconds ago             optimistic_curran
+    c06d57b783bf   ev3dev/ev3dev-stretch-ev3-generic   "su -l robot"   About an hour ago   Exited (0) 17 seconds ago             optimistic_curran
 
 Create a new image of the container. Replace `CONTAINER` with the container id or name
 

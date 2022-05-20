@@ -14,7 +14,7 @@
 - install zsh
 - configure zsh
 - replace PATH in .zshrc
-- password for user robot: ROBOTIK4EverOderSo
+- password
 - sshd configuration: port 22022; some security settings
 - clone this repo
 - install libmariadb-dev
@@ -23,3 +23,4 @@
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
+- ufw??
