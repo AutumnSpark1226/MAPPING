@@ -2,9 +2,9 @@
 import socket
 import sys
 
+import mapping0
 import mapping1
 import server
-import mapping0
 
 host = socket.gethostname()
 program = '?'
@@ -25,4 +25,4 @@ elif program == 'mapping0':
 elif program == 'mapping1':
     mapping1.run()
 else:
-    raise Exception('[start.py] Program not found')
+    raise Exception('[start_server.py] Program not found')
