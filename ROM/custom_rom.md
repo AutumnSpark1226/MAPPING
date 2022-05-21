@@ -24,3 +24,4 @@
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
 - ufw??
+- make wifi driver
