@@ -4,7 +4,7 @@
 ### Version: `20220526`
 
 ## TODO
-- install apt-utils dialog htop ufw zsh clang g++
+- install apt-utils dialog htop ufw zsh clang g++ python3-pip
 - install pybricks (pip)
 - set login shell
 - configure zsh
@@ -14,7 +14,7 @@
 - clone this repo
 - install required python libraries
 - set standard hostname (mappingX) in `/brickstrap/_tar-only/etc/hostname`
-- rtl8188eu driver workaround: https://github.com/ev3dev/ev3dev/wiki/USB-Wi-Fi-Dongles
+- rtl8188eu driver workaround: https://github.com/ev3dev/ev3dev/wiki/USB-Wi-Fi-Dongles (IDs !!)
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
