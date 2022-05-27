@@ -19,11 +19,7 @@ test_motor.run_target(500, 90)
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
 # say hi
-ev3.speaker.say("Jeremias is dumb as fuck")
+ev3.speaker.say("Jeremias: failure")
 # measure distance
 ultrasonic = UltrasonicSensor(Port.S1)
 print("distance: " + str(ultrasonic.distance()))
-# generate a random number
-print(random.randint(-255, 255))
-# do some calculations
-print(math.sqrt(234234 * 4323535))
