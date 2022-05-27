@@ -19,7 +19,7 @@ test_motor.run_target(500, 90)
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
 # say hi
-ev3.speaker.say("Hi, i'm a robot")
+ev3.speaker.say("Jeremias is dumb as fuck")
 # measure distance
 ultrasonic = UltrasonicSensor(Port.S1)
 print("distance: " + str(ultrasonic.distance()))
