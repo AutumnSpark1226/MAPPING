@@ -9,14 +9,18 @@ def drive_forward(length):
 
 
 def start():
+    print("[mapping1/main.py] connecting")
     client.connect('laptop', 6666)
+    print("[mapping1/main.py] connected")
     while client.receive_text() != 'ready':
         sleep(0.5)
     client.send_text('ready')
 
 
 def run():
+    print("[mapping1/main.py] starting")
     start()
+    print("[mapping1/main.py] ready")
     while True:
         command = client.receive_text()
         if command == 'drive_forward':
