@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-
-# uses python3.5
+#!/usr/bin/env pybricks-micropython
 
 import socket
 import sys

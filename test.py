@@ -1,7 +1,4 @@
-#!/usr/bin/env python3
-
-import math
-import random
+#!/usr/bin/env pybricks-micropython
 
 from pybricks.ev3devices import Motor  # not found by PyCharm; pip install pybricks
 from pybricks.ev3devices import UltrasonicSensor

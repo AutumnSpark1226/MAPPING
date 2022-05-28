@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env pybricks-micropython
 from time import sleep
 
 from lib.communication import client

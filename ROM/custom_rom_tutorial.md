@@ -23,7 +23,7 @@ Update and upgrade the system (this might take some time)
 
 Install `pip`
 
-    sudo apt install python-pip -y
+    sudo apt install python3-pip -y
 
 Test it (did not work for me) and install `pybricks`
 

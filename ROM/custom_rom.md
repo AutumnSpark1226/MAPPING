@@ -1,7 +1,7 @@
 # Custom ROM
 
 ### Status: `not tested`
-### Version: `20220526`
+### Version: `20220528`
 
 ## TODO
 - install apt-utils dialog htop ufw zsh clang g++ python3-pip
@@ -14,7 +14,7 @@
 - clone this repo
 - install required python libraries
 - set standard hostname (mappingX) in `/brickstrap/_tar-only/etc/hostname`
-- rtl8188eu driver workaround: https://github.com/ev3dev/ev3dev/wiki/USB-Wi-Fi-Dongles (IDs !!)
+- rtl8188eu driver workaround: https://github.com/ev3dev/ev3dev/wiki/USB-Wi-Fi-Dongles (/etc/udev/rules.d/99-edimax-n150.rules)
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
