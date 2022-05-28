@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import socket
 import threading
 from time import sleep
@@ -42,6 +43,10 @@ class EV3Connect(threading.Thread):
                 print('[server/main.py] ' + hostname + ' tried to connect')
                 sleep(0.5)
 
+    def stop(self):
+        if self.is_alive():
+            os.system('kill ' + str(self.native_id))
+
 
 def wait_for_connections():
     while not (mapping0_connection and mapping1_connection):
@@ -79,11 +84,11 @@ def start():
 
 
 def stop():
+    ev3_connect_thread.stop()
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()
     database.disconnect()
-    # TODO stop ev3_connect_thread()
 
 
 def run():
