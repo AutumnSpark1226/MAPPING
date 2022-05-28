@@ -22,19 +22,19 @@ class EV3Connect(threading.Thread):
         # save connections of the robots to the variables (They are separated by their hostnames.)
         server.start(6666)
         print('[server/main.py] server started')
-        count = 0  # test purposes only
+        #count = 0  # test purposes only
         while True:
             con, address = server.accept_client()
             hostname = socket.gethostbyaddr(address[0])[0]  # get hostname
             print('[server/main.py] connection request (' + hostname + ')')
-            #if hostname == 'mapping0':
-            if count == 0: # test purposes only
-                count = 1 # test purposes only
+            if hostname == 'mapping0':
+            #if count == 0: # test purposes only
+                #count = 1 # test purposes only
                 global mapping0_connection
                 mapping0_connection = con
                 print('[server/main.py] ' + hostname + ' connected')
-            #elif hostname == 'mapping1':
-            elif count == 1: # test purposes only
+            elif hostname == 'mapping1':
+            #elif count == 1: # test purposes only
                 global mapping1_connection
                 mapping1_connection = con
                 print('[server/main.py] ' + hostname + ' connected')
