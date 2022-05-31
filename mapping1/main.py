@@ -1,7 +1,11 @@
 #!/usr/bin/env pybricks-micropython
 from time import sleep
 
+from pybricks.hubs import EV3Brick
+
 from lib.communication import client
+
+ev3 = EV3Brick()
 
 
 def drive_forward(length):
@@ -15,6 +19,7 @@ def start():
     while client.receive_text() != 'ready':
         sleep(0.5)
     client.send_text('ready')
+    ev3.speaker.beep(duration=1000)
 
 
 def run():

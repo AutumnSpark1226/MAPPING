@@ -11,11 +11,10 @@ ev3 = EV3Brick()
 test_motor = Motor(Port.A)
 # Play a sound.
 ev3.speaker.beep()
-# Run the motor up to 500 degrees per second. To a target angle of 90 degrees.
 test_motor.run_time(500, 2000)
 # Play another beep sound.
 ev3.speaker.beep(1000, 500)
-# say hi
+ev3.speaker.set_volume(100)
 ev3.speaker.say("Jeremias: failure")
 # measure distance
 ultrasonic = UltrasonicSensor(Port.S1)
