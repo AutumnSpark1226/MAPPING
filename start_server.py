@@ -21,8 +21,10 @@ else:
 if program == 'server':
     server.run()
 elif program == 'mapping0':
+    print('[start_server.py] some features might not work properly')
     mapping0.run()
 elif program == 'mapping1':
+    print('[start_server.py] some features might not work properly')
     mapping1.run()
 else:
     raise Exception('[start_server.py] Program not found')
