@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+# this script contains test code
 import time
 
 from pybricks.ev3devices import GyroSensor
@@ -52,6 +53,24 @@ def measure():
         print('gyro' + str(angle_s3))
         print('motor A' + str(angle_a))
         time.sleep(0.1)
+
+
+def test_for_ultrasonic_interferences():
+    print('S1')
+    print(ultrasonic_s1.presence())
+    print(ultrasonic_s1.distance())
+    ultrasonic_s2.distance(silent=True)
+    print(ultrasonic_s1.presence())
+    print(ultrasonic_s1.distance())
+    time.sleep(0.5)
+    print('S2')
+    ultrasonic_s2.distance()
+    print(ultrasonic_s2.presence())
+    print(ultrasonic_s2.distance())
+    ultrasonic_s1.distance(silent=True)
+    print(ultrasonic_s2.presence())
+    print(ultrasonic_s2.distance())
+    ultrasonic_s1.distance()
 
 
 if __name__ == '__main__':
