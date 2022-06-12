@@ -3,36 +3,54 @@
 import time
 
 from pybricks.ev3devices import GyroSensor
-from pybricks.ev3devices import Motor  # not found by PyCharm; pip install pybricks
+from pybricks.ev3devices import Motor  # not found by PyCharm, works; pip install pybricks
 from pybricks.ev3devices import UltrasonicSensor
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
+
 
 ev3 = EV3Brick()
 motor_a = Motor(Port.A)
 gyro_s3 = GyroSensor(Port.S3)
 ultrasonic_s1 = UltrasonicSensor(Port.S1)
+ultrasonic_s1_error_correction = 0
 ultrasonic_s2 = UltrasonicSensor(Port.S2)
+ultrasonic_s2_error_correction = 0
 
 
 def test1():
     motor_a.run_time(500, 2000)
     # Play another beep sound.
     ev3.speaker.beep(1000, 500)
-    ev3.speaker.set_volume(1000)
+    ev3.speaker.set_volume(100)
     ev3.speaker.say("Jeremias: failure")
+    ev3.speaker.say("You are dumb as fuck")
     # measure distance
     print("distance: " + str(ultrasonic_s1.distance()))
 
 
-def calibrate():
+def auto_calibrate():
     reset_angle()
     print('WIP')
+    
+    
+def advanced_calibrate(real_distance_s1, real_distance_s2):
+    print("Do NOT move the ultrasonic sensors!")
+    global ultrasonic_s1_error_correction, ultrasonic_s2_error_correction
+    ultrasonic_s1_error_correction = get_error_correction(ultrasonic_s1, real_distance_s1)
+    ultrasonic_s2_error_correction = get_error_correction(ultrasonic_s2, real_distance_s2)
 
 
 def reset_angle():
     motor_a.reset_angle(0)
     gyro_s3.reset_angle(0)
+    
+    
+def get_error_correction(ultrasonic_sensor, real_distance):
+    calibrated_value = ultrasonic_sensors.range()
+    for range(20):
+        calibrated_value = (calibrated_value + ultrasonic_sensor.range()) / 2
+    return real_distance - int(calibrated_value)
 
 
 def measure():
@@ -44,8 +62,8 @@ def measure():
     while gyro_s3.angle() < 360:
         if motor_a.angle >= 360:
             print('ERROR: sensor error! (motor_a.angle() >= 360)')
-        distance_s1 = ultrasonic_s1.distance()
-        distance_s2 = ultrasonic_s2.distance()
+        distance_s1 = ultrasonic_s1.distance() + ultrasonic_s1_error_correction
+        distance_s2 = ultrasonic_s2.distance()) + ultrasonic_s2_error_correction
         angle_s3 = gyro_s3.angle()
         angle_a = motor_a.angle()
         print('sensors 1: ' + str(distance_s1))
@@ -74,5 +92,5 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    calibrate()
+    auto_calibrate()
     measure()
