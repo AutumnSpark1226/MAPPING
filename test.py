@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+
 # this script contains test code
 import time
 
@@ -47,8 +48,8 @@ def reset_angle():
     
     
 def get_error_correction(ultrasonic_sensor, real_distance):
-    calibrated_value = ultrasonic_sensors.range()
-    for range(20):
+    calibrated_value = ultrasonic_sensor.range()
+    for i in range(20):
         calibrated_value = (calibrated_value + ultrasonic_sensor.range()) / 2
     return real_distance - int(calibrated_value)
 
@@ -63,7 +64,7 @@ def measure():
         if motor_a.angle >= 360:
             print('ERROR: sensor error! (motor_a.angle() >= 360)')
         distance_s1 = ultrasonic_s1.distance() + ultrasonic_s1_error_correction
-        distance_s2 = ultrasonic_s2.distance()) + ultrasonic_s2_error_correction
+        distance_s2 = ultrasonic_s2.distance() + ultrasonic_s2_error_correction
         angle_s3 = gyro_s3.angle()
         angle_a = motor_a.angle()
         print('sensors 1: ' + str(distance_s1))

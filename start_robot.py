@@ -17,7 +17,7 @@ elif host == 'mapping0':
 elif host == 'mapping1':
     program = 'mapping1'
 else:
-    program = input('Choose a program [server, mapping0, mapping1]: ')
+    program = input('Choose lb program [server, mapping0, mapping1]: ')
 if program == 'server':
     print('Please run start_server.py')
 elif program == 'mapping0':

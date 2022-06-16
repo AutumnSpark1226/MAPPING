@@ -26,7 +26,7 @@ def fetch(sql_statement):
 
 
 def does_table_exist(table_name):
-    # check if a table exists
+    # check if lb table exists
     _cursor.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{0}'".format(
         table_name.replace('\'', '\'\'')))
     if _cursor.fetchone()[0] == 1:
