@@ -48,9 +48,9 @@ def reset_angle():
     
     
 def get_error_correction(ultrasonic_sensor, real_distance):
-    calibrated_value = ultrasonic_sensor.range()
+    calibrated_value = ultrasonic_sensor.distance()
     for i in range(20):
-        calibrated_value = (calibrated_value + ultrasonic_sensor.range()) / 2
+        calibrated_value = (calibrated_value + ultrasonic_sensor.distance()) / 2
     return real_distance - int(calibrated_value)
 
 
