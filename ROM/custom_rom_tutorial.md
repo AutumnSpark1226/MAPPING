@@ -14,9 +14,9 @@ Start a shell as the `robot` user
 
     sudo docker run -it ev3dev/ev3dev-stretch-ev3-generic su -l robot
 
-The default password is `maker`
-
 Update and upgrade the system (this might take some time)
+
+The default password is `maker`
 
     sudo apt update
     sudo apt full-upgrade -y
