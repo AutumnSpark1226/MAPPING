@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 import os
 import socket
+import sys
 import threading
 from time import sleep
+
+sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
 
 import lib.communication.server as server
 import db_operations

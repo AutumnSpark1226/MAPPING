@@ -1,11 +1,13 @@
 # easy access to the database
+import os
+
 from lib import database
 
 
 def connect():
-    password = open('DBPassword.txt', 'r').readline().rstrip()
-    setup_database()
+    password = open(os.getcwd() + '/server/DBPassword.txt', 'r').readline().rstrip()
     database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
+    setup_database()
 
 
 def disconnect():
