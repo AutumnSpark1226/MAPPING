@@ -5,7 +5,7 @@ import threading
 from time import sleep
 
 import lib.communication.server as server
-from lib import database
+import db_operations
 
 
 class EV3Connect(threading.Thread):
@@ -54,22 +54,11 @@ def wait_for_connections():
         sleep(0.5)
 
 
-def setup_database():
-    if not database.does_table_exist('GENERAL'):
-        database.execute(
-            'CREATE TABLE GENERAL (ID int NOT NULL AUTO_INCREMENT, NAME varchar(100) NOT NULL, VALUE varchar(255), '
-            'CHANGED timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
-        database.execute(
-            "INSERT INTO GENERAL (NAME, VALUE) VALUES ('created', '-> CHANGED')")
-
-
 def start():
     global ev3_connect_thread
     ev3_connect_thread.start()
-    password = open('DBPassword.txt', 'r').readline().rstrip()
-    database.connect('localhost', 'MAPPING_server', password, 'MAPPING')
-    print('[server/main.py] connected to database')
-    setup_database()
+    db_operations.connect()
+    db_operations.setup_database()
     print('[server/main.py] database ready')
     wait_for_connections()
     print('[server/main.py] all clients connected')
@@ -87,7 +76,6 @@ def stop():
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()
-    database.disconnect()
     ev3_connect_thread.stop()
 
 

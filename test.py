@@ -3,12 +3,11 @@
 # this script contains test code
 import time
 
-from pybricks.ev3devices import GyroSensor
-from pybricks.ev3devices import Motor  # not found by PyCharm, works; pip install pybricks
+from pybricks.ev3devices import GyroSensor  # pip install pybricks
+from pybricks.ev3devices import Motor  # not found by PyCharm; works
 from pybricks.ev3devices import UltrasonicSensor
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
-
 
 ev3 = EV3Brick()
 motor_a = Motor(Port.A)
@@ -33,8 +32,8 @@ def test1():
 def auto_calibrate():
     reset_angle()
     print('WIP')
-    
-    
+
+
 def advanced_calibrate(real_distance_s1, real_distance_s2):
     print("Do NOT move the ultrasonic sensors!")
     global ultrasonic_s1_error_correction, ultrasonic_s2_error_correction
@@ -45,8 +44,8 @@ def advanced_calibrate(real_distance_s1, real_distance_s2):
 def reset_angle():
     motor_a.reset_angle(0)
     gyro_s3.reset_angle(0)
-    
-    
+
+
 def get_error_correction(ultrasonic_sensor, real_distance):
     calibrated_value = ultrasonic_sensor.distance()
     for i in range(20):
@@ -93,5 +92,4 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    auto_calibrate()
-    measure()
+    test1()
