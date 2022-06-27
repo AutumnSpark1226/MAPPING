@@ -36,7 +36,6 @@ def does_table_exist(table_name):
 
 if __name__ == '__main__':
     # example to test this script
-    password = open('DBPassword.txt', 'r').readline().rstrip()
-    connect('localhost', 'MAPPING_server', password, 'MAPPING')
+    connect('localhost', 'root', None, None)
     print(fetch('SHOW DATABASES'))
     disconnect()
