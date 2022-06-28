@@ -59,8 +59,8 @@ def measure():
         print('WARNING: gyro sensors and motor angle not the same!')
         reset_angle()
     while gyro_s3.angle() < 360:
-        if motor_a.angle >= 360:
-            print('ERROR: sensor error! (motor_a.angle() >= 360)')
+        if motor_a.angle >= 361:
+            print('ERROR: sensor error! (motor_a.angle() >= 361)')
         motor_a.run_angle(6, 1)
         distance_s1 = ultrasonic_s1.distance() + ultrasonic_s1_error_correction
         distance_s2 = ultrasonic_s2.distance() + ultrasonic_s2_error_correction
