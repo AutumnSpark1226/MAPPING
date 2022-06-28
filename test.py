@@ -23,8 +23,7 @@ def test1():
     # Play another beep sound.
     ev3.speaker.beep(1000, 500)
     ev3.speaker.set_volume(100)
-    ev3.speaker.say("Jeremias: failure")
-    ev3.speaker.say("You are dumb as fuck")
+    ev3.speaker.say("Hello, world!")
     # measure distance
     print("distance: " + str(ultrasonic_s1.distance()))
 
