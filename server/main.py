@@ -58,11 +58,12 @@ def wait_for_connections():
 
 
 def start():
-    global ev3_connect_thread
-    ev3_connect_thread.start()
     db_operations.connect()
+    db_operations.clean()
     db_operations.setup_database()
     print('[server/main.py] database ready')
+    global ev3_connect_thread
+    ev3_connect_thread.start()
     wait_for_connections()
     print('[server/main.py] all clients connected')
     server.send_text(mapping0_connection, 'ready')
