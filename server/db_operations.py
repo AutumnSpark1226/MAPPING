@@ -4,6 +4,8 @@ from datetime import date
 
 from lib import database
 
+table_suffix = "???"
+
 
 def connect():
     password = open(os.getcwd() + '/server/DBPassword.txt', 'r').readline().rstrip()
@@ -21,13 +23,14 @@ def setup_database():
             'CHANGED timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
         database.execute("INSERT INTO GENERAL (NAME, VALUE) VALUES ('created', '-> CHANGED')")
         database.execute("INSERT INTO GENERAL (NAME, VALUE) VALUES ('run_count', '0')")
+    global table_suffix
     table_suffix = '_' + date.today().strftime("%Y%m%d") + '_' + str(
         database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0]) + 1) + "' WHERE NAME='run_count'")
     if not database.does_table_exist('RAW_DATA' + table_suffix):
         database.execute(
-            'CREATE TABLE RAW_DATA' + table_suffix + '(ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL, POS_Y int '
+            'CREATE TABLE RAW_DATA' + table_suffix + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL, POS_Y int '
                                                      'NOT NULL, ANGLE int, DISTANCE_S1 int, DISTANCE_S2 int, '
                                                      'TIME timestamp NOT NULL DEFAULT '
                                                      'CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
@@ -39,3 +42,9 @@ def clean():
         if table[0].startswith('RAW_DATA_'):
             database.execute("DROP TABLE " + table[0])
     database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count'")
+
+
+def write_raw_data(pos_x, pos_y, angle, distance_s1, distance_s2):
+    database.execute(
+        "INSERT INTO RAW_DATA" + table_suffix + " (POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2) VALUES (" + pos_x +
+        ", " + pos_y + ", " + angle + ", " + distance_s1 + ", " + distance_s2 + ")")
