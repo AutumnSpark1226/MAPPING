@@ -33,7 +33,6 @@ def setup_database():
                                                      'CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
 
 
-
 def clean():
     tables = database.fetch("SHOW TABLES")
     for table in tables:
