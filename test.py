@@ -11,7 +11,7 @@ from pybricks.parameters import Port
 
 ev3 = EV3Brick()
 motor_a = Motor(Port.A)
-gyro_s3 = GyroSensor(Port.S3)
+#gyro_s3 = GyroSensor(Port.S3)
 ultrasonic_s1 = UltrasonicSensor(Port.S1)
 ultrasonic_s1_error_correction = 0
 ultrasonic_s2 = UltrasonicSensor(Port.S2)
