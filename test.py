@@ -4,7 +4,7 @@
 import time
 
 from pybricks.ev3devices import GyroSensor  # pip install pybricks
-from pybricks.ev3devices import Motor  # not found by PyCharm; works
+from pybricks.ev3devices import Motor  # not found by PyCharm; works!
 from pybricks.ev3devices import UltrasonicSensor
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
@@ -25,7 +25,8 @@ def test1():
     ev3.speaker.set_volume(100)
     ev3.speaker.say("Hello, world!")
     # measure distance
-    print("distance: " + str(ultrasonic_s1.distance()))
+    print("distance 1: " + str(ultrasonic_s1.distance()))
+    print("distance 2: " + str(ultrasonic_s2.distance()))
 
 
 def auto_calibrate():
