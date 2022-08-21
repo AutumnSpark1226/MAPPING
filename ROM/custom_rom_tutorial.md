@@ -2,7 +2,6 @@
 ### Requirements
 - a (virtual) linux device that runs armel code (e.g. a Raspberry Pi)
 - docker engine -> https://docs.docker.com/engine/install/
-- root access
 - brickstrap -> https://github.com/ev3dev/brickstrap
 
 ### Steps
