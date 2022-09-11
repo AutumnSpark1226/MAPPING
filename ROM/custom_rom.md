@@ -19,3 +19,4 @@
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
 - configure ufw
+- pybricks-micropython pip/pycryptodomex????
