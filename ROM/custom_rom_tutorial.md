@@ -20,20 +20,6 @@ The default password is `maker`
     sudo apt update
     sudo apt full-upgrade -y
 
-Install `pip`
-
-    sudo apt install python3-pip -y
-
-Test it (did not work for me) and install `pybricks`
-
-    pip install pybricks
-
-If it installed pybricks, skip this step
-
-    curl https://bootstrap.pypa.io/pip/3.5/get-pip.py > get-pip.py
-    python3 get-pip.py
-    python3 -m pip install pybricks
-
 Now you can customize the rom  
 
 After that exit the docker container
