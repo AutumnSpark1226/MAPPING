@@ -1,10 +1,4 @@
-import hashlib
 import socket
-
-import Cryptodome.Cipher.PKCS1_OAEP  # pip install pycryptodomex
-from Cryptodome.Cipher import AES
-from Cryptodome.PublicKey import RSA
-from Cryptodome.Util import Padding
 
 _server_socket = None
 
@@ -53,5 +47,5 @@ if __name__ == '__main__':
             break
         print("received: " + test_message)
         send_text(conn, test_message)
-    conn[0].close()
+    conn.close()
     stop()

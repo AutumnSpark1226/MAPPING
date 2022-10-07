@@ -1,11 +1,10 @@
 # Custom ROM
 
 ### Status: `not tested`
-### Version: `20221006`
+### Version: `20221007`
 
 ## TODO
-- install apt-utils dialog htop ufw zsh clang g++ python3-pip
-- install pybricks (pip)
+- install apt-utils dialog htop ufw zsh
 - set login shell
 - configure zsh
 - replace PATH in .zshrc
@@ -19,10 +18,9 @@
      /etc/udev/rules.d/99-edimax-n150-eu.rules
 
 
-     ACTION=="add", ATTRS{idVendor}=="b811", ATTRS{idProduct}=="331b", RUN+="/sbin/modprobe 8188eu" RUN+="/bin/sh -c 'echo 7392 b811 > /sys/bus/usb/drivers/r8188eu/new_id'"
+     ACTION=="add", ATTRS{idVendor}=="7392", ATTRS{idProduct}=="b811", RUN+="/sbin/modprobe 8188eu" RUN+="/bin/sh -c 'echo 7392 b811 > /sys/bus/usb/drivers/r8188eu/new_id'"
 
 
 ## TODO after flashing
 - set hostnames (mapping0, mapping1)
 - configure ufw
-- pybricks-micropython pip/pycryptodomex????

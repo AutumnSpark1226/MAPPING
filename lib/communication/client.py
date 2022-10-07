@@ -1,6 +1,4 @@
-import os
 import socket
-
 
 _client_socket = None
 _aes_key = None
