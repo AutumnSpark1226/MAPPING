@@ -38,7 +38,7 @@ class EV3Connect(threading.Thread):
                 mapping1_connection = con
                 print('[server/main.py] ' + hostname + ' connected')
             else:
-                con[0].close()
+                con.close()
                 print('[server/main.py] ' + hostname + ' tried to connect')
                 sleep(0.5)
 

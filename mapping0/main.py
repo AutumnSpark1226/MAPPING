@@ -3,7 +3,7 @@ import os
 import sys
 from time import sleep
 
-#sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
+sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
 
 from pybricks.hubs import EV3Brick
 
