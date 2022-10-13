@@ -3,34 +3,34 @@
 # this script contains test code
 import time
 
-from pybricks.ev3devices import GyroSensor  # pip install pybricks
-from pybricks.ev3devices import Motor  # not found by PyCharm; works!
-from pybricks.ev3devices import UltrasonicSensor
 from pybricks.hubs import EV3Brick
-from pybricks.parameters import Port
+from pybricks.parameters import Color
 
 ev3 = EV3Brick()
-#motor_a = Motor(Port.A)
-#gyro_s3 = GyroSensor(Port.S3)
-#ultrasonic_s1 = UltrasonicSensor(Port.S1)
+# motor_a = Motor(Port.A)
+# gyro_s3 = GyroSensor(Port.S3)
+# ultrasonic_s1 = UltrasonicSensor(Port.S1)
 ultrasonic_s1_error_correction = 0
-#ultrasonic_s2 = UltrasonicSensor(Port.S2)
+# ultrasonic_s2 = UltrasonicSensor(Port.S2)
 ultrasonic_s2_error_correction = 0
 
 
 def test1():
-    #motor_a.run_time(500, 2000)
+    # motor_a.run_time(500, 2000)
     ev3.speaker.beep(1000, 500)
     ev3.speaker.set_volume(100)
     ev3.speaker.say("Justus is dumb as fuck! you lost!")
     # measure distance
-    #print("distance 1: " + str(ultrasonic_s1.distance()))
-    #print("distance 2: " + str(ultrasonic_s2.distance()))
+    # print("distance 1: " + str(ultrasonic_s1.distance()))
+    # print("distance 2: " + str(ultrasonic_s2.distance()))
+
 
 def test2():
-    ev3.light.on(purple)
+    ev3.light.on(Color.RED)
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
-    
+    time.sleep(3)
+
+
 def auto_calibrate():
     reset_angle()
     print('WIP')
