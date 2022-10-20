@@ -68,11 +68,10 @@ def measure():
         distance_s2 = ultrasonic_s2.distance() + ultrasonic_s2_error_correction
         angle_s3 = gyro_s3.angle()
         angle_a = motor_a.angle()
-        print('sensors 1: ' + str(distance_s1))
-        print('sensors 2: ' + str(distance_s2))
-        print('gyro' + str(angle_s3))
-        print('motor A' + str(angle_a))
-        time.sleep(0.1)
+        print('sensor S1: ' + str(distance_s1))
+        print('sensor S2: ' + str(distance_s2))
+        print('gyro S3: ' + str(angle_s3))
+        print('motor A: ' + str(angle_a))
 
 
 def test_for_ultrasonic_interferences():

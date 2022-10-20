@@ -18,7 +18,7 @@ class EV3Connect(threading.Thread):
         print('[server/main.py] ' + self.thread_name + ' initialized')
 
     def run(self):
-        # save connections of the robots to the variables (They are separated by their hostnames.)
+        # save connections of the robots
         server.start(6666)
         print('[server/main.py] server started')
         # count = 0  # test purposes only
@@ -59,7 +59,7 @@ def wait_for_connections():
 
 def start():
     db_operations.connect()
-    db_operations.clean()
+    db_operations.clean()  # TODO only clean in specific situations
     db_operations.setup_database()
     print('[server/main.py] database ready')
     global ev3_connect_thread
@@ -80,6 +80,7 @@ def stop():
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()
+    # last to stop (kills the process)
     ev3_connect_thread.stop()
 
 
