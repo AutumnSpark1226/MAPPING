@@ -18,9 +18,9 @@ fi
 if [ "$PROGRAM" = "server" ]; then
   ./server/main.py
 elif [ "$PROGRAM" = "mapping0" ]; then
-  brickrun -r ./mapping0/main.py
+  brickrun -r "./mapping0/main.py"
 elif [ "$PROGRAM" = "mapping1" ]; then
-  brickrun -r ./mapping1/main.py
+  brickrun -r "./mapping1/main.py"
 else
   echo "Program not found"
 fi
