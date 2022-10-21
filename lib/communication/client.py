@@ -31,7 +31,7 @@ def receive_text(size=1024):
 
 if __name__ == '__main__':
     # simple echo client to test the communication
-    host = socket.gethostname()
+    host = "192.168.0.2"
     connect(host, 6666)
     while True:
         test_message = input("> ")
