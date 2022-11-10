@@ -25,16 +25,10 @@ def fetch(sql_statement):
 
 
 def does_table_exist(table_name):
-    # check if lb table exists
+    # check if table exists
     _cursor.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{0}'".format(
         table_name.replace('\'', '\'\'')))
     if _cursor.fetchone()[0] == 1:
         return True
     return False
 
-
-if __name__ == '__main__':
-    # example to test this script
-    connect('localhost', 'root', None, None)
-    print(fetch('SHOW DATABASES'))
-    disconnect()

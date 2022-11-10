@@ -2,7 +2,7 @@
 import sys
 from time import sleep
 
-sys.path.insert(0, "/home/robot/MAPPING")
+sys.path.insert(0, "/home/main/Scripts/MAPPING")
 
 from pybricks.hubs import EV3Brick
 from lib.communication import client
@@ -16,7 +16,7 @@ def measure_at_current_location():
 
 def start():
     print("[mapping0/main.py] connecting")
-    client.connect('WIP', 6666)  # ip
+    client.connect('192.168.1.20', 6666)  # ip
     print("[mapping0/main.py] connected")
     while client.receive_text() != 'ready':
         sleep(0.5)

@@ -5,9 +5,8 @@ _server_socket = None
 
 def start(port):
     global _server_socket
-    host = socket.gethostname()
     _server_socket = socket.socket()
-    _server_socket.bind((host, port))
+    _server_socket.bind(('0.0.0.0', port))
     _server_socket.listen()
 
 
