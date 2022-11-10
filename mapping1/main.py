@@ -1,9 +1,8 @@
 #!/usr/bin/env pybricks-micropython
-import os
 import sys
 from time import sleep
 
-sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
+sys.path.insert(0, "/home/robot/MAPPING")
 
 from pybricks.hubs import EV3Brick
 from lib.communication import client
@@ -17,7 +16,7 @@ def drive_forward(length):
 
 def start():
     print("[mapping1/main.py] connecting")
-    client.connect('laptop', 6666)
+    client.connect('WIP', 6666)  # ip
     print("[mapping1/main.py] connected")
     while client.receive_text() != 'ready':
         sleep(0.5)
