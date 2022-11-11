@@ -4,7 +4,9 @@
 import time
 
 from pybricks.hubs import EV3Brick
+from pybricks.devices import TouchSensor
 from pybricks.parameters import Color
+
 
 ev3 = EV3Brick()
 # motor_a = Motor(Port.A)
@@ -30,9 +32,10 @@ def test2():
     ev3.light.on(Color.RED)
     ev3.speaker.say("You suck!")
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
-    while TouchSensor(Port.S1).pressed() == False:
+    ts = TouchSensor(Port.S1)
+    while not ts.pressed():
         ev3.screen.print(i)
-        if TouchSensor(1).pressed():
+        if ts.pressed():
             ev3.speaker.say("true")
         else:
             ev3.speaker.say("false")
