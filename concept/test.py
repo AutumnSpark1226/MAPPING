@@ -9,7 +9,7 @@ from pybricks.parameters import Color
 ev3 = EV3Brick()
 # motor_a = Motor(Port.A)
 # gyro_s3 = GyroSensor(Port.S3)
-# ultrasonic_s1 = UltrasonicSensor(Port.S1)
+# ultrasonic_s1 = TouchSensor(Port.S1)
 ultrasonic_s1_error_correction = 0
 # ultrasonic_s2 = UltrasonicSensor(Port.S2)
 ultrasonic_s2_error_correction = 0
@@ -30,7 +30,7 @@ def test2():
     ev3.light.on(Color.RED)
     ev3.speaker.say("You suck!")
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
-    while ev3.TouchSensor(1).pressed() == False:
+    while ev3.TouchSensor(Port.S1).pressed() == False:
         ev3.screen.print(i)
         if ev3.TouchSensor(1).pressed():
             ev3.speaker.say("true")
