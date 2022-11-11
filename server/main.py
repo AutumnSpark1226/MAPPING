@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import os
-import socket
 import sys
 import threading
 from time import sleep
@@ -16,7 +15,7 @@ class EV3Connect(threading.Thread):
         threading.Thread.__init__(self)
         self.thread_name = 'EV3ConnectThread'
         print('[server/main.py] ' + self.thread_name + ' initialized')
-        
+
     def run(self):
         # save connections of the robots
         server.start(6666)

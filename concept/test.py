@@ -41,9 +41,9 @@ def test2():
         else:
             ev3.speaker.say("false")
         time.sleep(1)
-        i += 1    
+        i += 1
     time.sleep(5)
-    
+
 
 def auto_calibrate():
     reset_angle()
@@ -107,4 +107,4 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    test2()    
+    test2()
