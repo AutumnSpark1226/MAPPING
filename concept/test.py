@@ -3,10 +3,9 @@
 # this script contains test code
 import time
 
+from pybricks.ev3devices import TouchSensor
 from pybricks.hubs import EV3Brick
-from pybricks.devices import TouchSensor
-from pybricks.parameters import Color
-
+from pybricks.parameters import Color, Port
 
 ev3 = EV3Brick()
 # motor_a = Motor(Port.A)
