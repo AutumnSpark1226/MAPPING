@@ -36,6 +36,7 @@ def test2():
         ev3.screen.print(i)
         if ts.pressed():
             ev3.speaker.say("true")
+            time.sleep(1)
         else:
             ev3.speaker.say("false")
         time.sleep(1)
