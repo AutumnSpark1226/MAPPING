@@ -32,11 +32,12 @@ def test2():
     ev3.speaker.say("You suck!")
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
     ts = TouchSensor(Port.S1)
-    while not ts.pressed():
+    while True:
         ev3.screen.print(i)
         if ts.pressed():
             ev3.speaker.say("true")
             time.sleep(1)
+            break
         else:
             ev3.speaker.say("false")
         time.sleep(1)
