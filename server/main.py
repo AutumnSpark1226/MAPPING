@@ -16,7 +16,7 @@ class EV3Connect(threading.Thread):
         threading.Thread.__init__(self)
         self.thread_name = 'EV3ConnectThread'
         print('[server/main.py] ' + self.thread_name + ' initialized')
-
+        
     def run(self):
         # save connections of the robots
         server.start(6666)
@@ -24,22 +24,22 @@ class EV3Connect(threading.Thread):
         # count = 0  # test purposes only
         while True:
             con, address = server.accept_client()
-            hostname = socket.gethostbyaddr(address[0])[0]  # get hostname
-            print('[server/main.py] connection request (' + hostname + ')')
-            if hostname == 'mapping0':
+            id = server.receive_text(con)
+            print('[server/main.py] connection request (' + id + ')')
+            if id == 'mapping0':
                 # if count == 0: # test purposes only
                 # count = 1 # test purposes only
                 global mapping0_connection
                 mapping0_connection = con
-                print('[server/main.py] ' + hostname + ' connected')
-            elif hostname == 'mapping1':
+                print('[server/main.py] ' + id + ' connected')
+            elif id == 'mapping1':
                 # elif count == 1: # test purposes only
                 global mapping1_connection
                 mapping1_connection = con
-                print('[server/main.py] ' + hostname + ' connected')
+                print('[server/main.py] ' + id + ' connected')
             else:
                 con.close()
-                print('[server/main.py] ' + hostname + ' tried to connect')
+                print('[server/main.py] ' + id + ' tried to connect')
                 sleep(0.5)
 
     def stop(self):

@@ -16,8 +16,9 @@ def drive_forward(length):
 
 def start():
     print("[mapping1/main.py] connecting")
-    client.connect('WIP', 6666)  # ip
+    client.connect('192.168.0.2', 6666)  # ip
     print("[mapping1/main.py] connected")
+    client.send_text("mapping1")
     while client.receive_text() != 'ready':
         sleep(0.5)
     client.send_text('ready')
