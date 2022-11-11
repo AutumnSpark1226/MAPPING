@@ -26,10 +26,20 @@ def test1():
 
 
 def test2():
+    i = 0
     ev3.light.on(Color.RED)
+    ev3.speaker.say("You suck!")
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
-    time.sleep(3)
-
+    while ev3.TouchSensor(1).pressed() == False:
+        ev3.screen.print(i)
+        if ev3.TouchSensor(1).pressed():
+            ev3.speaker.say("true")
+        else:
+            ev3.speaker.say("false")
+        time.sleep(1)
+        i += 1    
+    time.sleep(5)
+    
 
 def auto_calibrate():
     reset_angle()
@@ -93,4 +103,4 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    test2()
+    test2()    
