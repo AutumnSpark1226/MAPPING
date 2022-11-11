@@ -30,9 +30,9 @@ def test2():
     ev3.light.on(Color.RED)
     ev3.speaker.say("You suck!")
     ev3.screen.print(str(ev3.screen.width) + " " + str(ev3.screen.height))
-    while ev3.TouchSensor(Port.S1).pressed() == False:
+    while TouchSensor(Port.S1).pressed() == False:
         ev3.screen.print(i)
-        if ev3.TouchSensor(1).pressed():
+        if TouchSensor(1).pressed():
             ev3.speaker.say("true")
         else:
             ev3.speaker.say("false")
