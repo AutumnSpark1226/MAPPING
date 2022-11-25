@@ -48,8 +48,10 @@ def test2():
     time.sleep(5)
 
 
-def rotate_90(direction):
-    rotator.run_angle((30 * direction), 90)
+def rotate(degrees):
+    climber.run_angle(90, 360)
+    rotator.run_angle(30, degrees)
+    climber.run_angle(90, -360)
     ev3.speaker.say("Rotated 90 degrees!")
 
 def auto_calibrate():
