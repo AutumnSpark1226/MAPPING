@@ -3,7 +3,7 @@
 # this script contains test code
 import time
 
-from pybricks._common import Motor
+from pybricks.ev3devices import Motor  # not found by PyCharm; working
 from pybricks.ev3devices import TouchSensor
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Color, Port
