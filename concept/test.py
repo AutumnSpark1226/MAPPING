@@ -56,7 +56,7 @@ def rotate(degrees):
 
 
 def drive(cm):
-    degrees = cm * 21.2
+    degrees = cm * 21.17647058823529
     engineA.run_angle(90, degrees)
 
 
