@@ -58,6 +58,7 @@ def rotate(degrees):
 def drive(cm):
     degrees = cm * 21.17647058823529
     engineA.run_angle(90, degrees)
+    ev3.speaker.say(cm)
 
 
 def auto_calibrate():
@@ -122,4 +123,5 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    test2()
+    rotate(90)
+    drive(20)
