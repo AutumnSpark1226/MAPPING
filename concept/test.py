@@ -3,12 +3,15 @@
 # this script contains test code
 import time
 
+from pybricks._common import Motor
 from pybricks.ev3devices import TouchSensor
 from pybricks.hubs import EV3Brick
 from pybricks.parameters import Color, Port
 
 ev3 = EV3Brick()
-# motor_a = Motor(Port.A)
+engineA = Motor(Port.A)
+climber = Motor(Port.B)
+rotator = Motor(Port.C)
 # gyro_s3 = GyroSensor(Port.S3)
 # ultrasonic_s1 = TouchSensor(Port.S1)
 ultrasonic_s1_error_correction = 0
@@ -41,9 +44,13 @@ def test2():
         else:
             ev3.speaker.say("false")
         time.sleep(1)
-        i += 1    
+        i += 1
     time.sleep(5)
-    
+
+
+def rotate_90(direction):
+    rotator.run_angle((30 * direction), 90)
+    ev3.speaker.say("Rotated 90 degrees!")
 
 def auto_calibrate():
     reset_angle()
@@ -107,4 +114,4 @@ def test_for_ultrasonic_interferences():
 
 
 if __name__ == '__main__':
-    test2()    
+    test2()
