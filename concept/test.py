@@ -10,8 +10,8 @@ from pybricks.parameters import Color, Port
 
 ev3 = EV3Brick()
 engineA = Motor(Port.A)
-climber = Motor(Port.B)
-rotator = Motor(Port.C)
+climberB = Motor(Port.B)
+rotatorC = Motor(Port.C)
 # gyro_s3 = GyroSensor(Port.S3)
 # ultrasonic_s1 = TouchSensor(Port.S1)
 ultrasonic_s1_error_correction = 0
@@ -49,10 +49,16 @@ def test2():
 
 
 def rotate(degrees):
-    climber.run_angle(90, 360)
-    rotator.run_angle(30, degrees)
-    climber.run_angle(90, -360)
+    climberB.run_angle(90, 360)
+    rotatorC.run_angle(30, degrees)
+    climberB.run_angle(90, -360)
     ev3.speaker.say("Rotated 90 degrees!")
+
+
+def drive(cm):
+    degrees = cm * 21.2
+    engineA.run_angle(90, degrees)
+
 
 def auto_calibrate():
     reset_angle()
