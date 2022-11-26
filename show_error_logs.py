@@ -95,5 +95,4 @@ def interactive_logreader():
 
 
 if __name__ == '__main__':
-    # interactive_logreader()
-    choose_logfile()
+    interactive_logreader()
