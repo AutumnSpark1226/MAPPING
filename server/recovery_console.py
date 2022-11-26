@@ -3,7 +3,7 @@
 import os
 import sys
 
-from server import main
+import main
 
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
 
