@@ -17,6 +17,8 @@ else
 fi
 if [ "$PROGRAM" = "server" ]; then
   ./server/main.py
+elif [ "$PROGRAM" = "server_recovery" ]; then
+  ./server/recovery_console.py
 elif [ "$PROGRAM" = "mapping0" ]; then
   brickrun -r "./mapping0/main.py"
 elif [ "$PROGRAM" = "mapping1" ]; then
