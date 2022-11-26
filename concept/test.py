@@ -20,13 +20,13 @@ ultrasonic_s2_error_correction = 0
 
 
 def test1():
-    # motor_a.run_time(500, 2000)
+    motor_a.run_time(500, 2000)
     ev3.speaker.beep(1000, 500)
     ev3.speaker.set_volume(100)
     ev3.speaker.say("Justus is dumb as fuck! you lost!")
     # measure distance
-    # print("distance 1: " + str(ultrasonic_s1.distance()))
-    # print("distance 2: " + str(ultrasonic_s2.distance()))
+    print("distance 1: " + str(ultrasonic_s1.distance()))
+    print("distance 2: " + str(ultrasonic_s2.distance()))
 
 
 def test2():
@@ -58,7 +58,7 @@ def rotate(degrees):
 def drive(cm):
     degrees = cm * 21.17647058823529
     engineA.run_angle(90, degrees)
-    ev3.speaker.say(cm)
+    ev3.speaker.say(str(cm))
 
 
 def auto_calibrate():
@@ -104,7 +104,7 @@ def measure():
         print('motor A: ' + str(angle_a))
 
 
-def test_for_ultrasonic_interferences():
+def test_for_ultrasonic_interferences():  # check if the ultrasonic sensors interfere
     print('S1')
     print(ultrasonic_s1.presence())
     print(ultrasonic_s1.distance())
