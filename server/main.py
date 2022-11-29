@@ -49,11 +49,7 @@ class EV3Connect(threading.Thread):
 ev3_connect_thread = EV3Connect()
 mapping0_connection = None
 mapping1_connection = None
-
-
-def wait_for_connections():
-    while not (mapping0_connection and mapping1_connection):
-        sleep(0.5)
+failure_count = 0
 
 
 def start():
@@ -81,6 +77,22 @@ def stop():
     server.stop()
     # last to stop (kills the process)
     ev3_connect_thread.stop()
+
+
+def wait_for_connections():
+    while not (mapping0_connection and mapping1_connection):
+        sleep(0.5)
+
+
+def drive_forward(cm):
+    server.send_text(mapping1_connection, "drive_forward")
+    server.send_text(mapping1_connection, str(cm))
+    if server.receive_text(mapping1_connection) != "ok":
+        global failure_count
+        if failure_count > 10:
+            raise Exception("Too many failures to drive forward")
+        else:
+            failure_count += 1
 
 
 def run():

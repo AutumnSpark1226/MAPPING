@@ -10,7 +10,7 @@ from lib.communication import client
 ev3 = EV3Brick()
 
 
-def drive_forward(length):
+def drive_forward(cm):
     print('WIP')
 
 
