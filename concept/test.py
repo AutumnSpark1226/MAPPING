@@ -20,7 +20,7 @@ ultrasonic_s2_error_correction = 0
 
 
 def test1():
-    motor_a.run_time(500, 2000)
+    engineA.run_time(500, 2000)
     ev3.speaker.beep(1000, 500)
     ev3.speaker.set_volume(100)
     ev3.speaker.say("Justus is dumb as fuck! you lost!")

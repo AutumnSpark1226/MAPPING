@@ -11,6 +11,7 @@ ev3 = EV3Brick()
 
 
 def measure_at_current_location():
+    client.send_text("WIP")
     print('WIP')
 
 

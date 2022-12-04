@@ -31,8 +31,8 @@ def receive_text(size=1024):
 
 if __name__ == '__main__':
     # simple echo client to test the communication
-    host = ""  # the server's ip
-    connect(host, 6666)
+    server_ip = ""  # the server's ip
+    connect(server_ip, 6666)
     while True:
         test_message = input("> ")
         send_text(test_message)

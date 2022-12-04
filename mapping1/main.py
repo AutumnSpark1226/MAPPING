@@ -11,6 +11,7 @@ ev3 = EV3Brick()
 
 
 def drive_forward(cm):
+    client.send_text("WIP")
     print('WIP')
 
 
