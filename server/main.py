@@ -4,12 +4,11 @@ import sys
 import threading
 from time import sleep
 
-from server import analysis_algorithms
-
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
 
 import lib.communication.server as server
 import db_operations
+import analysis_algorithms
 
 
 class EV3Connect(threading.Thread):

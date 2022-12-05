@@ -3,7 +3,7 @@ import os
 from datetime import date
 
 from lib import database
-from server import analysis_algorithms
+import analysis_algorithms
 
 raw_data_table_suffix = "???"
 
@@ -42,7 +42,8 @@ def clean():
     for table in tables:
         if table[0].startswith('RAW_DATA_'):
             database.execute("DROP TABLE " + table[0])
-    database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
+    if database.does_table_exist('GENERAL'):
+        database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
 def create_raw_data_table():
