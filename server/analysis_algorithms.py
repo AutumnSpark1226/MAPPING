@@ -1,7 +1,10 @@
 import threading
+from time import sleep
+
+import db_operations
 
 
-class AnalysisThread0(threading.Thread):
+class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
     keep_alive = True
     current_id = 0
 
@@ -12,14 +15,26 @@ class AnalysisThread0(threading.Thread):
 
     def run(self):
         while self.keep_alive:
-            print("WIP")
-            break  # temporary solution to prevent an endless loop
+            if db_operations.count_raw_data_entries() > self.current_id:
+                raw_data = db_operations.get_raw_data(self.current_id)
+                primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4])
+                self.current_id += 1
+            else:
+                sleep(1)
 
 
 thread0 = AnalysisThread0()
 
 
-def complete_analysis():
+def complete_primary_analysis():
+    thread0.keep_alive = False
+    while db_operations.count_raw_data_entries() > thread0.current_id:
+        raw_data = db_operations.get_raw_data(thread0.current_id)
+        primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4])
+        thread0.current_id += 1
+
+
+def primary_analysis(pos_x, pos_y, angle, distance_s1, distance_s2):
     print("WIP")
 
 
