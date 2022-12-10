@@ -6,7 +6,7 @@ import db_operations
 
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
     keep_alive = True
-    current_id = 0
+    current_id = 1
 
     def __init__(self):
         threading.Thread.__init__(self)

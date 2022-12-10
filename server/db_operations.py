@@ -56,7 +56,7 @@ def create_raw_data_table():
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='raw_data_table_count'")[0][
                 0]) + 1) + "' WHERE NAME='raw_data_table_count'")
-    analysis_algorithms.thread0.current_id = 0
+    analysis_algorithms.thread0.current_id = 1
     # create raw data table
     if not database.does_table_exist(raw_data_table_name):
         database.execute(
