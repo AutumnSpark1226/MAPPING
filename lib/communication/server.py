@@ -1,9 +1,9 @@
 import socket
 
-_server_socket = None
+_server_socket: socket.socket
 
 
-def start(port):
+def start(port: int):
     global _server_socket
     _server_socket = socket.socket()
     _server_socket.bind(('0.0.0.0', port))
@@ -23,13 +23,13 @@ def accept_client():
     return connection, client_address
 
 
-def send_text(connection, text):
+def send_text(connection: socket.socket, text: str):
     if not _server_socket:
         raise Exception("server not running")
     connection.send(text.encode())
 
 
-def receive_text(connection, size=1024):
+def receive_text(connection: socket.socket, size=1024):
     if not _server_socket:
         raise Exception("server not running")
     text = connection.recv(size).decode()

@@ -1,8 +1,6 @@
 import socket
 
-_client_socket = None
-_aes_key = None
-_iv = None
+_client_socket: socket.socket
 
 
 def connect(host, port):
@@ -17,7 +15,7 @@ def disconnect():
     _client_socket.close()
 
 
-def send_text(text):
+def send_text(text: str):
     if not _client_socket:
         raise Exception("client not connected")
     _client_socket.send(text.encode())

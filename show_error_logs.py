@@ -1,5 +1,6 @@
 #!/usr/bin/env pybricks-micropython
 # no print() command because it would create another *.err.log file
+
 import os
 import time
 
@@ -12,7 +13,7 @@ max_chars_per_line = 25  # TODO hardcode or calculate the value
 
 
 def choose_logfile():
-    directory = "/home/main/Scripts/EV3/MAPPING"
+    directory = "/home/robot/MAPPING"
     logfiles = scan_directory(directory)
     chosen_file = None
     cursor_position = 0
@@ -42,7 +43,7 @@ def choose_logfile():
     return open(chosen_file)
 
 
-def scan_directory(directory):
+def scan_directory(directory: str):
     logfiles = []
     scan_result = os.scandir(directory)
     for entry in scan_result:
@@ -54,7 +55,7 @@ def scan_directory(directory):
     return logfiles
 
 
-def print_logfile(lines, part):
+def print_logfile(lines: list[str], part: int):
     ev3.screen.clear()
     i = part * max_lines_on_screen
     loop_end = i + 10

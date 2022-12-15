@@ -34,7 +34,7 @@ def complete_primary_analysis():
         thread0.current_id += 1
 
 
-def primary_analysis(pos_x, pos_y, angle, distance_s1, distance_s2):
+def primary_analysis(pos_x: int, pos_y: int, angle: int, distance_s1: int, distance_s2: int):
     print("WIP")
 
 

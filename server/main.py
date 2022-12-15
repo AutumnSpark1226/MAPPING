@@ -103,7 +103,7 @@ def recover_position():
         stop()
 
 
-def drive_forward(cm):
+def drive_forward(cm: int):
     server.send_text(mapping1_connection, "drive_forward")
     server.send_text(mapping1_connection, str(cm))
     if server.receive_text(mapping1_connection) != "ok":

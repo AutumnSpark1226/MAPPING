@@ -48,14 +48,14 @@ def test2():
     time.sleep(5)
 
 
-def rotate(degrees):
+def rotate(degrees: int):
     climberB.run_angle(90, 360)
     rotatorC.run_angle(30, degrees)
     climberB.run_angle(90, -360)
-    ev3.speaker.say("Rotated 90 degrees!")
+    ev3.speaker.say("Rotated " + str(degrees) + " degrees!")
 
 
-def drive(cm):
+def drive(cm: int):
     degrees = cm * 21.17647058823529
     engineA.run_angle(90, degrees)
     ev3.speaker.say(str(cm))

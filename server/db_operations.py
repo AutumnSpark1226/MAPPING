@@ -66,10 +66,10 @@ def create_raw_data_table():
                                                     ' NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
 
 
-def write_raw_data(pos_x, pos_y, angle, distance_s1, distance_s2):
+def write_raw_data(pos_x: int, pos_y: int, angle: int, distance_s1: int, distance_s2: int):
     database.execute(
         "INSERT INTO " + raw_data_table_name + " (POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2) VALUES ("
-        + pos_x + ", " + pos_y + ", " + angle + ", " + distance_s1 + ", " + distance_s2 + ")")
+        + str(pos_x) + ", " + str(pos_y) + ", " + str(angle) + ", " + str(distance_s1) + ", " + str(distance_s2) + ")")
     # TODO might result in errors; testing required
     # create a new table to save resources after 1000 entries have been written
     if database.fetch("SELECT ID FROM " + raw_data_table_name + " WHERE ID > 1000")[0][0]:
@@ -77,9 +77,9 @@ def write_raw_data(pos_x, pos_y, angle, distance_s1, distance_s2):
         create_raw_data_table()
 
 
-def get_raw_data(entry_id):
+def get_raw_data(entry_id: int):
     sql_statement = "SELECT POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2 FROM " + raw_data_table_name + \
-                    " WHERE ID=" + entry_id
+                    " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)
 
 

@@ -12,7 +12,7 @@ from lib import database as db
 import db_operations
 
 
-def log(content):
+def log(content: str):
     print('[server/recovery_console.py] ' + content)
 
 

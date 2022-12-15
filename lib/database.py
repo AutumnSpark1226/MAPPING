@@ -1,10 +1,10 @@
 import mariadb  # pip install mariadb
 
-_db = None
-_cursor = None
+_db: mariadb.connections.Connection
+_cursor: mariadb.Cursor
 
 
-def connect(address, username, user_password, use_database):
+def connect(address: str, username: str, user_password: str, use_database: str):
     # connect to the database and initialize it
     global _db, _cursor
     _db = mariadb.connect(host=address, user=username, password=user_password, database=use_database, autocommit=True)
@@ -16,24 +16,22 @@ def disconnect():
     if not _db or not _cursor:
         raise Exception("database not connected")
     _db.close()
-    _db = None
-    _cursor = None
 
 
-def execute(sql_statement):
+def execute(sql_statement: str):
     if not _db or not _cursor:
         raise Exception("database not connected")
     _cursor.execute(sql_statement)
 
 
-def fetch(sql_statement):
+def fetch(sql_statement: str):
     if not _db or not _cursor:
         raise Exception("database not connected")
     _cursor.execute(sql_statement)
     return _cursor.fetchall()
 
 
-def does_table_exist(table_name):
+def does_table_exist(table_name: str):
     if not _db or not _cursor:
         raise Exception("database not connected")
     # check if table exists
