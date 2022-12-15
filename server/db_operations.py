@@ -1,4 +1,8 @@
-# easy access to the database
+"""
+easy access to the database
+see database_info.ods for information
+"""
+
 import os
 from datetime import date
 
@@ -57,8 +61,8 @@ def create_raw_data_table():
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='raw_data_table_count'")[0][
                 0]) + 1) + "' WHERE NAME='raw_data_table_count'")
     analysis_algorithms.thread0.current_id = 1
-    # create raw data table
     if not database.does_table_exist(raw_data_table_name):
+        # create raw data table
         database.execute(
             'CREATE TABLE ' + raw_data_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
                                                     ' POS_Y int NOT NULL, ANGLE int NOT NULL, DISTANCE_S1 int'
@@ -71,8 +75,8 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, distance_s1: int, distanc
         "INSERT INTO " + raw_data_table_name + " (POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2) VALUES ("
         + str(pos_x) + ", " + str(pos_y) + ", " + str(angle) + ", " + str(distance_s1) + ", " + str(distance_s2) + ")")
     # TODO might result in errors; testing required
-    # create a new table to save resources after 1000 entries have been written
-    if database.fetch("SELECT ID FROM " + raw_data_table_name + " WHERE ID > 1000")[0][0]:
+    # create a new table to save resources after 1000 (or maybe more) entries have been written
+    if count_raw_data_entries() > 1000:
         analysis_algorithms.complete_primary_analysis()
         create_raw_data_table()
 

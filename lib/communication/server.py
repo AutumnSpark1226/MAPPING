@@ -2,11 +2,16 @@ import socket
 
 _server_socket: socket.socket
 
+"""
+the communication client
+not further explanation needed
+"""
+
 
 def start(port: int):
     global _server_socket
     _server_socket = socket.socket()
-    _server_socket.bind(('0.0.0.0', port))
+    _server_socket.bind(('0.0.0.0', port))  # be available on all interfaces
     _server_socket.listen()
 
 
@@ -16,7 +21,7 @@ def stop():
     _server_socket.close()
 
 
-def accept_client():
+def accept_client():  # clients won't be automatically accepted; calling this function will accept one client
     if not _server_socket:
         raise Exception("server not running")
     connection, client_address = _server_socket.accept()

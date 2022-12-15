@@ -1,6 +1,8 @@
 #!/usr/bin/env sh
+
 HOSTNAME=$(cat /etc/hostname)
 PROGRAM="?"
+
 if [ "$#" -eq "1" ]; then
   PROGRAM=$1
 else
@@ -15,6 +17,7 @@ else
     read -r PROGRAM
   fi
 fi
+
 if [ "$PROGRAM" = "server" ]; then
   ./server/main.py
 elif [ "$PROGRAM" = "server_recovery" ]; then

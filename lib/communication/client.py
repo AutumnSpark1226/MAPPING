@@ -2,6 +2,11 @@ import socket
 
 _client_socket: socket.socket
 
+"""
+the communication client
+not further explanation needed
+"""
+
 
 def connect(host, port):
     global _client_socket

@@ -1,5 +1,10 @@
 #!/usr/bin/env pybricks-micropython
-# no print() command because it would create another *.err.log file
+
+"""
+print *.err.log files on the ev3's screen
+no print() command because it would create another *.err.log file
+"""
+
 
 import os
 import time

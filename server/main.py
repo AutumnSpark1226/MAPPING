@@ -2,6 +2,7 @@
 import os
 import sys
 import threading
+from socket import socket
 from time import sleep
 
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
@@ -12,6 +13,10 @@ import analysis_algorithms
 
 
 class EV3Connect(threading.Thread):
+    """
+    create a new thread handling the connection process
+    """
+
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'EV3ConnectThread'
@@ -21,7 +26,6 @@ class EV3Connect(threading.Thread):
         # save connections of the robots
         server.start(6666)
         print('[server/main.py] server started')
-        # count = 0  # test purposes only
         while True:
             con, address = server.accept_client()
             client_id = server.receive_text(con)
@@ -38,6 +42,8 @@ class EV3Connect(threading.Thread):
                 con.close()
                 print('[server/main.py] ' + client_id + ' tried to connect')
                 sleep(0.5)
+            # yes, this is a security risk
+            # TODO find a better way to verify the client
 
     def stop(self):
         if self.is_alive():
@@ -45,8 +51,8 @@ class EV3Connect(threading.Thread):
 
 
 ev3_connect_thread = EV3Connect()
-mapping0_connection = None
-mapping1_connection = None
+mapping0_connection: socket
+mapping1_connection: socket
 failure_count = 0
 max_failures = 10
 
@@ -60,6 +66,7 @@ def start():
     db_operations.setup_database()
     print('[server/main.py] database ready')
     ev3_connect_thread.start()
+    # wait til the robots are both connected
     wait_for_connections()
     print('[server/main.py] all clients connected')
     server.send_text(mapping0_connection, 'ready')

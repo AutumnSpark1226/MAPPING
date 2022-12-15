@@ -3,6 +3,10 @@ import mariadb  # pip install mariadb
 _db: mariadb.connections.Connection
 _cursor: mariadb.Cursor
 
+"""
+not further explanation needed
+"""
+
 
 def connect(address: str, username: str, user_password: str, use_database: str):
     # connect to the database and initialize it
