@@ -2,7 +2,6 @@
 
 """
 print *.err.log files on the ev3's screen
-no print() command because it would create another *.err.log file
 """
 
 
@@ -18,23 +17,31 @@ max_chars_per_line = 25  # TODO hardcode or calculate the value
 
 
 def choose_logfile():
-    directory = "/home/robot/MAPPING"
+    directory = "/home/main/Scripts/MAPPING"
     logfiles = scan_directory(directory)
     chosen_file = None
     cursor_position = 0
     while not chosen_file:
-        if len(logfiles) <= max_lines_on_screen:
+        i = 0
+        if cursor_position >= max_lines_on_screen:
+            i = cursor_position
+            loop_end = cursor_position + max_lines_on_screen
+            if loop_end >= len(logfiles):
+                loop_end = len(logfiles)
+        elif len(logfiles) <= max_lines_on_screen:
             loop_end = len(logfiles)
         else:
             loop_end = max_lines_on_screen
         ev3.screen.clear()
-        for i in range(loop_end):
+        while i < loop_end:
             text_to_print = logfiles[i].replace(directory, ".")
             if i == cursor_position:
                 text_to_print = "> " + text_to_print
             ev3.screen.print(text_to_print)
             print(text_to_print)
+            i += 1
         pressed_button = ev3.buttons.pressed()
+        pressed_button = [Button.CENTER]
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
             time.sleep(1)
@@ -44,10 +51,13 @@ def choose_logfile():
             cursor_position += 1
         elif pressed_button[0] == Button.UP:
             cursor_position -= 1
-        if cursor_position > len(logfiles):
-            cursor_position = len(logfiles)
+        if cursor_position >= len(logfiles):
+            cursor_position = len(logfiles) - 1
         elif cursor_position < 0:
             cursor_position = 0
+        #chosen_file = logfiles[cursor_position]
+        time.sleep(2)
+        print()
     return open(chosen_file)
 
 
@@ -56,7 +66,7 @@ def scan_directory(directory: str):
     scan_result = os.listdir(directory)
     for entry in scan_result:
         if entry.endswith(".err.log"):
-            logfiles.extend([directory + "/" + entry.name])
+            logfiles.extend([directory + "/" + entry])
         #elif entry.is_dir():
         #    logfiles.extend(scan_directory(directory + "/" + entry.name))
     logfiles.sort()
@@ -73,6 +83,7 @@ def print_logfile(lines: list[str], part: int):
         loop_end = len(lines)
     while i < loop_end:
         ev3.screen.print(lines[i])
+        print(lines[i])
         i += 1
 
 
@@ -91,6 +102,7 @@ def interactive_logreader():
     while True:
         print_logfile(lines, logfile_position)
         pressed_button = ev3.buttons.pressed()
+        pressed_button = [Button.DOWN]
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
         if pressed_button[0] == Button.LEFT_UP:
