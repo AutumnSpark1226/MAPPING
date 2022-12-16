@@ -89,3 +89,7 @@ def get_raw_data(entry_id: int):
 
 def count_raw_data_entries():
     return int(database.fetch("SELECT COUNT(*) FROM " + raw_data_table_name)[0])
+
+
+def write_object(pos_x: int, pos_y: int, object_type: str):
+    print("WIP")
