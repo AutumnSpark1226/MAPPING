@@ -51,8 +51,8 @@ class EV3Connect(threading.Thread):
 
 
 ev3_connect_thread = EV3Connect()
-mapping0_connection: socket
-mapping1_connection: socket
+mapping0_connection = None
+mapping1_connection = None
 failure_count = 0
 max_failures = 10
 
