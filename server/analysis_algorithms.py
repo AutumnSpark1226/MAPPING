@@ -1,3 +1,4 @@
+import math
 import threading
 from time import sleep
 
@@ -35,7 +36,13 @@ def complete_primary_analysis():
 
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance_s1: int, distance_s2: int):
-    print("WIP")
+    if distance_s1 == 2550:
+        obstacle = False
+    else:
+        obstacle = True
+        y = int(distance_s1 / math.sin(angle) + pos_y)
+        x = int(math.sqrt((distance_s1 ** 2) - (y ** 2)) + pos_x)
+        db_operations.write_object(x, y, "dummy")
 
 
 def start():
