@@ -17,7 +17,7 @@ def measure_at_current_location():
 
 def start():
     print("[mapping0/main.py] connecting")
-    client.connect('192.168.0.2', 6666)  # ip
+    client.connect('192.168.0.100', 6666)  # ip
     print("[mapping0/main.py] connected")
     client.send_text("mapping0")
     while client.receive_text() != 'ready':
