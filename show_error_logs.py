@@ -57,6 +57,7 @@ def scan_directory(directory: str):
         #elif entry.is_dir():
         #    logfiles.extend(scan_directory(directory + "/" + entry.name))
     logfiles.sort()
+    print("logfiles scanned")
     return logfiles
 
 
@@ -73,6 +74,7 @@ def print_logfile(lines: list[str], part: int):
 
 def interactive_logreader():
     logfile = choose_logfile()
+    print("logfile chosen")
     logfile_position = 0
     line = logfile.readline()
     lines = []
