@@ -52,7 +52,7 @@ def scan_directory(directory: str):
     logfiles = []
     scan_result = os.listdir(directory)
     for entry in scan_result:
-        os.open(entry)
+        entry = os.open(entry, os.O_RDONLY)
         if entry.is_file() and entry.name.endswith(".err.log"):
             logfiles.extend([directory + "/" + entry.name])
         elif entry.is_dir():
