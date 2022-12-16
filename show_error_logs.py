@@ -27,6 +27,7 @@ def choose_logfile():
             loop_end = len(logfiles)
         else:
             loop_end = max_lines_on_screen
+        ev3.screen.clear()
         for i in range(loop_end):
             text_to_print = logfiles[i].replace(directory, ".")
             if i == cursor_position:
@@ -35,6 +36,7 @@ def choose_logfile():
         pressed_button = ev3.buttons.pressed()
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
+            sleep(0.1)
         if pressed_button[0] == Button.CENTER:
             chosen_file = logfiles[cursor_position]
         elif pressed_button[0] == Button.DOWN:
