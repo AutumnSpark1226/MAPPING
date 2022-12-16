@@ -36,7 +36,7 @@ def choose_logfile():
         pressed_button = ev3.buttons.pressed()
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
-            sleep(0.1)
+            time.sleep(1)
         if pressed_button[0] == Button.CENTER:
             chosen_file = logfiles[cursor_position]
         elif pressed_button[0] == Button.DOWN:
