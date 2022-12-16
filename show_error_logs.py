@@ -61,6 +61,7 @@ def scan_directory(directory: str):
         #    logfiles.extend(scan_directory(directory + "/" + entry.name))
     logfiles.sort()
     print("logfiles scanned")
+    print(logfiles)
     return logfiles
 
 

@@ -1,6 +1,6 @@
 import socket
 
-_client_socket: socket.socket
+_client_socket = None
 
 """
 the communication client
