@@ -27,6 +27,7 @@ def choose_logfile():
             loop_end = len(logfiles)
         else:
             loop_end = max_lines_on_screen
+        ev3.screen.clear()
         for i in range(loop_end):
             text_to_print = logfiles[i].replace(directory, ".")
             if i == cursor_position:
@@ -35,6 +36,7 @@ def choose_logfile():
         pressed_button = ev3.buttons.pressed()
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
+            time.sleep(1)
         if pressed_button[0] == Button.CENTER:
             chosen_file = logfiles[cursor_position]
         elif pressed_button[0] == Button.DOWN:
@@ -50,13 +52,14 @@ def choose_logfile():
 
 def scan_directory(directory: str):
     logfiles = []
-    scan_result = os.scandir(directory)
+    scan_result = os.listdir(directory)
     for entry in scan_result:
-        if entry.is_file() and entry.name.endswith(".err.log"):
+        if entry.endswith(".err.log"):
             logfiles.extend([directory + "/" + entry.name])
-        elif entry.is_dir():
-            logfiles.extend(scan_directory(directory + "/" + entry.name))
+        #elif entry.is_dir():
+        #    logfiles.extend(scan_directory(directory + "/" + entry.name))
     logfiles.sort()
+    print("logfiles scanned")
     return logfiles
 
 
@@ -73,6 +76,7 @@ def print_logfile(lines: list[str], part: int):
 
 def interactive_logreader():
     logfile = choose_logfile()
+    print("logfile chosen")
     logfile_position = 0
     line = logfile.readline()
     lines = []

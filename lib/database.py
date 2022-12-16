@@ -1,7 +1,7 @@
 import mariadb  # pip install mariadb
 
-_db: mariadb.connections.Connection
-_cursor: mariadb.Cursor
+_db: mariadb.connection
+_cursor: mariadb.connection.cursor
 
 """
 not further explanation needed
