@@ -29,7 +29,7 @@ def choose_logfile():
             loop_end = max_lines_on_screen
         ev3.screen.clear()
         for i in range(loop_end):
-            text_to_print = logfiles[i].replace(directory, ".")
+            text_to_print = logfiles[i]#.replace(directory, ".")
             if i == cursor_position:
                 text_to_print = "> " + text_to_print
             ev3.screen.print(text_to_print)
