@@ -9,11 +9,13 @@ from datetime import date
 import analysis_algorithms
 from lib import database
 
-raw_data_table_name = "???"
+raw_data_table_name: str
+objects_table_name: str
 
 
-def connect(address="localhost", username="MAPPING_server", password="getFromFile", database_name='MAPPING'):
-    if password == "getFromFile":
+def connect(address="localhost", username="MAPPING_server", password="$$getFromFile",
+            database_name='MAPPING'):  # do NOT use $$getFromFile as your password
+    if password == "$$getFromFile":
         password = open(os.getcwd() + '/server/DBPassword.txt', 'r').readline().rstrip()
     database.connect(address, username, password, database_name)
 
@@ -35,6 +37,14 @@ def setup_database():
         # insert raw_data_table_count
         database.execute("INSERT INTO GENERAL (NAME, VALUE) VALUES ('raw_data_table_count', '0')")
     create_raw_data_table()
+    global objects_table_name
+    objects_table_name = 'OBJECTS_' + date.today().strftime("%Y%m%d") + '_' + str(
+        database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
+    if not database.does_table_exist(objects_table_name):
+        database.execute('CREATE TABLE ' + objects_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
+                                                                ' POS_Y int NOT NULL, OBJECT_TYPE varchar(64), TIME '
+                                                                'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, '
+                                                                'PRIMARY KEY (ID))')
     # update run_count
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][
@@ -84,12 +94,13 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, distance_s1: int, distanc
 def get_raw_data(entry_id: int):
     sql_statement = "SELECT POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2 FROM " + raw_data_table_name + \
                     " WHERE ID=" + str(entry_id)
-    return database.fetch(sql_statement)
+    return database.fetch(sql_statement)[0]
 
 
 def count_raw_data_entries():
     return int(database.fetch("SELECT COUNT(*) FROM " + raw_data_table_name)[0])
 
 
-def write_object(pos_x: int, pos_y: int, object_type: str):
-    print("WIP")
+def write_object(pos_x: int, pos_y: int, object_type="UNDEFINED"):
+    database.execute("INSERT INTO " + objects_table_name + " (POS_X, POS_Y, OBJECT_TYPE) VALUES (" + str(pos_x) +
+                     ", " + str(pos_y) + ", " + object_type + ")")

@@ -18,7 +18,8 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         while self.keep_alive:
             if db_operations.count_raw_data_entries() > self.current_id:
                 raw_data = db_operations.get_raw_data(self.current_id)
-                primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4])
+                primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3])
+                primary_analysis(raw_data[0], raw_data[1], raw_data[2] + 180, raw_data[4])
                 self.current_id += 1
             else:
                 sleep(1)
@@ -31,18 +32,16 @@ def complete_primary_analysis():
     thread0.keep_alive = False
     while db_operations.count_raw_data_entries() > thread0.current_id:
         raw_data = db_operations.get_raw_data(thread0.current_id)
-        primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], raw_data[4])
+        primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3])
+        primary_analysis(raw_data[0], raw_data[1], raw_data[2] + 180, raw_data[4])
         thread0.current_id += 1
 
 
-def primary_analysis(pos_x: int, pos_y: int, angle: int, distance_s1: int, distance_s2: int):
-    if distance_s1 == 2550:
-        obstacle = False
-    else:
-        obstacle = True
-        y = int(distance_s1 / math.sin(angle) + pos_y)
-        x = int(math.sqrt((distance_s1 ** 2) - (y ** 2)) + pos_x)
-        db_operations.write_object(x, y, "dummy")
+def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int):
+    if distance != 2550:
+        y = int(distance / math.sin(angle) + pos_y)
+        x = int(math.sqrt((distance ** 2) - (y ** 2)) + pos_x)
+        db_operations.write_object(x, y)
 
 
 def start():
