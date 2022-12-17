@@ -6,6 +6,7 @@ print *.err.log files on the ev3's screen
 
 
 import os
+import sys
 import time
 
 from pybricks.hubs import EV3Brick
@@ -17,8 +18,12 @@ max_chars_per_line = 25  # TODO hardcode or calculate the value
 
 
 def choose_logfile():
-    directory = "/home/main/Scripts/MAPPING"
+    directory = "/home/main/Scripts/EV3/MAPPING"
     logfiles = scan_directory(directory)
+    if len(logfiles) == 0:
+        ev3.screen.clear()
+        ev3.screen.print("no logfiles found")
+        sys.exit(0)
     chosen_file = None
     cursor_position = 0
     while not chosen_file:
@@ -38,13 +43,11 @@ def choose_logfile():
             if i == cursor_position:
                 text_to_print = "> " + text_to_print
             ev3.screen.print(text_to_print)
-            print(text_to_print)
             i += 1
         pressed_button = ev3.buttons.pressed()
-        pressed_button = [Button.CENTER]
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
-            time.sleep(1)
+            time.sleep(0.2)
         if pressed_button[0] == Button.CENTER:
             chosen_file = logfiles[cursor_position]
         elif pressed_button[0] == Button.DOWN:
@@ -55,9 +58,6 @@ def choose_logfile():
             cursor_position = len(logfiles) - 1
         elif cursor_position < 0:
             cursor_position = 0
-        #chosen_file = logfiles[cursor_position]
-        time.sleep(2)
-        print()
     return open(chosen_file)
 
 
@@ -67,18 +67,14 @@ def scan_directory(directory: str):
     for entry in scan_result:
         if entry.endswith(".err.log"):
             logfiles.extend([directory + "/" + entry])
-        #elif entry.is_dir():
-        #    logfiles.extend(scan_directory(directory + "/" + entry.name))
     logfiles.sort()
-    print("logfiles scanned")
-    print(logfiles)
     return logfiles
 
 
 def print_logfile(lines: list[str], part: int):
     ev3.screen.clear()
     i = part * max_lines_on_screen
-    loop_end = i + 10
+    loop_end = i + max_lines_on_screen
     if loop_end > len(lines):
         loop_end = len(lines)
     while i < loop_end:
@@ -89,7 +85,6 @@ def print_logfile(lines: list[str], part: int):
 
 def interactive_logreader():
     logfile = choose_logfile()
-    print("logfile chosen")
     logfile_position = 0
     line = logfile.readline()
     lines = []
@@ -102,9 +97,9 @@ def interactive_logreader():
     while True:
         print_logfile(lines, logfile_position)
         pressed_button = ev3.buttons.pressed()
-        pressed_button = [Button.DOWN]
         while not len(pressed_button) == 1:
             pressed_button = ev3.buttons.pressed()
+            time.sleep(0.2)
         if pressed_button[0] == Button.LEFT_UP:
             break
         elif pressed_button[0] == Button.DOWN:
@@ -115,7 +110,6 @@ def interactive_logreader():
             logfile_position = lines_count
         elif logfile_position < 0:
             logfile_position = 0
-        time.sleep(3)
 
 
 if __name__ == '__main__':
