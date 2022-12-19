@@ -3,8 +3,6 @@
 """
 print *.err.log files on the ev3's screen
 """
-
-
 import os
 import sys
 import time
@@ -27,16 +25,8 @@ def choose_logfile():
     chosen_file = None
     cursor_position = 0
     while not chosen_file:
-        i = 0
-        if cursor_position >= max_lines_on_screen:
-            i = cursor_position
-            loop_end = cursor_position + max_lines_on_screen
-            if loop_end >= len(logfiles):
-                loop_end = len(logfiles)
-        elif len(logfiles) <= max_lines_on_screen:
-            loop_end = len(logfiles)
-        else:
-            loop_end = max_lines_on_screen
+        i = cursor_position
+        loop_end = min((cursor_position + max_lines_on_screen), len(logfiles))
         ev3.screen.clear()
         while i < loop_end:
             text_to_print = logfiles[i].replace(directory, ".")
@@ -54,10 +44,7 @@ def choose_logfile():
             cursor_position += 1
         elif pressed_button[0] == Button.UP:
             cursor_position -= 1
-        if cursor_position >= len(logfiles):
-            cursor_position = len(logfiles) - 1
-        elif cursor_position < 0:
-            cursor_position = 0
+        cursor_position = max(min(cursor_position, (len(logfiles) - 1)), 0)
     return open(chosen_file)
 
 
@@ -74,9 +61,7 @@ def scan_directory(directory: str):
 def print_logfile(lines: list[str], part: int):
     ev3.screen.clear()
     i = part * max_lines_on_screen
-    loop_end = i + max_lines_on_screen
-    if loop_end > len(lines):
-        loop_end = len(lines)
+    loop_end = min((i + max_lines_on_screen), len(lines))
     while i < loop_end:
         ev3.screen.print(lines[i])
         print(lines[i])
@@ -93,7 +78,6 @@ def interactive_logreader():
                range(0, len(line.rstrip()), max_chars_per_line)]
         lines.extend(add)
         line = logfile.readline()
-    lines_count = len(lines)
     while True:
         print_logfile(lines, logfile_position)
         pressed_button = ev3.buttons.pressed()
@@ -106,10 +90,7 @@ def interactive_logreader():
             logfile_position += 1
         elif pressed_button[0] == Button.UP:
             logfile_position -= 1
-        if logfile_position > lines_count:
-            logfile_position = lines_count
-        elif logfile_position < 0:
-            logfile_position = 0
+        logfile_position = max(min(logfile_position, (len(lines) - 1)), 0)
 
 
 if __name__ == '__main__':
