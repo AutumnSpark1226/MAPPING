@@ -1,7 +1,7 @@
 # Custom ROM
 
 ### Status: `not tested`
-### Version: `20221007`
+### Version: `20221222`
 
 ## TODO
 - install apt-utils dialog htop ufw zsh
