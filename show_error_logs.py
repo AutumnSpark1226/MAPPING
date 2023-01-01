@@ -16,7 +16,7 @@ max_chars_per_line = 25  # TODO hardcode or calculate the value
 
 
 def choose_logfile():
-    directory = "/home/main/Scripts/EV3/MAPPING"
+    directory = "/home/robot/MAPPING"
     logfiles = scan_directory(directory)
     if len(logfiles) == 0:
         ev3.screen.clear()

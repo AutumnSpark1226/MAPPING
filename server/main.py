@@ -2,7 +2,6 @@
 import os
 import sys
 import threading
-from socket import socket
 from time import sleep
 
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
