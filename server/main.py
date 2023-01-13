@@ -142,10 +142,10 @@ def run():
     print('[server/main.py] starting...')
     start()
     print('[server/main.py] ready')
-    while True:
-        validate_position()
+    #while True:
+        #validate_position()
         # TODO create the map
-        break  # temporary solution to prevent an endless loop
+        #break  # temporary solution to prevent an endless loop
     stop()
 
 
