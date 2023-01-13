@@ -11,9 +11,9 @@ ev3 = EV3Brick()
 
 
 def drive_forward(cm: int):
-    client.send_text("WIP")
-    print('WIP')
-
+    degrees = cm * 21.17647058823529
+    engineA.run_angle(90, degrees)
+    ev3.speaker.say(str(cm))
 
 def start():
     print("[mapping1/main.py] connecting")
