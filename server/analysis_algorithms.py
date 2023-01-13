@@ -7,6 +7,7 @@ import db_operations
 
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
     keep_alive = True
+    dead = True
     current_id = 1
 
     def __init__(self):
@@ -15,6 +16,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
 
     def run(self):
+        self.dead = False
         while self.keep_alive:
             if db_operations.count_raw_data_entries() > self.current_id:
                 raw_data = db_operations.get_raw_data(self.current_id)
@@ -23,6 +25,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
                 self.current_id += 1
             else:
                 sleep(1)
+        self.dead = True
 
 
 thread0 = AnalysisThread0()
@@ -50,3 +53,5 @@ def start():
 
 def stop():
     thread0.keep_alive = False
+    while not thread0.dead:
+        sleep(0.5)

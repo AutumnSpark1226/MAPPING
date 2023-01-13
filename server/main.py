@@ -83,8 +83,12 @@ def stop():
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()
+    print('[server/main.py] server stopped')
     analysis_algorithms.stop()
+    print('[server/main.py] analysis_algorithms stopped')
     db_operations.disconnect()
+    print('[server/main.py] disconnected from database')
+    print('[server/main.py] killing remaining threads')
     # last to stop (kills the process)
     ev3_connect_thread.stop()
 
@@ -142,10 +146,11 @@ def run():
     print('[server/main.py] starting...')
     start()
     print('[server/main.py] ready')
-    #while True:
-        #validate_position()
+    while True:
+        validate_position()
         # TODO create the map
-        #break  # temporary solution to prevent an endless loop
+        break  # temporary solution to prevent an endless loop
+    print('[server/main.py] shutdown')
     stop()
 
 
