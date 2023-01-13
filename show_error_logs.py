@@ -64,7 +64,6 @@ def print_logfile(lines: list[str], part: int):
     loop_end = min((i + max_lines_on_screen), len(lines))
     while i < loop_end:
         ev3.screen.print(lines[i])
-        print(lines[i])
         i += 1
 
 
