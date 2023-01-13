@@ -83,12 +83,8 @@ def stop():
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()
-    print('[server/main.py] server stopped')
     analysis_algorithms.stop()
-    print('[server/main.py] analysis_algorithms stopped')
     db_operations.disconnect()
-    print('[server/main.py] disconnected from database')
-    print('[server/main.py] killing remaining threads')
     # last to stop (kills the process)
     ev3_connect_thread.stop()
 
