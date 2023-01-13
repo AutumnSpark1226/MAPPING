@@ -11,8 +11,9 @@ from pybricks.hubs import EV3Brick
 from pybricks.parameters import Button
 
 ev3 = EV3Brick()
-max_lines_on_screen = 4  # TODO hardcode or calculate the value
-max_chars_per_line = 13  # TODO hardcode or calculate the value
+# These values work on an EV3 display
+max_lines_on_screen = 4
+max_chars_per_line = 13
 
 
 def choose_logfile():

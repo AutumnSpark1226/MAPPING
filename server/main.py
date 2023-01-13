@@ -118,6 +118,7 @@ def drive_forward(cm: int):
             raise Exception("Too many failures occurred during driving")
         else:
             failure_count += 1
+            validate_position()
             drive_forward(cm)
 
 

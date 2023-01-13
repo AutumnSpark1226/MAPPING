@@ -53,5 +53,6 @@ def start():
 
 def stop():
     thread0.keep_alive = False
+    # wait for the thread to finish
     while not thread0.dead:
         sleep(0.5)

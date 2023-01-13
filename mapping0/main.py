@@ -23,20 +23,25 @@ def start():
     while client.receive_text() != 'ready':
         sleep(0.5)
     client.send_text('ready')
-    ev3.speaker.beep(duration=1000)
+
+
+def stop():
+    client.disconnect()
+    print("[mapping0/main.py] disconnected")
 
 
 def run():
     print("[mapping0/main.py] starting")
     start()
     print("[mapping0/main.py] ready")
+    ev3.speaker.beep(duration=1000)
     while True:
         command = client.receive_text()
         if command == 'measure_at_current_location':
             measure_at_current_location()
         elif command == 'exit':
             break
-    client.disconnect()
+    stop()
 
 
 if __name__ == '__main__':

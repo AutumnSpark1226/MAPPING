@@ -8,6 +8,7 @@ from datetime import date
 
 import analysis_algorithms
 from lib import database
+from secrets import compare_digest
 
 raw_data_table_name: str
 objects_table_name: str
@@ -15,7 +16,7 @@ objects_table_name: str
 
 def connect(address="localhost", username="MAPPING_server", password="$$getFromFile",
             database_name='MAPPING'):  # do NOT use $$getFromFile as your password
-    if password == "$$getFromFile":
+    if compare_digest(password, "$$getFromFile"):
         password = open(os.getcwd() + '/server/DBPassword.txt', 'r').readline().rstrip()
     database.connect(address, username, password, database_name)
 
