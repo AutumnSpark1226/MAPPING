@@ -139,6 +139,7 @@ def measure_at_current_location():
         distance_s1 = server.receive_text(mapping0_connection)
         distance_s2 = server.receive_text(mapping0_connection)
         db_operations.write_raw_data(robot_position_x, robot_position_y, angle, distance_s1, distance_s2)
+        response = server.receive_text(mapping0_connection)
 
 
 def run():
