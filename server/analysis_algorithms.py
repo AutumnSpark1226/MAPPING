@@ -51,7 +51,7 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int):
         print(distance)
         print(x)
         print(y)
-        print(int(math.sin(angle)))
+        print(math.sin(angle))
         print()
         db_operations.write_object(x, y)
 
