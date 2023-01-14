@@ -31,14 +31,19 @@ def accept_client():  # clients won't be automatically accepted; calling this fu
 def send_text(connection: socket.socket, text: str):
     if not _server_socket:
         raise Exception("server not running")
-    connection.send(text.encode())
+    buffer = text.encode() + b'\x04'
+    connection.send(buffer)
 
 
-def receive_text(connection: socket.socket, size=1024):
+def receive_text(connection: socket.socket):
     if not _server_socket:
         raise Exception("server not running")
-    text = connection.recv(size).decode()
-    return text
+    buffer = b''
+    received_byte = b''
+    while received_byte != b'\x04':
+        buffer += received_byte
+        received_byte = connection.recv(1)
+    return buffer.decode()
 
 
 if __name__ == '__main__':

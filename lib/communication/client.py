@@ -23,13 +23,19 @@ def disconnect():
 def send_text(text: str):
     if not _client_socket:
         raise Exception("client not connected")
-    _client_socket.send(text.encode())
+    buffer = text.encode() + b'\x04'
+    _client_socket.send(buffer)
 
 
-def receive_text(size=1024):
+def receive_text():
     if not _client_socket:
         raise Exception("client not connected")
-    return _client_socket.recv(size).decode()
+    buffer = b''
+    received_byte = b''
+    while received_byte != b'\x04':
+        buffer += received_byte
+        received_byte = _client_socket.recv(1)
+    return buffer.decode()
 
 
 if __name__ == '__main__':
