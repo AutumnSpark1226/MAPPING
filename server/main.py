@@ -80,6 +80,7 @@ def start():
 
 
 def stop():
+    analysis_algorithms.complete_primary_analysis()
     server.send_text(mapping0_connection, 'exit')
     server.send_text(mapping1_connection, 'exit')
     server.stop()

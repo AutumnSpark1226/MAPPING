@@ -33,6 +33,8 @@ thread0 = AnalysisThread0()
 
 def complete_primary_analysis():
     thread0.keep_alive = False
+    while not thread0.dead:
+        sleep(0.5)
     while db_operations.count_raw_data_entries() > thread0.current_id:
         raw_data = db_operations.get_raw_data(thread0.current_id)
         primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3])

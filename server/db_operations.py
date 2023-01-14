@@ -90,6 +90,7 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, distance_s1: int, distanc
     if count_raw_data_entries() > 1000:
         analysis_algorithms.complete_primary_analysis()
         create_raw_data_table()
+        analysis_algorithms.start()
 
 
 def get_raw_data(entry_id: int):
