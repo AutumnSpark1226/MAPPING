@@ -44,15 +44,9 @@ def complete_primary_analysis():
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int):
     if distance != 2550:
-        dy = distance * int(math.sin(angle))
+        dy = distance * math.sin(math.radians(angle))
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
-        y = dy + pos_y
-        print(angle)
-        print(distance)
-        print(x)
-        print(y)
-        print(math.sin(angle))
-        print()
+        y = int(dy + pos_y)
         db_operations.write_object(x, y)
 
 
