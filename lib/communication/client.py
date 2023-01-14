@@ -33,8 +33,11 @@ def receive_text(size=1024):
 
 
 if __name__ == '__main__':
+    import os
+
     # simple echo client to test the communication
-    server_ip = ""  # the server's ip
+    server_ip = open(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)) + '/host.txt',
+                     'r').readline().rstrip()
     connect(server_ip, 6666)
     while True:
         test_message = input("> ")

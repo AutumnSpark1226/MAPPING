@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+import os
 import sys
 from time import sleep
 
@@ -16,8 +17,9 @@ def measure_at_current_location():
 
 
 def start():
-    print("[mapping0/main.py] connecting")
-    client.connect('192.168.0.101', 6666)  # ip
+    host = open(os.getcwd() + '/host.txt', 'r').readline().rstrip()
+    print("[mapping0/main.py] connecting...")
+    client.connect(host, 6666)
     print("[mapping0/main.py] connected")
     client.send_text("mapping0")
     while client.receive_text() != 'ready':

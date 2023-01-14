@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+import os
 import sys
 from time import sleep
 
@@ -17,8 +18,9 @@ def drive_forward(cm: int):
 
 
 def start():
+    host = open(os.getcwd() + '/host.txt', 'r').readline().rstrip()
     print("[mapping1/main.py] connecting...")
-    client.connect('192.168.0.101', 6666)  # ip
+    client.connect(host, 6666)  # ip
     print("[mapping1/main.py] connected")
     client.send_text("mapping1")
     while client.receive_text() != 'ready':
