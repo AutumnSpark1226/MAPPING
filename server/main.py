@@ -129,6 +129,7 @@ def measure_at_current_location():
         if failure_count >= max_failures:
             raise Exception("Too many failures occurred during measurement")
         else:
+            validate_position()
             failure_count += 1
             measure_at_current_location()
     response = server.receive_text(mapping0_connection)
@@ -145,6 +146,7 @@ def run():
     print('[server/main.py] ready')
     while True:
         validate_position()
+        measure_at_current_location()
         # TODO create the map
         break  # temporary solution to prevent an endless loop
     print('[server/main.py] shutdown')

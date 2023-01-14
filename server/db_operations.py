@@ -55,7 +55,7 @@ def setup_database():
 def clean():  # clean data from previous runs
     tables = database.fetch("SHOW TABLES")
     for table in tables:
-        if table[0].startswith('RAW_DATA_'):
+        if table[0].startswith('RAW_DATA_') or table[0].startswith('OBJECTS_'):
             database.execute("DROP TABLE " + table[0])
     if database.does_table_exist('GENERAL'):
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
