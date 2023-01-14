@@ -5,10 +5,10 @@ see database_info.ods for information
 
 import os
 from datetime import date
+from secrets import compare_digest
 
 import analysis_algorithms
 from lib import database
-from secrets import compare_digest
 
 raw_data_table_name: str
 objects_table_name: str
@@ -45,7 +45,7 @@ def setup_database():
         database.execute('CREATE TABLE ' + objects_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
                                                                 ' POS_Y int NOT NULL, OBJECT_TYPE varchar(64), TIME '
                                                                 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, '
-                                                                'PRIMARY KEY (ID))')
+                                                                'PRIMARY KEY (ID))')  # OBJECT_TYPE: varchar ===> enum
     # update run_count
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][
@@ -103,6 +103,6 @@ def count_raw_data_entries():
     return int(database.fetch("SELECT COUNT(*) FROM " + raw_data_table_name)[0][0])
 
 
-def write_object(pos_x: int, pos_y: int, object_type="UNDEFINED"):
+def write_object(pos_x: int, pos_y: int, object_type="undefined"):
     database.execute("INSERT INTO " + objects_table_name + " (POS_X, POS_Y, OBJECT_TYPE) VALUES (" + str(pos_x) +
-                     ", " + str(pos_y) + ", " + object_type + ")")
+                     ", " + str(pos_y) + ", '" + object_type + "')")
