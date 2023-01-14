@@ -46,11 +46,11 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int):
     if distance != 2550:
         print(distance)
         print(angle)
-        dy = distance * math.sin(angle)
+        dy = distance * int(math.sin(angle))
         print(dy)
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
         print(x)
-        y = int(pos_y) + dy
+        y = dy + pos_y
         print(y)
         db_operations.write_object(x, y)
 
