@@ -60,7 +60,7 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
     else:
-        print("not implemented")  # WIP
+        print("[server/analysis_algorithms.py] not implemented")  # WIP
 
 
 def start():

@@ -97,14 +97,14 @@ def wait_for_connections():
 
 def validate_position():
     position_validity = True
-    print("WIP")
+    print("validate_position WIP")
     if not position_validity:
         recover_position()
 
 
 def recover_position():
     recovery_successful = False
-    print("WIP")
+    print("recover_position WIP")
     if not recovery_successful:
         print("Position could not be recovered! The process will terminate")
         stop()

@@ -13,7 +13,7 @@ else
   elif [ "$HOSTNAME" = "mapping1" ]; then
     PROGRAM="mapping1"
   else
-    echo "Choose a program [server, mapping0, mapping1]"
+    echo "Choose a program [server, mapping0, mapping1, server_recovery]"
     read -r PROGRAM
   fi
 fi
