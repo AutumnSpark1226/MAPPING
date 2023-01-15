@@ -113,7 +113,15 @@ def recover_position():
 def drive_forward(cm: int):
     server.send_text(mapping1_connection, "drive_forward")
     server.send_text(mapping1_connection, str(cm))
-    if server.receive_text(mapping1_connection) != "ok":
+    response = server.receive_text(mapping1_connection)
+    if response == "ok":
+        print("")
+    elif response == "objectNearby":
+        sensor_type = server.receive_text(mapping1_connection)
+        distance = server.receive_text(mapping1_connection)
+        angle = server.receive_text(mapping1_connection)
+        db_operations.write_raw_data(robot_position_x, robot_position_y, angle, sensor_type, distance_s1=distance)
+    else:
         global failure_count
         if failure_count >= max_failures:
             raise Exception("Too many failures occurred during driving")
@@ -133,12 +141,14 @@ def measure_at_current_location():
             validate_position()
             failure_count += 1
             measure_at_current_location()
+    sensor_type = server.receive_text(mapping0_connection)
     response = server.receive_text(mapping0_connection)
     while response != "finished":
         angle = response
         distance_s1 = server.receive_text(mapping0_connection)
         distance_s2 = server.receive_text(mapping0_connection)
-        db_operations.write_raw_data(robot_position_x, robot_position_y, angle, distance_s1, distance_s2)
+        db_operations.write_raw_data(robot_position_x, robot_position_y, angle, sensor_type, distance_s1=distance_s1,
+                                     distance_s2=distance_s2)
         response = server.receive_text(mapping0_connection)
 
 

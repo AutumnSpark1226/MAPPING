@@ -9,11 +9,17 @@ from pybricks.hubs import EV3Brick
 from lib.communication import client
 
 ev3 = EV3Brick()
+distance_sensor_type = "S1.US;S2.US"
 
 
 def measure_at_current_location():
-    client.send_text("WIP")
-    print('WIP')
+    # send dummy values
+    client.send_text("ok")
+    client.send_text(distance_sensor_type)
+    client.send_text("0")
+    client.send_text("200")
+    client.send_text("2550")
+    client.send_text("finished")
 
 
 def start():

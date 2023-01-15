@@ -1,6 +1,7 @@
 # Custom ROM
 
-### Status: `not tested`
+### Status: `working`
+
 ### Version: `20221222`
 
 ## TODO

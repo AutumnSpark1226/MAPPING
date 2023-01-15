@@ -9,12 +9,19 @@ from pybricks.hubs import EV3Brick
 from lib.communication import client
 
 ev3 = EV3Brick()
+distance_sensor_type = "S3.US"
 
 
 def drive_forward(cm: int):
-    degrees = cm * 21.17647058823529
-    engineA.run_angle(90, degrees)
-    client.send_text("ok")
+    if ultrasonic.distance() + 100 >= cm * 10:
+        client.send_text("objectNearby")
+        client.send_text(distance_sensor_type)
+        client.send_text(ultrasonic.distance())
+        client.send_text(gyro.angle())
+    else:
+        degrees = cm * 21.17647058823529
+        engineA.run_angle(90, degrees)
+        client.send_text("ok")
 
 
 def start():
