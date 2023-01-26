@@ -28,7 +28,26 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = True
 
 
+class AnalysisThread1(threading.Thread):  # primary analysis: find groups of objects
+    keep_alive = True
+    dead = True
+    current_id = 1
+
+    def __init__(self):
+        threading.Thread.__init__(self)
+        self.thread_name = 'AnalysisThread1'
+        print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
+
+    def run(self):
+        self.dead = False
+        while self.keep_alive:
+            # TODO WIP
+            self.keep_alive = False
+        self.dead = True
+
+
 thread0 = AnalysisThread0()
+thread1 = AnalysisThread1()
 
 
 def complete_primary_analysis():
@@ -65,10 +84,12 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
 
 def start():
     thread0.start()
+    thread1.start()
 
 
 def stop():
     thread0.keep_alive = False
+    thread1.keep_alive = False
     # wait for the thread to finish
-    while not thread0.dead:
+    while not thread0.dead and thread1.dead:
         sleep(0.5)
