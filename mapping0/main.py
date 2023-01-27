@@ -1,4 +1,5 @@
 #!/usr/bin/env pybricks-micropython
+import os
 import sys
 from time import sleep
 
@@ -53,4 +54,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-
