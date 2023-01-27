@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 #!/usr/bin/env pybricks-micropython
 import os
 import sys
@@ -57,4 +55,3 @@ def run():
 if __name__ == '__main__':
     run()
 
->>>>>>> parent of b874454 (2023.01.27.FIX)
