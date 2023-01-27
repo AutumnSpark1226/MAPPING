@@ -23,7 +23,7 @@ def measure_at_current_location():
 
 
 def start():
-    host = open(os.getcwd() + '/host.txt', 'r').readline().rstrip()
+    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()
     print("[mapping0/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping0/main.py] connected")
