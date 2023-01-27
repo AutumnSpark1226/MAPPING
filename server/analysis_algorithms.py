@@ -10,6 +10,7 @@ import db_operations
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
     keep_alive = True
     dead = True
+    locked = False
     current_id = 1
 
     def __init__(self):
@@ -20,7 +21,10 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
     def run(self):
         self.dead = False
         while self.keep_alive:
+            while self.locked:
+                sleep(0.1)
             if db_operations.count_raw_data_entries() >= self.current_id:
+                thread1.locked = True
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
                 if raw_data[5].__contains__("S1"):
@@ -34,6 +38,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
                 self.current_id += 1
             else:
+                thread1.locked = False
                 sleep(1)
         self.dead = True
 
@@ -41,12 +46,13 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.keep_alive = False
         while not self.dead:
             sleep(0.5)
+        thread1.locked = False
 
 
 class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of objects
     keep_alive = True
     dead = True
-    current_id = 1
+    locked = False
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -58,8 +64,12 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         id0 = 0
         id1 = 1
         while self.keep_alive:
+            while self.locked:
+                sleep(0.1)
             if id0 < db_operations.count_object_entries():
                 while id1 < db_operations.count_object_entries():
+                    while self.locked:
+                        sleep(0.1)
                     point1 = db_operations.get_object(id0)
                     point2 = db_operations.get_object(id1)
                     x_diff = point2[0] - point1[0]
@@ -103,5 +113,14 @@ def start():
 
 
 def stop():
+    thread0.locked = False
     thread0.stop()
     thread1.stop()
+
+
+def lock():
+    thread0.locked = True
+
+
+def unlock():
+    thread0.locked = True
