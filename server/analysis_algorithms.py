@@ -1,6 +1,8 @@
 import math
 import threading
 from time import sleep
+from matplotlib.lines import Line2D
+import matplotlib.pyplot as plt
 
 import db_operations
 
@@ -80,6 +82,25 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         db_operations.write_object(x, y)
     else:
         print("[server/analysis_algorithms.py] not implemented")  # WIP
+
+
+def secondary_analysis():
+    id = 0
+    id_other = 1
+    # loop
+    # loop
+    point1 = db_operations.get_object(id)
+    point2 = db_operations.get_object(id_other)
+    x_diff = point2[0] - point1[0]
+    y_diff = point2[1] - point1[1]
+    distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
+    id_other = id_other + 1
+    # loop end
+    if distance < 20:
+        line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
+    id = id + 1
+    id_other = id + 1
+    # loop end
 
 
 def start():
