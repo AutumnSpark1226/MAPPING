@@ -87,8 +87,8 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
 def secondary_analysis():
     id = 0
     id_other = 1
-    # loop
-    # loop
+    # loop until id maxed out
+    # loop until id_other maxed out
     point1 = db_operations.get_object(id)
     point2 = db_operations.get_object(id_other)
     x_diff = point2[0] - point1[0]

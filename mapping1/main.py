@@ -3,7 +3,7 @@ import os
 import sys
 from time import sleep
 
-sys.path.insert(0, "/home/robot/MAPPING")
+sys.path.insert(0, "/home/home/MAPPING")
 
 from pybricks.hubs import EV3Brick
 from lib.communication import client
