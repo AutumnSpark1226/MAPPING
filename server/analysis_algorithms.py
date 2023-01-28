@@ -53,7 +53,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
 class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of objects
     keep_alive = True
     dead = True
-    _locked = False
+    locked = False
     analysis_finished = False
 
     def __init__(self):
@@ -66,7 +66,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         id0 = 1
         id1 = 2
         while self.keep_alive or not self.analysis_finished:
-            while self._locked:
+            while self.locked:
                 sleep(0.5)
             if id0 < db_operations.count_object_entries():
                 self.analysis_finished = False
@@ -94,10 +94,10 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
             sleep(0.5)
 
     def lock(self):
-        self._locked = True
+        self.locked = True
 
     def unlock(self):
-        self._locked = False
+        self.locked = False
 
 
 thread0 = AnalysisThread0()

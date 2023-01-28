@@ -148,6 +148,6 @@ def get_object(entry_id: int):
 
 
 def count_object_entries():
-    while _locked:
+    while _locked and analysis_algorithms.thread1.locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
