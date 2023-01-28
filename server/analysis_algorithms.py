@@ -19,11 +19,9 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
 
     def run(self):
-        print("1")
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
-            if self.current_id < db_operations.count_raw_data_entries():
-                print("2")
+            if self.current_id <= db_operations.count_raw_data_entries():
                 self.analysis_finished = False
                 thread1.lock()
                 raw_data = db_operations.get_raw_data(self.current_id)
@@ -63,8 +61,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
 
     def run(self):
         self.dead = False
-        id0 = 0
-        id1 = 1
+        id0 = 1
+        id1 = 2
         while self.keep_alive or not self.analysis_finished:
             while self.locked:
                 sleep(0.5)
@@ -77,7 +75,9 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 20:
+                    if distance < 200:
+                        print("\nP1: " + str(point1))
+                        print("P2: " + str(point2))
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                 id0 += 1
                 id1 = id0 + 1
@@ -103,8 +103,6 @@ thread1 = AnalysisThread1()
 
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
-    print(sensor_type)
-    print("3")
     if distance == -1:
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
@@ -113,7 +111,6 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
-        print("DEBUG: object_written")
     else:
         print("[server/analysis_algorithms.py] not implemented")  # WIP
 
