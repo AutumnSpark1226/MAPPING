@@ -105,7 +105,9 @@ def start():
 
 def complete_primary_analysis():
     thread0.stop()
-    thread1.start()
+    db_operations.create_raw_data_table()
+    thread0.current_id = 1
+    thread0.start()
 
 
 def stop():

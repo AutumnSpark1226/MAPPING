@@ -15,6 +15,7 @@ raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
 _locked = False
+_raw_data_table_entry_counter = 0
 
 
 def connect(address="localhost", username="MAPPING_server", password="$$getFromFile$$",
@@ -113,11 +114,10 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
             distance_s2) + ", '" + sensor_type + "')")
     # TODO might result in errors; testing required
     # create a new table to save resources after 10000 (or maybe more) entries have been written
-    if count_raw_data_entries() > 10000:
+    global _raw_data_table_entry_counter
+    _raw_data_table_entry_counter += 1
+    if _raw_data_table_entry_counter > 10000:
         analysis_algorithms.complete_primary_analysis()
-        create_raw_data_table()
-        analysis_algorithms.thread0.current_id = 1
-        analysis_algorithms.start()
 
 
 def get_raw_data(entry_id: int):
