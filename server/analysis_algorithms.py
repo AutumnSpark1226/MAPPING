@@ -22,7 +22,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         print("1")
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
-            if self.current_id <= db_operations.count_raw_data_entries():
+            if self.current_id < db_operations.count_raw_data_entries():
                 print("2")
                 self.analysis_finished = False
                 thread1.lock()
