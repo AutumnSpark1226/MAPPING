@@ -9,6 +9,8 @@ from lib.communication import client
 
 ev3 = EV3Brick()
 distance_sensor_type = "S3.US"
+
+
 # TODO initialize motors and sensors
 
 
@@ -19,6 +21,7 @@ def drive_forward(mm: int):
         client.send_text(ultrasonic.distance())
         client.send_text(gyro.angle())
     else:
+        # TODO object check during driving
         degrees = mm * 211.7647058823529
         engineA.run_angle(90, degrees)
         client.send_text("ok")

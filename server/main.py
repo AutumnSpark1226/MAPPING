@@ -2,6 +2,8 @@
 import os
 import sys
 import threading
+from shlex import quote as shlex_quote
+from socket import socket
 from time import sleep
 
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
@@ -31,28 +33,31 @@ class EV3Connect(threading.Thread):
             client_id = server.receive_text(con)
             print('[server/main.py] connection request (' + client_id + ')')
             if client_id == 'mapping0':
-                global mapping0_connection
+                global mapping0_connection, mapping0_initialized
                 mapping0_connection = con
+                mapping0_initialized = True
                 print('[server/main.py] ' + client_id + ' connected')
             elif client_id == 'mapping1':
-                global mapping1_connection
+                global mapping1_connection, mapping1_initialized
                 mapping1_connection = con
+                mapping1_initialized = True
                 print('[server/main.py] ' + client_id + ' connected')
             else:
                 con.close()
                 print('[server/main.py] ' + client_id + ' tried to connect')
-                sleep(0.5)
-            # yes, this is a security risk
-            # TODO find a better way to verify the client
+                sleep(0.5)  # yes, this is a security risk  # TODO find a better way to verify the client
 
     def stop(self):
         if self.is_alive():
-            os.system('kill ' + str(self.native_id))  # easiest way to stop the thread (kills the entire process)
+            os.system(shlex_quote('kill ' + str(self.native_id)))  # easiest way to stop the thread (kills the entire
+            # process)
 
 
 ev3_connect_thread = EV3Connect()
-mapping0_connection = None
-mapping1_connection = None
+mapping0_connection: socket
+mapping0_initialized = False
+mapping1_connection: socket
+mapping1_initialized = False
 failure_count = 0
 max_failures = 10
 
@@ -91,7 +96,7 @@ def stop():
 
 
 def wait_for_connections():
-    while not (mapping0_connection and mapping1_connection):
+    while not (mapping0_initialized and mapping1_initialized):
         sleep(0.5)
 
 

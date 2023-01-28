@@ -7,8 +7,10 @@ import main
 robot_pos = [0, 0]
 robot_rot = 0
 critical_distance = False
+sensor_max_distance = 2550
 
-def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
+
+def crit_distance(crit_value: int):
     i = 0
     while id < db_operations.count_object_entries():
         robot_pos_x = main.robot_position_x
@@ -32,8 +34,8 @@ def move_to(x, y):
     distance = math.sqrt(dx ** 2 + dy ** 2)
     angle = math.atan(dy / dx)
     dangle = angle - robot_rot
-    main.rotate(dangle)
-    main.drive_forward(distance)
+    main.rotate(int(dangle))
+    main.drive_forward(int(distance))
     robot_pos = [x, y]
 
 
@@ -48,7 +50,8 @@ def change_position(amount):
 
 
 def change_rotation(amount):
-    robot_rot + amount
+    global robot_rot
+    robot_rot += amount
 
 
 def divide_and_conquer(size_x=0, size_y=0):
@@ -57,7 +60,6 @@ def divide_and_conquer(size_x=0, size_y=0):
     i = 0
     i2 = 0
     stage = 0
-
     if size_x and size_y == 0:
         if not critical_distance:
             while not critical_distance:
@@ -65,13 +67,14 @@ def divide_and_conquer(size_x=0, size_y=0):
                     while i2 < stage + 1:
                         main.measure_at_current_location()
                         # TODO save square in database with percentage of real values aka not max distance of sensor
-                        main.drive_forward((((2 * sensor_max_distance)**2) / 4) * 2)
+                        main.drive_forward((((2 * sensor_max_distance) ** 2) / 4) * 2)
                         main.measure_at_current_location()
                         i2 += 1
                     i += 1
                 main.rotate(90)
         else:
+            print("WIP")
             # TODO do something
     else:
+        print("WIP")
         # TODO do something
-
