@@ -15,4 +15,6 @@ def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value:int):
         distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
         id += 1
         if distance < crit_value:
-                # find direction of object
+                # TODO find direction of object do something
+
+
