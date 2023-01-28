@@ -54,6 +54,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
     keep_alive = True
     dead = True
     _locked = False
+    analysis_finished = False
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -64,10 +65,11 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         self.dead = False
         id0 = 1
         id1 = 2
-        while self.keep_alive:
+        while self.keep_alive or not self.analysis_finished:
             while self._locked:
                 sleep(0.5)
             if id0 < db_operations.count_object_entries():
+                self.analysis_finished = False
                 while id1 < db_operations.count_object_entries():
                     point1 = db_operations.get_object(id0)
                     point2 = db_operations.get_object(id1)
@@ -82,7 +84,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                 id0 += 1
                 id1 = id0 + 1
             else:
-                sleep(1)
+                self.analysis_finished = True
+                sleep(0.5)
         self.dead = True
 
     def stop(self):
