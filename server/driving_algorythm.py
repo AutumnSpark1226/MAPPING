@@ -6,7 +6,7 @@ import main
 
 robot_pos = [0, 0]
 robot_rot = 0
-
+critical_distance = False
 
 def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
     i = 0
@@ -20,6 +20,8 @@ def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
         i += 1
         if distance < crit_value:
             print("distance < crit_value")
+            global critical_distance
+            critical_distance = True
     # TODO find direction of object do something
 
 
@@ -47,3 +49,29 @@ def change_position(amount):
 
 def change_rotation(amount):
     robot_rot + amount
+
+
+def divide_and_conquer(size_x=0, size_y=0):
+    global sensor_max_distance
+    sensor_max_distance = 2550
+    i = 0
+    i2 = 0
+    stage = 0
+
+    if size_x and size_y == 0:
+        if not critical_distance:
+            while not critical_distance:
+                while i < 2:
+                    while i2 < stage + 1:
+                        main.measure_at_current_location()
+                        # TODO save square in database with percentage of real values aka not max distance of sensor
+                        main.drive_forward((((2 * sensor_max_distance)**2) / 4) * 2)
+                        main.measure_at_current_location()
+                        i2 += 1
+                    i += 1
+                main.rotate(90)
+        else:
+            # TODO do something
+    else:
+        # TODO do something
+
