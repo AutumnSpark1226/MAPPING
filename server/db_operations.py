@@ -73,13 +73,11 @@ def clean():  # clean data from previous runs
 
 
 def lock():  # lock read operations to tables with high usage
-    print("locking...")
     global _locked
     _locked = True
 
 
 def unlock():  # unlock read operations
-    print("unlocking...")
     global _locked
     _locked = False
 
