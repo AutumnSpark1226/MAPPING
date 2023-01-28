@@ -21,7 +21,6 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = False
         while self.keep_alive:
             if db_operations.count_raw_data_entries() >= self.current_id:
-                thread1.locked = True
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
                 if raw_data[5].__contains__("S1"):

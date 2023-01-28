@@ -79,7 +79,7 @@ def lock():  # lock read operations to tables with high usage
 
 def unlock():  # unlock read operations
     global _locked
-    _locked = True
+    _locked = False
 
 
 def create_raw_data_table():
