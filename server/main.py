@@ -114,6 +114,7 @@ def drive_forward(cm: int):
     server.send_text(mapping1_connection, str(cm))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
+        # TODO calculate new position
         print("")
     elif response == "objectNearby":
         sensor_type = server.receive_text(mapping1_connection)
@@ -156,15 +157,29 @@ def measure_at_current_location():
     db_operations.unlock_raw_data_table()
 
 
+def rotate(angle: int):
+    server.send_text(mapping1_connection, "rotate")
+    server.send_text(mapping1_connection, str(angle))
+    response = server.receive_text(mapping1_connection)
+    if response == "ok":
+        print("")
+    else:
+        global failure_count
+        if failure_count >= max_failures:
+            raise Exception("Too many failures occurred during rotating")
+        else:
+            failure_count += 1
+            validate_position()
+            rotate(angle)
+
+
 def run():
     print('[server/main.py] starting...')
     start()
     print('[server/main.py] ready')
-    while True:
-        validate_position()
-        measure_at_current_location()
-        # TODO create the map
-        break  # temporary solution to prevent an endless loop
+    validate_position()
+    measure_at_current_location()
+    # TODO create the map
     print('[server/main.py] shutdown')
     stop()
 
