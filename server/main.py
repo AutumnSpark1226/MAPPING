@@ -119,7 +119,9 @@ def drive_forward(cm: int):
         sensor_type = server.receive_text(mapping1_connection)
         distance = server.receive_text(mapping1_connection)
         angle = server.receive_text(mapping1_connection)
+        db_operations.lock_raw_data_table()
         db_operations.write_raw_data(robot_position_x, robot_position_y, angle, sensor_type, distance_s1=distance)
+        db_operations.unlock_raw_data_table()
     else:
         global failure_count
         if failure_count >= max_failures:
@@ -131,7 +133,7 @@ def drive_forward(cm: int):
 
 
 def measure_at_current_location():
-    db_operations.lock()
+    db_operations.lock_raw_data_table()
     server.send_text(mapping0_connection, "measure_at_current_location")
     if server.receive_text(mapping0_connection) != "ok":
         global failure_count
@@ -151,7 +153,7 @@ def measure_at_current_location():
                                      distance_s2=distance_s2)
         server.send_text(mapping0_connection, "ok")
         response = server.receive_text(mapping0_connection)
-    db_operations.unlock()
+    db_operations.unlock_raw_data_table()
 
 
 def run():

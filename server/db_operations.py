@@ -14,7 +14,9 @@ from lib import database
 raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
-_locked = False
+_raw_data_table_locked = False
+_objects_table_locked = False
+_object_groups_table_locked = False
 _raw_data_table_entry_counter = 0
 
 
@@ -72,14 +74,34 @@ def clean():  # clean data from previous runs
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
-def lock():  # lock read operations to tables with high usage
-    global _locked
-    _locked = True
+def lock_raw_data_table():  # lock read operations to tables with high usage
+    global _raw_data_table_locked
+    _raw_data_table_locked = True
 
 
-def unlock():  # unlock read operations
-    global _locked
-    _locked = False
+def unlock_raw_data_table():  # unlock read operations
+    global _raw_data_table_locked
+    _raw_data_table_locked = False
+
+
+def lock_objects_table():  # lock read operations to tables with high usage
+    global _objects_table_locked
+    _objects_table_locked = True
+
+
+def unlock_objects_table():  # unlock read operations
+    global _objects_table_locked
+    _objects_table_locked = False
+
+
+def lock_object_groups_table():  # lock read operations to tables with high usage
+    global _object_groups_table_locked
+    _object_groups_table_locked = True
+
+
+def unlock_object_groups_table():  # unlock read operations
+    global _object_groups_table_locked
+    _object_groups_table_locked = False
 
 
 def create_raw_data_table():
@@ -122,7 +144,7 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
 
 
 def get_raw_data(entry_id: int):
-    while _locked:
+    while _raw_data_table_locked:
         sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name + \
                     " WHERE ID=" + str(entry_id)
@@ -130,7 +152,7 @@ def get_raw_data(entry_id: int):
 
 
 def count_raw_data_entries():
-    while _locked:
+    while _raw_data_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])
 
@@ -141,13 +163,13 @@ def write_object(pos_x: int, pos_y: int, object_type="undefined"):
 
 
 def get_object(entry_id: int):
-    while _locked:
+    while _objects_table_locked:
         sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + objects_table_name + " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)[0]
 
 
 def count_object_entries():
-    while _locked and analysis_algorithms.thread1.locked:
+    while _objects_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
