@@ -73,11 +73,13 @@ def clean():  # clean data from previous runs
 
 
 def lock():  # lock read operations to tables with high usage
+    print("locking...")
     global _locked
     _locked = True
 
 
 def unlock():  # unlock read operations
+    print("unlocking...")
     global _locked
     _locked = False
 
@@ -131,7 +133,7 @@ def get_raw_data(entry_id: int):
 def count_raw_data_entries():
     while _locked:
         sleep(0.5)
-    return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])  # TODO add lock
+    return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])
 
 
 def write_object(pos_x: int, pos_y: int, object_type="undefined"):
