@@ -21,6 +21,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = False
         while self.keep_alive:
             if self.current_id <= db_operations.count_raw_data_entries():
+                thread1.lock()
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
                 if raw_data[5].__contains__("S1"):
@@ -34,6 +35,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
                 self.current_id += 1
             else:
+                thread1.unlock()
                 sleep(1)
         self.dead = True
 
@@ -46,6 +48,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
 class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of objects
     keep_alive = True
     dead = True
+    _locked = False
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -57,6 +60,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         id0 = 0
         id1 = 1
         while self.keep_alive:
+            while self._locked:
+                sleep(0.5)
             if id0 < db_operations.count_object_entries():
                 while id1 < db_operations.count_object_entries():
                     point1 = db_operations.get_object(id0)
@@ -77,6 +82,12 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         self.keep_alive = False
         while not self.dead:
             sleep(0.5)
+
+    def lock(self):
+        self._locked = True
+
+    def unlock(self):
+        self._locked = False
 
 
 thread0 = AnalysisThread0()

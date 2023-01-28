@@ -1,5 +1,4 @@
 #!/usr/bin/env pybricks-micropython
-import os
 import sys
 from time import sleep
 
@@ -19,6 +18,8 @@ def measure_at_current_location():
     client.send_text("0")
     client.send_text("200")
     client.send_text("2550")
+    if not client.receive_text() == "ok":
+        raise Exception("Error (server did not respond correctly)")
     client.send_text("finished")
 
 
