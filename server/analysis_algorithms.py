@@ -22,7 +22,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         print("1")
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
-            if self.current_id < db_operations.count_raw_data_entries():
+            if self.current_id <= db_operations.count_raw_data_entries():
                 print("2")
                 self.analysis_finished = False
                 thread1.lock()
@@ -62,8 +62,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
 
     def run(self):
         self.dead = False
-        id0 = 0
-        id1 = 1
+        id0 = 1
+        id1 = 2
         while self.keep_alive:
             while self._locked:
                 sleep(0.5)
@@ -76,6 +76,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
                     if distance < 20:
+                        print("\nP1: " + str(point1))
+                        print("P1: " + str(point2))
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                 id0 += 1
                 id1 = id0 + 1
