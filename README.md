@@ -1,7 +1,7 @@
 # MAPPING
 creating a map of a room with EV3  
 IMPORTANT: contains german  
-The `master` branch might be unstable. All working commits will be copied into a `stable` branch (which does not exist yet)  
+The `master` branch might be unstable. All working commits will be copied into the `stable` branch  
 tHe CoDe Is ThE dOcUmEnTaTiOn (I even added comments)
 
 ## WIP
