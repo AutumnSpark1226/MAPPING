@@ -9,7 +9,7 @@ from lib.communication import client
 
 ev3 = EV3Brick()
 distance_sensor_type = "S3.US"
-# TODO initialize motors
+# TODO initialize motors and sensors
 
 
 def drive_forward(cm: int):
@@ -51,15 +51,14 @@ def run():
     print("[mapping1/main.py] starting")
     start()
     print("[mapping1/main.py] ready")
-    ev3.speaker.beep(duration=1000)
     while True:
         command = client.receive_text()
         if command == 'drive_forward':
             drive_forward(int(client.receive_text()))
-        elif command == 'exit':
-            break
         elif command == 'rotate':
             rotate(int(client.receive_text()))
+        elif command == 'exit':
+            break
     stop()
 
 
