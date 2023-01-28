@@ -72,12 +72,12 @@ def clean():  # clean data from previous runs
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
-def lock():  # lock read operations
+def lock():  # lock read operations to tables with high usage
     global _locked
     _locked = True
 
 
-def unlock():  # lock read operations
+def unlock():  # unlock read operations
     global _locked
     _locked = True
 
@@ -116,7 +116,7 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
     # create a new table to save resources after 10000 (or maybe more) entries have been written
     global _raw_data_table_entry_counter
     _raw_data_table_entry_counter += 1
-    if _raw_data_table_entry_counter > 10000:
+    if _raw_data_table_entry_counter >= 10000:
         analysis_algorithms.complete_primary_analysis()
 
 
