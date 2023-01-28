@@ -28,12 +28,15 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
                 if raw_data[5].__contains__("S1"):
                     sensor_type = raw_data[5][raw_data[5].find("S1.") + 3:raw_data[5].find("S1.") + 5]
+                    print(sensor_type)
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
                 if raw_data[5].__contains__("S2"):
                     sensor_type = raw_data[5][raw_data[5].find("S2.") + 3:raw_data[5].find("S2.") + 5]
+                    print(sensor_type)
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2] + 180, raw_data[4], sensor_type)
                 if raw_data[5].__contains__("S3"):
                     sensor_type = raw_data[5]
+                    print(sensor_type)
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
                 self.current_id += 1
             else:
