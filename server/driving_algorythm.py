@@ -7,6 +7,7 @@ import main
 robot_pos = [0, 0]
 robot_rot = 0
 
+
 def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
     i = 0
     while id < db_operations.count_object_entries():
@@ -21,11 +22,13 @@ def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
             print("distance < crit_value")
     # TODO find direction of object do something
 
+
 def move_to(x, y):
+    global robot_pos
     dx = x - robot_pos[0]
     dy = y - robot_pos[1]
-    distance = math.sqrt(dx**2 + dy**2)
-    angle = math.atan(dy/dx)
+    distance = math.sqrt(dx ** 2 + dy ** 2)
+    angle = math.atan(dy / dx)
     dangle = angle - robot_rot
     main.rotate(dangle)
     main.drive_forward(distance)
@@ -40,6 +43,7 @@ def drive_randomly():
 def change_position(amount):
     robot_pos[0] = robot_pos[0] + amount * math.sin(robot_rot)
     robot_pos[1] = robot_pos[1] + amount * math.cos(robot_rot)
+
 
 def change_rotation(amount):
     robot_rot + amount
