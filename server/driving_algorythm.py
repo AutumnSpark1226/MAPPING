@@ -1,4 +1,5 @@
 import math
+import random
 
 from pybricks.ev3devices import Motor
 from pybricks.hubs import EV3Brick
@@ -37,3 +38,5 @@ def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
 
 
 def drive_randomly():
+    rotate(random.randint(0, 360))
+    drive(random.randint(0, 100))
