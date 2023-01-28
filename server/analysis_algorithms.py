@@ -41,7 +41,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
             else:
                 self.analysis_finished = True
                 thread1.unlock()
-                sleep(1)
+                sleep(0.5)
         self.dead = True
 
     def stop(self):
@@ -100,6 +100,7 @@ thread1 = AnalysisThread1()
 
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
+    print(sensor_type)
     print("3")
     if distance == -1:
         raise Exception("distance is -1")
@@ -110,8 +111,8 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
         print("DEBUG: object_written")
-    # else:
-    #    print("[server/analysis_algorithms.py] not implemented")  # WIP
+    else:
+        print("[server/analysis_algorithms.py] not implemented")  # WIP
 
 
 def start():
