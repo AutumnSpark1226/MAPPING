@@ -9,6 +9,7 @@ sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pard
 import lib.communication.server as server
 import db_operations
 import analysis_algorithms
+import driving_algorythm
 
 
 class EV3Connect(threading.Thread):
@@ -130,7 +131,8 @@ def drive_forward(mm: int):
         else:
             failure_count += 1
             validate_position()
-            drive_forward(cm)
+            drive_forward(mm)
+    driving_algorythm.change_position(mm)
 
 
 def measure_at_current_location():
@@ -171,6 +173,7 @@ def rotate(angle: int):
             failure_count += 1
             validate_position()
             rotate(angle)
+    driving_algorythm.change_rotation(angle)
 
 
 def run():
