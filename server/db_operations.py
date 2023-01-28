@@ -6,6 +6,7 @@ see database_info.ods for information
 import os
 from datetime import date
 from secrets import compare_digest
+from time import sleep
 
 import analysis_algorithms
 from lib import database
@@ -13,6 +14,7 @@ from lib import database
 raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
+_locked = False
 
 
 def connect(address="localhost", username="MAPPING_server", password="$$getFromFile$$",
@@ -69,6 +71,16 @@ def clean():  # clean data from previous runs
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
+def lock():  # lock read operations
+    global _locked
+    _locked = True
+
+
+def unlock():  # lock read operations
+    global _locked
+    _locked = True
+
+
 def create_raw_data_table():
     # update raw_data_table_name
     global raw_data_table_name
@@ -109,13 +121,17 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
 
 
 def get_raw_data(entry_id: int):
+    while _locked:
+        sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name + \
                     " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)[0]
 
 
 def count_raw_data_entries():
-    return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0]) # TODO add lock
+    while _locked:
+        sleep(0.5)
+    return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])  # TODO add lock
 
 
 def write_object(pos_x: int, pos_y: int, object_type="undefined"):
@@ -124,9 +140,13 @@ def write_object(pos_x: int, pos_y: int, object_type="undefined"):
 
 
 def get_object(entry_id: int):
+    while _locked:
+        sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + objects_table_name + " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)[0]
 
 
 def count_object_entries():
+    while _locked:
+        sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
