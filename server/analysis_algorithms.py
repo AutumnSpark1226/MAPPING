@@ -103,8 +103,8 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
-    else:
-        print("[server/analysis_algorithms.py] not implemented")  # WIP
+    # else:
+    #    print("[server/analysis_algorithms.py] not implemented")  # WIP
 
 
 def start():
