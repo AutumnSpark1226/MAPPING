@@ -23,6 +23,12 @@ def drive_forward(cm: int):
         engineA.run_angle(90, degrees)
         client.send_text("ok")
 
+def rotate(degrees: int):
+    climberB.run_angle(90, 360)
+    rotatorC.run_angle(30, degrees)
+    climberB.run_angle(90, -360)
+    ev3.speaker.say("Rotated " + str(degrees) + " degrees!")
+
 
 def start():
     host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()
@@ -51,6 +57,8 @@ def run():
             drive_forward(int(client.receive_text()))
         elif command == 'exit':
             break
+        elif command == 'rotate':
+            rotate(int(client.receive_text()))
     stop()
 
 if __name__ == '__main__':
