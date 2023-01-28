@@ -43,7 +43,6 @@ def run():
     print("[mapping0/main.py] starting")
     start()
     print("[mapping0/main.py] ready")
-    ev3.speaker.beep(duration=1000)
     while True:
         command = client.receive_text()
         if command == 'measure_at_current_location':
