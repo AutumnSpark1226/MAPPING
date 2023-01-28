@@ -11,7 +11,7 @@ not further explanation needed
 def start(port: int):
     global _server_socket
     _server_socket = socket.socket()
-    _server_socket.bind(('0.0.0.0', port))  # be available on all interfaces
+    _server_socket.bind(('0.0.0.0', port))  # FIXME choose another interface
     _server_socket.listen()
 
 
