@@ -11,6 +11,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
     keep_alive = True
     dead = True
     current_id = 1
+    analysis_finished = False
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -21,6 +22,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = False
         while self.keep_alive:
             if self.current_id <= db_operations.count_raw_data_entries():
+                self.analysis_finished = False
                 thread1.lock()
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
@@ -35,6 +37,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
                 self.current_id += 1
             else:
+                self.analysis_finished = True
                 thread1.unlock()
                 sleep(1)
         self.dead = True
@@ -103,6 +106,7 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
+        print("DEBUG: object_written")
     # else:
     #    print("[server/analysis_algorithms.py] not implemented")  # WIP
 

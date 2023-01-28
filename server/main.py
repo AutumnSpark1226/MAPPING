@@ -161,6 +161,8 @@ def run():
     while True:
         validate_position()
         measure_at_current_location()
+        while not analysis_algorithms.thread0.analysis_finished:
+            sleep(1)
         # TODO create the map
         break  # temporary solution to prevent an endless loop
     print('[server/main.py] shutdown')
