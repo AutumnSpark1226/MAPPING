@@ -76,7 +76,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 20:
+                    if distance < 200:
                         print("\nP1: " + str(point1))
                         print("P1: " + str(point2))
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
@@ -104,7 +104,6 @@ thread1 = AnalysisThread1()
 
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
-    print(sensor_type)
     if distance == -1:
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
