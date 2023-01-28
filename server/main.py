@@ -109,9 +109,9 @@ def recover_position():
         stop()
 
 
-def drive_forward(cm: int):
+def drive_forward(mm: int):
     server.send_text(mapping1_connection, "drive_forward")
-    server.send_text(mapping1_connection, str(cm))
+    server.send_text(mapping1_connection, str(mm))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
         # TODO calculate new position

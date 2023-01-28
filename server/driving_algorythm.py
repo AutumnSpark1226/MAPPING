@@ -22,7 +22,14 @@ def crit_distance(robot_pos_x, robot_pos_y, object_pos, crit_value: int):
     # TODO find direction of object do something
 
 def move_to(x, y):
-
+    dx = x - robot_pos[0]
+    dy = y - robot_pos[1]
+    distance = math.sqrt(dx**2 + dy**2)
+    angle = math.atan(dy/dx)
+    dangle = angle - robot_rot
+    main.rotate(dangle)
+    main.drive_forward(distance)
+    robot_pos = [x, y]
 
 
 def drive_randomly():
