@@ -19,9 +19,11 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
 
     def run(self):
+        print("1")
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
             if self.current_id <= db_operations.count_raw_data_entries():
+                print("2")
                 self.analysis_finished = False
                 thread1.lock()
                 raw_data = db_operations.get_raw_data(self.current_id)
@@ -98,6 +100,7 @@ thread1 = AnalysisThread1()
 
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
+    print("3")
     if distance == -1:
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
