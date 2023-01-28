@@ -23,7 +23,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         while self.keep_alive:
             while self.locked:
                 sleep(0.1)
-            if db_operations.count_raw_data_entries() >= self.current_id:
+            if not self.locked and db_operations.count_raw_data_entries() >= self.current_id:
                 thread1.locked = True
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
@@ -66,7 +66,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         while self.keep_alive:
             while self.locked:
                 sleep(0.1)
-            if id0 < db_operations.count_object_entries():
+            if not self.locked and id0 < db_operations.count_object_entries():
                 while id1 < db_operations.count_object_entries():
                     while self.locked:
                         sleep(0.1)
