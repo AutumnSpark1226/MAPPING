@@ -119,6 +119,7 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
     global _raw_data_table_entry_counter
     _raw_data_table_entry_counter += 1
     if _raw_data_table_entry_counter >= 10000:
+        _raw_data_table_entry_counter = 0
         analysis_algorithms.complete_primary_analysis()
 
 
