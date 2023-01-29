@@ -24,7 +24,7 @@ def crit_distance(crit_value: int):
             print("distance < crit_value")
             global critical_distance
             critical_distance = True
-    # TODO find direction of object do something
+    # TODO find direction of object, do something
 
 
 def move_to(x, y):
@@ -73,8 +73,16 @@ def divide_and_conquer(size_x=0, size_y=0):
                     i += 1
                 main.rotate(90)
         else:
-            print("WIP")
-            # TODO do something
+            main.measure_at_current_location()
+            # TODO get direction of object then rotate to object +90 degrees
+            # TODO pretend that critical distance is false when object on that side maybe go back a bit and then turn
+
     else:
         print("WIP")
-        # TODO do something
+        # TODO split room in small enough squares and do the same as before
+
+
+def prioritise_locations():
+    # TODO find the locations where the most noise was and drive there
+    # fix the map lol
+    move_to(0, 0)
