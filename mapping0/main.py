@@ -12,6 +12,7 @@ distance_sensor_type = "S1.US;S2.US"
 
 
 def measure_at_current_location():
+    # TODO use real sensors instead of dummy data
     # send dummy values
     client.send_text("ok")
     client.send_text(distance_sensor_type)

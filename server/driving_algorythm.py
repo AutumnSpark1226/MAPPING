@@ -76,7 +76,6 @@ def divide_and_conquer(size_x=0, size_y=0):
             main.measure_at_current_location()
             # TODO get direction of object then rotate to object +90 degrees
             # TODO pretend that critical distance is false when object on that side maybe go back a bit and then turn
-
     else:
         print("WIP")
         # TODO split room in small enough squares and do the same as before
