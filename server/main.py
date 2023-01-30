@@ -14,7 +14,6 @@ import analysis_algorithms
 import driving_algorythm
 
 
-
 class EV3Connect(threading.Thread):
     """
     create a new thread handling the connection process
@@ -31,33 +30,34 @@ class EV3Connect(threading.Thread):
         print('[server/main.py] server started')
         global mapping0_connection, mapping0_initialized, mapping1_connection, mapping1_initialized
         while True:
-          if mapping0_initialized and mapping1_initialized:
-            # TODO periodically check if the clients are still available
-          else:
-            con, address = server.accept_client()
-            # yes, this is a security risk  
-            # TODO find a better way to verify the client
-            client_id = server.receive_text(con)
-            print('[server/main.py] connection request (' + client_id + ')')
-            if client_id == 'mapping0':
-                mapping0_connection = con
-                mapping0_initialized = True
-                print('[server/main.py] ' + client_id + ' connected')
-            elif client_id == 'mapping1':
-                mapping1_connection = con
-                mapping1_initialized = True
-                print('[server/main.py] ' + client_id + ' connected')
+            if mapping0_initialized and mapping1_initialized:
+                break
+                # TODO periodically check if the clients are still available
             else:
-                con.close()
-                print('[server/main.py] ' + client_id + ' tried to connect')
-                sleep(0.5)
+                con, address = server.accept_client()
+                # yes, this is a security risk
+                # TODO find a better way to verify the client
+                client_id = server.receive_text(con)
+                print('[server/main.py] connection request (' + client_id + ')')
+                if client_id == 'mapping0':
+                    mapping0_connection = con
+                    mapping0_initialized = True
+                    print('[server/main.py] ' + client_id + ' connected')
+                elif client_id == 'mapping1':
+                    mapping1_connection = con
+                    mapping1_initialized = True
+                    print('[server/main.py] ' + client_id + ' connected')
+                else:
+                    con.close()
+                    print('[server/main.py] ' + client_id + ' tried to connect')
+                    sleep(0.5)
 
     def stop(self):
         if self.is_alive():
             os.system(shlex_quote('kill ' + str(self.native_id)))  # easiest way to stop the thread (kills the entire
             # process)
-            
-            
+
+
 ev3_connect_thread = EV3Connect()
 mapping0_connection: socket
 mapping0_initialized = False
@@ -68,7 +68,6 @@ max_failures = 10
 
 robot_position_x = 0
 robot_position_y = 0
-
 
 
 def start():
