@@ -1,5 +1,6 @@
 #!/usr/bin/env pybricks-micropython
 import sys
+import random
 from time import sleep
 
 sys.path.insert(0, "/home/robot/MAPPING")
@@ -16,9 +17,9 @@ def measure_at_current_location():
     # send dummy values
     client.send_text("ok")
     client.send_text(distance_sensor_type)
-    client.send_text("0")
-    client.send_text("200")
-    client.send_text("2550")
+    client.send_text(str(random.randint(0, 360))
+    client.send_text(random.randint(0, 2550))
+    client.send_text(random.randint(0, 2550))
     if not client.receive_text() == "ok":
         raise Exception("Error (server did not respond correctly)")
     client.send_text("finished")

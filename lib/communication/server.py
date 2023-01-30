@@ -13,7 +13,7 @@ def start(port: int):
     hostname = socket.gethostname()
     ip_address = socket.gethostbyname(hostname)
     _server_socket = socket.socket()
-    _server_socket.bind((ip_address, port))
+    _server_socket.bind(("0.0.0.0", port))  # FIXME
     _server_socket.listen()
 
 
