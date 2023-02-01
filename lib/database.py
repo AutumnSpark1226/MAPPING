@@ -43,7 +43,7 @@ def does_table_exist(table_name: str):
         raise Exception("database not connected")
     # check if table exists
     _cursor.execute(
-        "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '" + table_name.replace('\'', '\'\''))
+        "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '" + table_name.replace('\'', '\'\'') + "'")
     if _cursor.fetchone()[0] == 1:
         return True
     return False
