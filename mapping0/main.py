@@ -1,9 +1,11 @@
 #!/usr/bin/env pybricks-micropython
+import os
 import random
 import sys
 from time import sleep
 
-sys.path.insert(0, "/home/robot/MAPPING")
+working_dir = os.getcwd()
+sys.path.insert(0, working_dir)
 
 from pybricks.hubs import EV3Brick
 from lib.communication import client
@@ -15,18 +17,19 @@ distance_sensor_type = "S1.US;S2.US"
 def measure_at_current_location():
     # TODO use real sensors instead of dummy data
     # send dummy values
-    client.send_text("ok")
-    client.send_text(distance_sensor_type)
-    client.send_text(str(random.randint(0, 360)))
-    client.send_text(str(random.randint(0, 2550)))
-    client.send_text(str(random.randint(0, 2550)))
-    if not client.receive_text() == "ok":
-        raise Exception("Error (server did not respond correctly)")
+    for i in range(0, 10):
+        client.send_text("ok")
+        client.send_text(distance_sensor_type)
+        client.send_text(str(random.randint(0, 360)))
+        client.send_text(str(random.randint(0, 2550)))
+        client.send_text(str(random.randint(0, 2550)))
+        if not client.receive_text() == "ok":
+            raise Exception("Error (server did not respond correctly)")
     client.send_text("finished")
 
 
 def start():
-    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()
+    host = open(working_dir + '/host.txt', 'r').readline().rstrip()
     print("[mapping0/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping0/main.py] connected")

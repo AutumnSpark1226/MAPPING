@@ -1,8 +1,10 @@
 #!/usr/bin/env pybricks-micropython
+import os
 import sys
 from time import sleep
 
-sys.path.insert(0, "/home/robot/MAPPING")
+working_dir = os.getcwd()
+sys.path.insert(0, working_dir)
 
 from pybricks.hubs import EV3Brick
 from lib.communication import client
@@ -39,7 +41,7 @@ def rotate(degrees: int):
 
 
 def start():
-    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()
+    host = open(working_dir + '/host.txt', 'r').readline().rstrip()
     print("[mapping1/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping1/main.py] connected")
