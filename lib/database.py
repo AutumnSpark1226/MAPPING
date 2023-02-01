@@ -1,5 +1,8 @@
 import mariadb  # pip install mariadb
 
+# TODO replace after updating mariadb
+# _db: mariadb.connections.Connection
+# _cursor: mariadb.connections.Connection.cursor
 _db: mariadb.connection
 _cursor: mariadb.connection.cursor
 
@@ -39,8 +42,8 @@ def does_table_exist(table_name: str):
     if not _db or not _cursor:
         raise Exception("database not connected")
     # check if table exists
-    _cursor.execute("SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '{0}'".format(
-        table_name.replace('\'', '\'\'')))
+    _cursor.execute(
+        "SELECT COUNT(*) FROM information_schema.tables WHERE table_name = '" + table_name.replace('\'', '\'\''))
     if _cursor.fetchone()[0] == 1:
         return True
     return False
