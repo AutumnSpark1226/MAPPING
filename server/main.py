@@ -14,6 +14,11 @@ import analysis_algorithms
 import driving_algorithm
 
 
+def log(text: str, origin: str):
+    if debugging_enabled:
+        print("[" + origin + "] " + text)
+
+
 class EV3Connect(threading.Thread):
     """
     create a new thread handling the connection process
@@ -100,11 +105,6 @@ def stop():
     db_operations.disconnect()
     # last to stop (kills the process)
     ev3_connect_thread.stop()
-
-
-def log(text: str, origin: str):
-    if debugging_enabled:
-        print("[" + origin + "] " + text)
 
 
 def wait_for_connections():
