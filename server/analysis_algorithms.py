@@ -23,7 +23,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
             if self.current_id <= db_operations.count_raw_data_entries():
-                main.log("analysing raw data", self.thread_name)
+                # main.log("analysing raw data", self.thread_name)
                 self.analysis_finished = False
                 thread1.analysis_finished = False
                 db_operations.lock_objects_table()
@@ -67,6 +67,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         id1 = 2
         while self.keep_alive or not self.analysis_finished:
             if id0 < db_operations.count_object_entries():
+                main.log("analysing objects", self.thread_name)
                 self.analysis_finished = False
                 while id1 < db_operations.count_object_entries():
                     point1 = db_operations.get_object(id0)
