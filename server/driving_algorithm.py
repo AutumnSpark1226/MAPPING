@@ -21,7 +21,7 @@ def crit_distance(crit_value: int):
         distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
         i += 1
         if distance < crit_value:
-            print("distance < crit_value")
+            main.log("distance < crit_value", "driving_algorithm.crit_distance()")
             global critical_distance
             critical_distance = True
     # TODO find direction of object, do something
@@ -77,7 +77,7 @@ def divide_and_conquer(size_x=0, size_y=0):
             # TODO get direction of object then rotate to object +90 degrees
             # TODO pretend that critical distance is false when object on that side maybe go back a bit and then turn
     else:
-        print("WIP")
+        main.log("WIP", "driving_algorithm.divide_and_conquer()")
         # TODO split room in small enough squares and do the same as before
 
 

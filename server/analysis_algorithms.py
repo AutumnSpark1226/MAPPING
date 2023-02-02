@@ -5,6 +5,7 @@ from time import sleep
 from matplotlib.lines import Line2D
 
 import db_operations
+import main
 
 
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
@@ -16,7 +17,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'AnalysisThread0'
-        print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
+        main.log('initialized', self.thread_name)
 
     def run(self):
         self.dead = False
@@ -56,7 +57,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'AnalysisThread1'
-        print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
+        main.log('initialized', self.thread_name)
 
     def run(self):
         self.dead = False
@@ -73,8 +74,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
                     if distance < 200:
-                        print("\nP1: " + str(point1))
-                        print("P2: " + str(point2))
+                        main.log("\nP1: " + str(point1), self.thread_name)
+                        main.log("P2: " + str(point2), self.thread_name)
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                 id0 += 1
                 id1 = id0 + 1
@@ -103,7 +104,7 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
     else:
-        print("[server/analysis_algorithms.py] not implemented")  # WIP
+        main.log("not implemented", "analysis_algorithms.primary_analysis()")  # WIP
 
 
 def start():
