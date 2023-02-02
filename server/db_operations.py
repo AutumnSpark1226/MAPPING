@@ -121,8 +121,8 @@ def create_raw_data_table():
     database.execute(
         'CREATE TABLE ' + raw_data_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
                                                 ' POS_Y int NOT NULL, ANGLE int NOT NULL, DISTANCE_S1 int, '
-                                                'DISTANCE_S2 int, SENSOR_TYPE enum("S1.US;S2.US", "S1.IR;S2.IR", '
-                                                '"S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", '
+                                                'DISTANCE_S2 int, SENSOR_TYPE enum("S1.US,S2.US", "S1.IR,S2.IR", '
+                                                '"S1.US,S2.IR", "S1.IR,S2.US", "S1.US", "S1.IR", "S2.US", '
                                                 '"S2.IR", "S3.US") NOT NULL, TIME timestamp NOT'
                                                 ' NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
 

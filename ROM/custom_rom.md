@@ -1,11 +1,12 @@
 # Custom ROM
 
-### Status: `working`
+### Version: `20221222` (working)
 
-### Version: `20221222`
+### β: `20230129_beta`  (not tested)
 
 ## TODO
-- install apt-utils dialog htop ufw zsh
+
+- install apt-utils dialog htop zsh
 - set login shell
 - configure zsh
 - replace PATH in .zshrc

@@ -5,6 +5,7 @@ from time import sleep
 from matplotlib.lines import Line2D
 
 import db_operations
+import main
 
 
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system
@@ -16,16 +17,18 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'AnalysisThread0'
-        print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
+        main.log('initialized', self.thread_name)
 
     def run(self):
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
             if self.current_id <= db_operations.count_raw_data_entries():
+                # main.log("analysing raw data", self.thread_name)
                 self.analysis_finished = False
+                thread1.analysis_finished = False
                 db_operations.lock_objects_table()
                 raw_data = db_operations.get_raw_data(self.current_id)
-                # "S1.US;S2.IR", "S1.IR;S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
+                # "S1.US,S2.US", "S1.IR,S2.IR, "S1.US,S2.IR", "S1.IR,S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
                 if raw_data[5].__contains__("S1"):
                     sensor_type = raw_data[5][raw_data[5].find("S1.") + 3:raw_data[5].find("S1.") + 5]
                     primary_analysis(raw_data[0], raw_data[1], raw_data[2], raw_data[3], sensor_type)
@@ -39,7 +42,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
             else:
                 db_operations.unlock_objects_table()
                 self.analysis_finished = True
-                sleep(0.5)
+                sleep(1)
         self.dead = True
 
     def stop(self):
@@ -56,7 +59,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'AnalysisThread1'
-        print('[server/analysis_algorithms.py] ' + self.thread_name + ' initialized')
+        main.log('initialized', self.thread_name)
 
     def run(self):
         self.dead = False
@@ -72,9 +75,9 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 200:
-                        print("\nP1: " + str(point1))
-                        print("P2: " + str(point2))
+                    if distance < 200:  # TODO real world tests (might require fine tuning)
+                        main.log("P1: " + str(point1), self.thread_name)
+                        main.log("P2: " + str(point2), self.thread_name)
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                 id0 += 1
                 id1 = id0 + 1
@@ -95,6 +98,7 @@ thread1 = AnalysisThread1()
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
     if distance == -1:
+        main.log("distance is -1", "analysis_algorithms.primary_analysis()")
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
     if distance != 2550 and sensor_type == "US":
@@ -103,7 +107,7 @@ def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_t
         y = int(dy + pos_y)
         db_operations.write_object(x, y)
     else:
-        print("[server/analysis_algorithms.py] not implemented")  # WIP
+        main.log("not implemented", "analysis_algorithms.primary_analysis()")  # WIP
 
 
 def start():

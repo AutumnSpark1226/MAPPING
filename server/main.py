@@ -2,6 +2,8 @@
 import os
 import sys
 import threading
+from shlex import quote as shlex_quote
+from socket import socket
 from time import sleep
 
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
@@ -9,6 +11,12 @@ sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pard
 import lib.communication.server as server
 import db_operations
 import analysis_algorithms
+import driving_algorithm
+
+
+def log(text: str, origin: str):
+    if debugging_enabled:
+        print("[" + origin + "] " + text)
 
 
 class EV3Connect(threading.Thread):
@@ -19,39 +27,48 @@ class EV3Connect(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.thread_name = 'EV3ConnectThread'
-        print('[server/main.py] ' + self.thread_name + ' initialized')
+        log('initialized', self.thread_name)
 
     def run(self):
         # save connections of the robots
         server.start(6666)
-        print('[server/main.py] server started')
+        log('server started', self.thread_name)
+        global mapping0_connection, mapping0_initialized, mapping1_connection, mapping1_initialized
         while True:
-            con, address = server.accept_client()
-            client_id = server.receive_text(con)
-            print('[server/main.py] connection request (' + client_id + ')')
-            if client_id == 'mapping0':
-                global mapping0_connection
-                mapping0_connection = con
-                print('[server/main.py] ' + client_id + ' connected')
-            elif client_id == 'mapping1':
-                global mapping1_connection
-                mapping1_connection = con
-                print('[server/main.py] ' + client_id + ' connected')
+            if mapping0_initialized and mapping1_initialized:
+                break
+                # TODO periodically check if the clients are still available
             else:
-                con.close()
-                print('[server/main.py] ' + client_id + ' tried to connect')
-                sleep(0.5)
-            # yes, this is a security risk
-            # TODO find a better way to verify the client
+                con, address = server.accept_client()
+                # yes, this is a security risk
+                # TODO find a better way to verify the client
+                client_id = server.receive_text(con)
+                log('connection request (' + client_id + ')', self.thread_name)
+                if client_id == 'mapping0':
+                    mapping0_connection = con
+                    mapping0_initialized = True
+                    log(client_id + ' connected', self.thread_name)
+                elif client_id == 'mapping1':
+                    mapping1_connection = con
+                    mapping1_initialized = True
+                    log(client_id + ' connected', self.thread_name)
+                else:
+                    con.close()
+                    log(client_id + ' tried to connect', self.thread_name)
+                    sleep(0.5)
 
     def stop(self):
         if self.is_alive():
-            os.system('kill ' + str(self.native_id))  # easiest way to stop the thread (kills the entire process)
+            os.system(shlex_quote('kill ' + str(self.native_id)))  # easiest way to stop the thread (kills the entire
+            # process)
 
 
+debugging_enabled = True
 ev3_connect_thread = EV3Connect()
-mapping0_connection = None
-mapping1_connection = None
+mapping0_connection: socket
+mapping0_initialized = False
+mapping1_connection: socket
+mapping1_initialized = False
 failure_count = 0
 max_failures = 10
 
@@ -63,19 +80,20 @@ def start():
     db_operations.connect()
     db_operations.clean()  # TODO only clean in specific situations
     db_operations.setup_database()
-    print('[server/main.py] database ready')
+    log('[server/main.py] database ready', "main.start()")
     ev3_connect_thread.start()
     # wait til the robots are both connected
     wait_for_connections()
-    print('[server/main.py] all clients connected')
+    log('all clients connected', "main.start()")
     server.send_text(mapping0_connection, 'ready')
     server.send_text(mapping1_connection, 'ready')
     mapping0_ready = server.receive_text(mapping0_connection)
     mapping1_ready = server.receive_text(mapping1_connection)
     if not (mapping0_ready == 'ready' and mapping1_ready == 'ready'):
-        print('[server/main.py] mapping0: ' + mapping0_ready)
-        print('[server/main.py] mapping1: ' + mapping1_ready)
-        raise Exception('[server/main.py] robots not ready')
+        log('mapping0: ' + mapping0_ready, "main.start()")
+        log('mapping1: ' + mapping1_ready, "main.start()")
+        log('robots not ready', "main.start()")
+        raise Exception('robots not ready')
     analysis_algorithms.start()
 
 
@@ -90,28 +108,28 @@ def stop():
 
 
 def wait_for_connections():
-    while not (mapping0_connection and mapping1_connection):
+    while not (mapping0_initialized and mapping1_initialized):
         sleep(0.5)
 
 
 def validate_position():
     position_validity = True
-    print("validate_position WIP")
+    log("WIP", "main.validate_position()")
     if not position_validity:
         recover_position()
 
 
 def recover_position():
     recovery_successful = False
-    print("recover_position WIP")
+    log("WIP", "main.recover_position()")
     if not recovery_successful:
-        print("Position could not be recovered! The process will terminate")
+        log("Position could not be recovered! The process will terminate", "main.recover_position()")
         stop()
 
 
-def drive_forward(cm: int):
+def drive_forward(mm: int):
     server.send_text(mapping1_connection, "drive_forward")
-    server.send_text(mapping1_connection, str(cm))
+    server.send_text(mapping1_connection, str(mm))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
         # TODO calculate new position
@@ -126,11 +144,13 @@ def drive_forward(cm: int):
     else:
         global failure_count
         if failure_count >= max_failures:
+            log("Too many failures occurred during driving", "main.drive_forward()")
             raise Exception("Too many failures occurred during driving")
         else:
             failure_count += 1
             validate_position()
-            drive_forward(cm)
+            drive_forward(mm)
+    driving_algorithm.change_position(mm)
 
 
 def measure_at_current_location():
@@ -146,6 +166,7 @@ def measure_at_current_location():
             measure_at_current_location()
     sensor_type = server.receive_text(mapping0_connection)
     response = server.receive_text(mapping0_connection)
+    analysis_algorithms.thread0.analysis_finished = False
     while response != "finished":
         angle = response
         distance_s1 = server.receive_text(mapping0_connection)
@@ -162,6 +183,7 @@ def rotate(angle: int):
     server.send_text(mapping1_connection, str(angle))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
+        # TODO update angle
         print("")
     else:
         global failure_count
@@ -171,16 +193,17 @@ def rotate(angle: int):
             failure_count += 1
             validate_position()
             rotate(angle)
+    driving_algorithm.change_rotation(angle)
 
 
 def run():
-    print('[server/main.py] starting...')
+    log('starting...', "main.run()")
     start()
-    print('[server/main.py] ready')
+    log('ready', "main.run()")
     validate_position()
     measure_at_current_location()
     # TODO create the map
-    print('[server/main.py] shutdown')
+    log('shutdown', "main.run()")
     stop()
 
 

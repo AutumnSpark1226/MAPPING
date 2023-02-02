@@ -1,6 +1,7 @@
 import socket
 
-_client_socket = None
+_client_socket: socket
+_client_initialized = False
 
 """
 the communication client
@@ -9,26 +10,29 @@ not further explanation needed
 
 
 def connect(host, port):
-    global _client_socket
+    global _client_socket, _client_initialized
     _client_socket = socket.socket()
     _client_socket.connect((host, port))
+    _client_initialized = True
 
 
 def disconnect():
-    if not _client_socket:
+    global _client_initialized
+    if not _client_initialized:
         raise Exception("client not connected")
+    _client_initialized = False
     _client_socket.close()
 
 
 def send_text(text: str):
-    if not _client_socket:
+    if not _client_initialized:
         raise Exception("client not connected")
     buffer = text.encode() + b'\x04'
     _client_socket.send(buffer)
 
 
 def receive_text():
-    if not _client_socket:
+    if not _client_initialized:
         raise Exception("client not connected")
     buffer = b''
     received_byte = b''
