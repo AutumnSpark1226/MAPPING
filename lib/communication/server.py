@@ -1,6 +1,7 @@
 import socket
+from socket import socket
 
-_server_socket: socket.socket
+_server_socket: socket
 
 """
 the communication client
@@ -10,10 +11,8 @@ not further explanation needed
 
 def start(port: int):
     global _server_socket
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
     _server_socket = socket.socket()
-    _server_socket.bind(("0.0.0.0", port))  # FIXME
+    _server_socket.bind(("0.0.0.0", port))
     _server_socket.listen()
 
 
@@ -30,14 +29,14 @@ def accept_client():  # clients won't be automatically accepted; calling this fu
     return connection, client_address
 
 
-def send_text(connection: socket.socket, text: str):
+def send_text(connection: socket, text: str):
     if not _server_socket:
         raise Exception("server not running")
     buffer = text.encode() + b'\x04'
     connection.send(buffer)
 
 
-def receive_text(connection: socket.socket):
+def receive_text(connection: socket):
     if not _server_socket:
         raise Exception("server not running")
     buffer = b''

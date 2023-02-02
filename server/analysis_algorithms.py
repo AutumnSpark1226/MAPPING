@@ -67,7 +67,6 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
         id1 = 2
         while self.keep_alive or not self.analysis_finished:
             if id0 < db_operations.count_object_entries():
-                main.log("analysing objects", self.thread_name)
                 self.analysis_finished = False
                 while id1 < db_operations.count_object_entries():
                     point1 = db_operations.get_object(id0)
@@ -76,8 +75,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 200:
-                        main.log("\nP1: " + str(point1), self.thread_name)
+                    if distance < 200:  # TODO real world tests (might require fine tuning)
+                        main.log("P1: " + str(point1), self.thread_name)
                         main.log("P2: " + str(point2), self.thread_name)
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                 id0 += 1
