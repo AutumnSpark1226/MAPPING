@@ -23,7 +23,9 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
         self.dead = False
         while self.keep_alive or not self.analysis_finished:
             if self.current_id <= db_operations.count_raw_data_entries():
+                main.log("analysing raw data", self.thread_name)
                 self.analysis_finished = False
+                thread1.analysis_finished = False
                 db_operations.lock_objects_table()
                 raw_data = db_operations.get_raw_data(self.current_id)
                 # "S1.US,S2.US", "S1.IR,S2.IR, "S1.US,S2.IR", "S1.IR,S2.US", "S1.US", "S1.IR", "S2.US", "S2.IR", "S3.US"
@@ -40,7 +42,7 @@ class AnalysisThread0(threading.Thread):  # primary analysis: position objects i
             else:
                 db_operations.unlock_objects_table()
                 self.analysis_finished = True
-                sleep(0.5)
+                sleep(1)
         self.dead = True
 
     def stop(self):
@@ -96,6 +98,7 @@ thread1 = AnalysisThread1()
 
 def primary_analysis(pos_x: int, pos_y: int, angle: int, distance: int, sensor_type: str):
     if distance == -1:
+        main.log("distance is -1", "analysis_algorithms.primary_analysis()")
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
     if distance != 2550 and sensor_type == "US":

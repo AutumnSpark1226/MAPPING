@@ -11,7 +11,7 @@ from pybricks.hubs import EV3Brick
 from lib.communication import client
 
 ev3 = EV3Brick()
-distance_sensor_type = "S1.US,S2.US"
+distance_sensor_type = "S1.US,S2.IR"
 
 
 def measure_at_current_location():
