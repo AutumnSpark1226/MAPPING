@@ -166,6 +166,7 @@ def measure_at_current_location():
             measure_at_current_location()
     sensor_type = server.receive_text(mapping0_connection)
     response = server.receive_text(mapping0_connection)
+    analysis_algorithms.thread0.analysis_finished = False
     while response != "finished":
         angle = response
         distance_s1 = server.receive_text(mapping0_connection)
