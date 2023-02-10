@@ -41,7 +41,7 @@ def rotate(degrees: int):
 
 
 def start():
-    host = open(working_dir + '/host.txt', 'r').readline().rstrip()
+    host = open('home/robot/host.txt', 'r').readline().rstrip()
     print("[mapping1/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping1/main.py] connected")
