@@ -79,6 +79,8 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                         main.log("P1: " + str(point1), self.thread_name)
                         main.log("P2: " + str(point2), self.thread_name)
                         line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
+                        # TODO calculate angle
+                        # TODO write to db
                 id0 += 1
                 id1 = id0 + 1
             else:

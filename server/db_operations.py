@@ -173,3 +173,19 @@ def count_object_entries():
     while _objects_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
+
+
+def write_scan_area(pos_x, pos_y, realValuePercentage):
+    Square_P0_x = pos_x - ((2 * sensor_max_distance) ** 2) / 4
+    Square_P0_y = pos_y - ((2 * sensor_max_distance) ** 2) / 4
+    Square_P1_x = pos_x + ((2 * sensor_max_distance) ** 2) / 4
+    Square_P1_y = pos_y + ((2 * sensor_max_distance) ** 2) / 4
+    # TODO mach das AutumnSpark1226
+
+def write_line(P1, P2, angle):
+    print("WIP")
+    # TODO WIP
+def get_line_angle():
+    print("WIP")
+    # TODO WIP
+    return angle

@@ -66,7 +66,6 @@ def divide_and_conquer(size_x=0, size_y=0):
                 while i < 2:
                     while i2 < stage + 1:
                         main.measure_at_current_location()
-                        # TODO save square in database with percentage of real values aka not max distance of sensor
                         main.drive_forward((((2 * sensor_max_distance) ** 2) / 4) * 2)
                         main.measure_at_current_location()
                         i2 += 1
@@ -74,8 +73,9 @@ def divide_and_conquer(size_x=0, size_y=0):
                 main.rotate(90)
         else:
             main.measure_at_current_location()
-            # TODO get direction of object then rotate to object +90 degrees
-            # TODO pretend that critical distance is false when object on that side maybe go back a bit and then turn
+            main.drive_forward(-10)
+            main.rotate(robot_rot - db_operations.get_line_angle())
+            change_rotation(robot_rot - db_operations.get_line_angle())
     else:
         main.log("WIP", "driving_algorithm.divide_and_conquer()")
         # TODO split room in small enough squares and do the same as before
