@@ -8,10 +8,18 @@ working_dir = os.getcwd()
 sys.path.insert(0, working_dir)
 
 from pybricks.hubs import EV3Brick
+from pybricks.ev3devices import InfraredSensor
+from pybricks.ev3devices import UltrasonicSensor
 from lib.communication import client
 
 ev3 = EV3Brick()
+ultrasonic_s1 = UltrasonicSensor(Port.S1)
+infrared_s2 = InfraredSensor(Port.S2)
+gyro_s3 = GyroSensor(Port.S3)
+
 distance_sensor_type = "S1.US,S2.IR"
+
+
 
 
 def measure_at_current_location():
@@ -20,16 +28,20 @@ def measure_at_current_location():
     client.send_text("ok")
     client.send_text(distance_sensor_type)
     for i in range(0, 10):
-        client.send_text(str(random.randint(0, 360)))
-        client.send_text(str(random.randint(0, 2550)))
-        client.send_text(str(random.randint(0, 2550)))
+        # measure
+        angle = gyro_s3.angle()
+        s1_value = ultrasonic_s1.distance()
+        s2_value = infrared_s2. distance()
+        client.send_text(str(angle))
+        client.send_text(str(s1_value))
+        client.send_text(str(s2_value))
         if not client.receive_text() == "ok":
             raise Exception("Error (server did not respond correctly)")
     client.send_text("finished")
 
 
 def start():
-    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()
+    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()  # TODO add relative path
     print("[mapping0/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping0/main.py] connected")
