@@ -1,6 +1,5 @@
 #!/usr/bin/env pybricks-micropython
 import os
-import random
 import sys
 from time import sleep
 
@@ -8,8 +7,8 @@ working_dir = os.getcwd()
 sys.path.insert(0, working_dir)
 
 from pybricks.hubs import EV3Brick
-from pybricks.ev3devices import InfraredSensor
-from pybricks.ev3devices import UltrasonicSensor
+from pybricks.parameters import Port
+from pybricks.ev3devices import InfraredSensor, GyroSensor, UltrasonicSensor
 from lib.communication import client
 # imports !!!
 
@@ -21,8 +20,6 @@ gyro_s3 = GyroSensor(Port.S3)
 distance_sensor_type = "S1.US,S2.IR"
 
 
-
-
 def measure_at_current_location():
     # TODO use real sensors instead of dummy data
     # send dummy values
@@ -32,7 +29,7 @@ def measure_at_current_location():
         # measure
         angle = gyro_s3.angle()
         s1_value = ultrasonic_s1.distance()
-        s2_value = infrared_s2. distance()
+        s2_value = infrared_s2.distance()
         client.send_text(str(angle))
         client.send_text(str(s1_value))
         client.send_text(str(s2_value))

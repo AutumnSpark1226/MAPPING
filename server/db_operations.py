@@ -9,6 +9,7 @@ from secrets import compare_digest
 from time import sleep
 
 import analysis_algorithms
+from driving_algorithm import sensor_max_distance
 from lib import database
 
 raw_data_table_name: str
@@ -175,17 +176,27 @@ def count_object_entries():
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
 
 
-def write_scan_area(pos_x, pos_y, realValuePercentage):
-    Square_P0_x = pos_x - ((2 * sensor_max_distance) ** 2) / 4
-    Square_P0_y = pos_y - ((2 * sensor_max_distance) ** 2) / 4
-    Square_P1_x = pos_x + ((2 * sensor_max_distance) ** 2) / 4
-    Square_P1_y = pos_y + ((2 * sensor_max_distance) ** 2) / 4
+def write_scan_area(pos_x, pos_y, real_value_percentage):
+    square_p0_x = pos_x - ((2 * sensor_max_distance) ** 2) / 4
+    square_p0_y = pos_y - ((2 * sensor_max_distance) ** 2) / 4
+    square_p1_x = pos_x + ((2 * sensor_max_distance) ** 2) / 4
+    square_p1_y = pos_y + ((2 * sensor_max_distance) ** 2) / 4
     # TODO mach das AutumnSpark1226
 
-def write_line(P1, P2, angle):
+
+def write_line(p1, p2, angle):
     print("WIP")
     # TODO WIP
-def get_line_angle():
+
+
+def get_line(entry_id: int):
     print("WIP")
     # TODO WIP
-    return angle
+    # return [p0_x, p0_y], [p1_x, p1_y], angle
+    return [0, 0], [0, 0], 0
+
+
+def get_line_angle(entry_id: int):
+    print("WIP")
+    # TODO WIP
+    return 0
