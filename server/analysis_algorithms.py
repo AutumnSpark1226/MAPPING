@@ -2,8 +2,6 @@ import math
 import threading
 from time import sleep
 
-from matplotlib.lines import Line2D
-
 import db_operations
 import main
 
@@ -75,10 +73,10 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 200:  # TODO real world tests (might require fine tuning)
+                    if distance < 20:  # TODO real world tests (might require fine tuning)
                         main.log("P1: " + str(point1), self.thread_name)
                         main.log("P2: " + str(point2), self.thread_name)
-                        line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
+                        # line = Line2D([point1[0], point2[0]], [point1[1], point2[1]])
                         # TODO calculate angle
                         # TODO write to db
                 id0 += 1
