@@ -7,7 +7,7 @@ import main
 robot_pos = [0, 0]
 robot_rot = 0
 critical_distance = False
-sensor_max_distance = 2550
+sensor_max_distance = 2500
 
 
 def crit_distance(crit_value: int):
