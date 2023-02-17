@@ -39,6 +39,10 @@ def rotate(degrees: int):
     rotator.run_angle(30, degrees)
     climber.run_angle(90, -360)
     client.send_text("ok")
+    
+def rotate_tower(degrees: int):
+    # TODO WIP
+    client.send_text("ok")
 
 
 def start():
@@ -67,6 +71,8 @@ def run():
             drive_forward(int(client.receive_text()))
         elif command == 'rotate':
             rotate(int(client.receive_text()))
+        elif command == 'rotate_tower':
+            rotate_tower(int(client.receive_text()))
         elif command == 'exit':
             break
     stop()

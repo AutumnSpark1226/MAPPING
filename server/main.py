@@ -74,6 +74,8 @@ max_failures = 10
 
 robot_position_x = 0
 robot_position_y = 0
+robot_rotation = 0
+tower_rotation = 0
 
 
 def start():
@@ -180,6 +182,24 @@ def measure_at_current_location():
 
 def rotate(angle: int):
     server.send_text(mapping1_connection, "rotate")
+    server.send_text(mapping1_connection, str(angle))
+    response = server.receive_text(mapping1_connection)
+    if response == "ok":
+        # TODO update angle
+        print("")
+    else:
+        global failure_count
+        if failure_count >= max_failures:
+            raise Exception("Too many failures occurred during rotating")
+        else:
+            failure_count += 1
+            validate_position()
+            rotate(angle)
+    driving_algorithm.change_rotation(angle)
+    
+    
+def rotate_tower(angle: int):
+    server.send_text(mapping1_connection, "rotate_tower")
     server.send_text(mapping1_connection, str(angle))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
