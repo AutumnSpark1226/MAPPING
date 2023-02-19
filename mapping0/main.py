@@ -28,7 +28,7 @@ def measure():
     client.send_text(distance_sensor_type)
     for i in range(0, 10):
         # measure
-        degrees = gyro_s3.degrees()
+        degrees = gyro_s3.degrees()  # not found by PyCharm
         s1_value = ultrasonic_s1.distance()
         s2_value = infrared_s2.distance()
         client.send_text(str(degrees))

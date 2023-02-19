@@ -33,9 +33,8 @@ def move_to(x, y):
     dx = x - robot_pos[0]
     dy = y - robot_pos[1]
     distance = math.sqrt(dx ** 2 + dy ** 2)
-    degrees = math.atan(dy / dx)
-    ddegrees = degrees - robot_rot
-    main.rotate(int(ddegrees))
+    degrees = math.atan(dy / dx) - robot_rot
+    main.rotate(int(degrees))
     main.drive_forward(int(distance))
     robot_pos = [x, y]
 
@@ -57,26 +56,22 @@ def change_rotation(amount):
 
 def divide_and_conquer(size_x=0, size_y=0):
     global sensor_max_distance
-    sensor_max_distance = 2550
-    i = 0
-    i2 = 0
+    sensor_max_distance = 2550  # FIXME why overwrite the standard value??
     stage = 0
-    if size_x and size_y == 0:
+    if size_x and size_y == 0:  # FIXME you mean: "size_x == 0 and size_y == 0"??
         if not critical_distance:
             while not critical_distance:
-                while i < 2:
-                    while i2 < stage + 1:
+                for i in range(2):
+                    for j in range(stage + 1):
                         main.measure()
                         main.drive_forward((((2 * sensor_max_distance) ** 2) / 4) * 2)
-                        main.measure()
-                        i2 += 1
-                    i += 1
+                        main.measure()  # FIXME measure two times??
                 main.rotate(90)
         else:
             main.measure()
-            main.drive_forward(-10)
-            main.rotate(robot_rot - db_operations.get_line_degrees())
-            change_rotation(robot_rot - db_operations.get_line_degrees())
+            main.drive_forward(-10)  # FIXME only 1cm??
+            main.rotate(robot_rot - db_operations.get_line_degrees())  # FIXME
+            change_rotation(robot_rot - db_operations.get_line_degrees())  # FIXME
     else:
         log("WIP", "driving_algorithm.divide_and_conquer()")
         # TODO split room in small enough squares and do the same as before
