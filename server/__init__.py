@@ -1,3 +1,3 @@
-from .main import *
+__all__ = ['run', 'log', 'rotate', 'drive_forward']
 
-__all__ = ['run', 'log']
+from .main import run, log, rotate, drive_forward

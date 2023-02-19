@@ -26,20 +26,21 @@ def drive_forward(mm: int):
         client.send_text("objectNearby")
         client.send_text(distance_sensor_type)
         client.send_text(ultrasonic.distance())
-        client.send_text(gyro.angle())
+        client.send_text(gyro.degrees())
     else:
         # TODO object check during driving
         degrees = mm * 211.7647058823529
-        engine.run_angle(90, degrees)
+        engine.run_degrees(90, degrees)
         client.send_text("ok")
 
 
 def rotate(degrees: int):
-    climber.run_angle(90, 360)
-    rotator.run_angle(30, degrees)
-    climber.run_angle(90, -360)
+    climber.run_degrees(90, 360)
+    rotator.run_degrees(30, degrees)
+    climber.run_degrees(90, -360)
     client.send_text("ok")
-    
+
+
 def rotate_tower(degrees: int):
     # TODO WIP
     client.send_text("ok")

@@ -3,6 +3,7 @@ import random
 
 import db_operations
 import main
+from main import log
 
 robot_pos = [0, 0]
 robot_rot = 0
@@ -21,7 +22,7 @@ def crit_distance(crit_value: int):
         distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
         i += 1
         if distance < crit_value:
-            main.log("distance < crit_value", "driving_algorithm.crit_distance()")
+            log("distance < crit_value", "driving_algorithm.crit_distance()")
             global critical_distance
             critical_distance = True
     # TODO find direction of object, do something
@@ -32,9 +33,9 @@ def move_to(x, y):
     dx = x - robot_pos[0]
     dy = y - robot_pos[1]
     distance = math.sqrt(dx ** 2 + dy ** 2)
-    angle = math.atan(dy / dx)
-    dangle = angle - robot_rot
-    main.rotate(int(dangle))
+    degrees = math.atan(dy / dx)
+    ddegrees = degrees - robot_rot
+    main.rotate(int(ddegrees))
     main.drive_forward(int(distance))
     robot_pos = [x, y]
 
@@ -65,19 +66,19 @@ def divide_and_conquer(size_x=0, size_y=0):
             while not critical_distance:
                 while i < 2:
                     while i2 < stage + 1:
-                        main.measure_at_current_location()
+                        main.measure()
                         main.drive_forward((((2 * sensor_max_distance) ** 2) / 4) * 2)
-                        main.measure_at_current_location()
+                        main.measure()
                         i2 += 1
                     i += 1
                 main.rotate(90)
         else:
-            main.measure_at_current_location()
+            main.measure()
             main.drive_forward(-10)
-            main.rotate(robot_rot - db_operations.get_line_angle())
-            change_rotation(robot_rot - db_operations.get_line_angle())
+            main.rotate(robot_rot - db_operations.get_line_degrees())
+            change_rotation(robot_rot - db_operations.get_line_degrees())
     else:
-        main.log("WIP", "driving_algorithm.divide_and_conquer()")
+        log("WIP", "driving_algorithm.divide_and_conquer()")
         # TODO split room in small enough squares and do the same as before
 
 

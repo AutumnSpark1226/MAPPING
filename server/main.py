@@ -139,9 +139,9 @@ def drive_forward(mm: int):
     elif response == "objectNearby":
         sensor_type = server.receive_text(mapping1_connection)
         distance = server.receive_text(mapping1_connection)
-        angle = server.receive_text(mapping1_connection)
+        degrees = server.receive_text(mapping1_connection)
         db_operations.lock_raw_data_table()
-        db_operations.write_raw_data(robot_position_x, robot_position_y, angle, sensor_type, distance_s1=distance)
+        db_operations.write_raw_data(robot_position_x, robot_position_y, degrees, sensor_type, distance_s1=distance)
         db_operations.unlock_raw_data_table()
     else:
         global failure_count
@@ -155,9 +155,9 @@ def drive_forward(mm: int):
     driving_algorithm.change_position(mm)
 
 
-def measure_at_current_location():
+def measure():
     db_operations.lock_raw_data_table()
-    server.send_text(mapping0_connection, "measure_at_current_location")
+    server.send_text(mapping0_connection, "measure")
     if server.receive_text(mapping0_connection) != "ok":
         global failure_count
         if failure_count >= max_failures:
@@ -165,27 +165,27 @@ def measure_at_current_location():
         else:
             validate_position()
             failure_count += 1
-            measure_at_current_location()
+            measure()
     sensor_type = server.receive_text(mapping0_connection)
     response = server.receive_text(mapping0_connection)
     analysis_algorithms.thread0.analysis_finished = False
     while response != "finished":
-        angle = response
+        degrees = response
         distance_s1 = server.receive_text(mapping0_connection)
         distance_s2 = server.receive_text(mapping0_connection)
-        db_operations.write_raw_data(robot_position_x, robot_position_y, angle, sensor_type, distance_s1=distance_s1,
+        db_operations.write_raw_data(robot_position_x, robot_position_y, degrees, sensor_type, distance_s1=distance_s1,
                                      distance_s2=distance_s2)
         server.send_text(mapping0_connection, "ok")
         response = server.receive_text(mapping0_connection)
     db_operations.unlock_raw_data_table()
 
 
-def rotate(angle: int):
+def rotate(degrees: int):
     server.send_text(mapping1_connection, "rotate")
-    server.send_text(mapping1_connection, str(angle))
+    server.send_text(mapping1_connection, str(degrees))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
-        # TODO update angle
+        # TODO update degrees
         print("")
     else:
         global failure_count
@@ -194,16 +194,16 @@ def rotate(angle: int):
         else:
             failure_count += 1
             validate_position()
-            rotate(angle)
-    driving_algorithm.change_rotation(angle)
-    
-    
-def rotate_tower(angle: int):
+            rotate(degrees)
+    driving_algorithm.change_rotation(degrees)
+
+
+def rotate_tower(degrees: int):
     server.send_text(mapping1_connection, "rotate_tower")
-    server.send_text(mapping1_connection, str(angle))
+    server.send_text(mapping1_connection, str(degrees))
     response = server.receive_text(mapping1_connection)
     if response == "ok":
-        # TODO update angle
+        # TODO update degrees
         print("")
     else:
         global failure_count
@@ -212,8 +212,12 @@ def rotate_tower(angle: int):
         else:
             failure_count += 1
             validate_position()
-            rotate(angle)
-    driving_algorithm.change_rotation(angle)
+            rotate_tower(degrees)
+
+
+def measure_at_current_position():
+    measure()
+    rotate_tower(1)
 
 
 def run():
@@ -221,7 +225,7 @@ def run():
     start()
     log('ready', "main.run()")
     validate_position()
-    measure_at_current_location()
+    measure()
     # TODO create the map
     log('shutdown', "main.run()")
     stop()

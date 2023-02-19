@@ -121,19 +121,19 @@ def create_raw_data_table():
     # create raw data table
     database.execute(
         'CREATE TABLE ' + raw_data_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
-                                                ' POS_Y int NOT NULL, ANGLE int NOT NULL, DISTANCE_S1 int, '
+                                                ' POS_Y int NOT NULL, DEGREES int NOT NULL, DISTANCE_S1 int, '
                                                 'DISTANCE_S2 int, SENSOR_TYPE enum("S1.US,S2.US", "S1.IR,S2.IR", '
                                                 '"S1.US,S2.IR", "S1.IR,S2.US", "S1.US", "S1.IR", "S2.US", '
                                                 '"S2.IR", "S3.US") NOT NULL, TIME timestamp NOT'
                                                 ' NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
 
 
-def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distance_s1=-1, distance_s2=-1):
+def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, distance_s1=-1, distance_s2=-1):
     if distance_s1 == distance_s2 == -1:
         raise Exception("no value given")
     database.execute(
-        "INSERT INTO " + raw_data_table_name + " (POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE) VALUES ("
-        + str(pos_x) + ", " + str(pos_y) + ", " + str(angle) + ", " + str(distance_s1) + ", " + str(
+        "INSERT INTO " + raw_data_table_name + "(POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE) VALUES ("
+        + str(pos_x) + ", " + str(pos_y) + ", " + str(degrees) + ", " + str(distance_s1) + ", " + str(
             distance_s2) + ", '" + sensor_type + "')")
     # TODO might result in errors; testing required
     # create a new table to save resources after 10000 (or maybe more) entries have been written
@@ -147,7 +147,7 @@ def write_raw_data(pos_x: int, pos_y: int, angle: int, sensor_type: str, distanc
 def get_raw_data(entry_id: int):
     while _raw_data_table_locked:
         sleep(0.5)
-    sql_statement = "SELECT POS_X, POS_Y, ANGLE, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name + \
+    sql_statement = "SELECT POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name + \
                     " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)[0]
 
@@ -170,6 +170,13 @@ def get_object(entry_id: int):
     return database.fetch(sql_statement)[0]
 
 
+def get_all_objects():
+    while _objects_table_locked:
+        sleep(0.5)
+    sql_statement = "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + objects_table_name
+    return database.fetch(sql_statement)
+
+
 def count_object_entries():
     while _objects_table_locked:
         sleep(0.5)
@@ -184,7 +191,7 @@ def write_scan_area(pos_x, pos_y, real_value_percentage):
     # TODO mach das AutumnSpark1226
 
 
-def write_line(p1, p2, angle):
+def write_line(p1, p2, degrees):
     print("WIP")
     # TODO WIP
 
@@ -192,11 +199,11 @@ def write_line(p1, p2, angle):
 def get_line(entry_id: int):
     print("WIP")
     # TODO WIP
-    # return [p0_x, p0_y], [p1_x, p1_y], angle
+    # return [p0_x, p0_y], [p1_x, p1_y], degrees
     return [0, 0], [0, 0], 0
 
 
-def get_line_angle(entry_id: int):
+def get_line_degrees(entry_id: int):
     print("WIP")
     # TODO WIP
     return 0

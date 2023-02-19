@@ -10,6 +10,7 @@ from pybricks.hubs import EV3Brick
 from pybricks.parameters import Port
 from pybricks.ev3devices import InfraredSensor, GyroSensor, UltrasonicSensor
 from lib.communication import client
+
 # imports !!!
 
 ev3 = EV3Brick()
@@ -20,17 +21,17 @@ gyro_s3 = GyroSensor(Port.S3)
 distance_sensor_type = "S1.US,S2.IR"
 
 
-def measure_at_current_location():
+def measure():
     # TODO use real sensors instead of dummy data
     # send dummy values
     client.send_text("ok")
     client.send_text(distance_sensor_type)
     for i in range(0, 10):
         # measure
-        angle = gyro_s3.angle()
+        degrees = gyro_s3.degrees()
         s1_value = ultrasonic_s1.distance()
         s2_value = infrared_s2.distance()
-        client.send_text(str(angle))
+        client.send_text(str(degrees))
         client.send_text(str(s1_value))
         client.send_text(str(s2_value))
         if not client.receive_text() == "ok":
@@ -60,8 +61,8 @@ def run():
     print("[mapping0/main.py] ready")
     while True:
         command = client.receive_text()
-        if command == 'measure_at_current_location':
-            measure_at_current_location()
+        if command == 'measure':
+            measure()
         elif command == 'exit':
             break
     stop()
