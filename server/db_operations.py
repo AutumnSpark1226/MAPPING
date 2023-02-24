@@ -170,13 +170,6 @@ def get_object(entry_id: int):
     return database.fetch(sql_statement)[0]
 
 
-def get_all_objects():
-    while _objects_table_locked:
-        sleep(0.5)
-    sql_statement = "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + objects_table_name
-    return database.fetch(sql_statement)
-
-
 def count_object_entries():
     while _objects_table_locked:
         sleep(0.5)
