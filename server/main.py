@@ -9,14 +9,11 @@ from time import sleep
 sys.path.extend([os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))])
 
 import lib.communication.server as server
+from lib.logging import log
 import db_operations
 import analysis_algorithms
 import driving_algorithm
 
-
-def log(text: str, origin: str):
-    if debugging_enabled:
-        print("[" + origin + "] " + text)
 
 
 class EV3Connect(threading.Thread):
@@ -63,7 +60,6 @@ class EV3Connect(threading.Thread):
             # process)
 
 
-debugging_enabled = True
 ev3_connect_thread = EV3Connect()
 mapping0_connection: socket
 mapping0_initialized = False

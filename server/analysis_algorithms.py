@@ -2,9 +2,9 @@ import math
 import threading
 from time import sleep
 
-import database
+import lib.database
 import db_operations
-from main import log
+from lib.logging import log
 
 
 class AnalysisThread0(threading.Thread):  # primary analysis: position objects in coordinate system

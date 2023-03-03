@@ -3,7 +3,7 @@ import random
 
 import db_operations
 import main
-from main import log
+from lib.logging import log
 
 robot_pos = [0, 0]
 robot_rot = 0
