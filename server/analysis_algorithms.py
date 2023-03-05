@@ -2,7 +2,7 @@ import math
 import threading
 from time import sleep
 
-import lib.database
+import database
 import db_operations
 from lib.logging import log
 
@@ -73,7 +73,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                     y_diff = point2[1] - point1[1]
                     distance = math.sqrt(x_diff ** 2 + y_diff ** 2)
                     id1 += 1
-                    if distance < 20:  # TODO real world tests (might require fine tuning)
+                    if distance < 20:  # TODO real world tests (might require fine-tuning)
                         log("P1: " + str(point1), self.thread_name)
                         log("P2: " + str(point2), self.thread_name)
                         # TODO calculate degrees

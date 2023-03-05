@@ -3,10 +3,11 @@ import os
 import sys
 from time import sleep
 
+from pybricks.hubs import EV3Brick
+
 working_dir = os.getcwd()
 sys.path.insert(0, working_dir)
 
-from pybricks.hubs import EV3Brick
 from lib.communication import client
 
 ev3 = EV3Brick()

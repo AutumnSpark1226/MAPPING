@@ -15,7 +15,6 @@ import analysis_algorithms
 import driving_algorithm
 
 
-
 class EV3Connect(threading.Thread):
     """
     create a new thread handling the connection process

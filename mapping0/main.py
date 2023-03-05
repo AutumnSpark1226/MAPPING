@@ -3,15 +3,14 @@ import os
 import sys
 from time import sleep
 
+from pybricks.ev3devices import InfraredSensor, GyroSensor, UltrasonicSensor
+from pybricks.hubs import EV3Brick
+from pybricks.parameters import Port
+
 working_dir = os.getcwd()
 sys.path.insert(0, working_dir)
 
-from pybricks.hubs import EV3Brick
-from pybricks.parameters import Port
-from pybricks.ev3devices import InfraredSensor, GyroSensor, UltrasonicSensor
 from lib.communication import client
-
-# imports !!!
 
 ev3 = EV3Brick()
 ultrasonic_s1 = UltrasonicSensor(Port.S1)
@@ -22,8 +21,6 @@ distance_sensor_type = "S1.US,S2.IR"
 
 
 def measure():
-    # TODO use real sensors instead of dummy data
-    # send dummy values
     client.send_text("ok")
     client.send_text(distance_sensor_type)
     for i in range(0, 10):
@@ -40,7 +37,7 @@ def measure():
 
 
 def start():
-    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()  # TODO add relative path
+    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()  # TODO use relative path
     print("[mapping0/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping0/main.py] connected")
