@@ -15,9 +15,11 @@ from lib import database
 raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
+divide_conquer_table_name: str
 _raw_data_table_locked = False
 _objects_table_locked = False
 _object_groups_table_locked = False
+_divide_conquer_table_locked = False
 _raw_data_table_entry_counter = 0
 
 
@@ -46,10 +48,12 @@ def setup_database():
         # insert raw_data_table_count
         database.execute("INSERT INTO GENERAL (NAME, VALUE) VALUES ('raw_data_table_count', '0')")
     create_raw_data_table()
-    global objects_table_name, object_groups_table_name
+    global objects_table_name, object_groups_table_name, divide_conquer_table_name
     objects_table_name = 'OBJECTS_' + date.today().strftime("%Y%m%d") + '_' + str(
         database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
     object_groups_table_name = 'OBJECT_GROUPS_' + date.today().strftime("%Y%m%d") + '_' + str(
+        database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
+    divide_conquer_table_name = 'DIVIDE_CONQUER_' + date.today().strftime("%Y%m%d") + '_' + str(
         database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
     if not database.does_table_exist(objects_table_name):
         database.execute('CREATE TABLE ' + objects_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
@@ -60,6 +64,13 @@ def setup_database():
         # TODO WIP
         database.execute(
             'CREATE TABLE ' + object_groups_table_name + ' (ID int NOT NULL AUTO_INCREMENT, PRIMARY KEY (ID))')
+    if not database.does_table_exist(divide_conquer_table_name):
+        database.execute(
+            'CREATE TABLE ' + divide_conquer_table_name + '(ID int NOT NULL AUTO_INCREMENT, SQUARE_P0_X int NOT NULL, '
+                                                          'SQUARE_P0_Y int NOT NULL, SQUARE_P1_X int NOT NULL, '
+                                                          'SQUARE_P1_Y int NOT NULL, REAL_VALUE_PERCENTAGE double(6, '
+                                                          '5), TIME timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, '
+                                                          'PRIMARY KEY (ID))')
     # update run_count
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][
@@ -147,8 +158,8 @@ def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, dista
 def get_raw_data(entry_id: int):
     while _raw_data_table_locked:
         sleep(0.5)
-    sql_statement = "SELECT POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name + \
-                    " WHERE ID=" + str(entry_id)
+    sql_statement = "SELECT POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name \
+                    + " WHERE ID=" + str(entry_id)
     return database.fetch(sql_statement)[0]
 
 
@@ -176,12 +187,17 @@ def count_object_entries():
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
 
 
-def write_scan_area(pos_x, pos_y, real_value_percentage):
+def write_scan_area(pos_x: int, pos_y: int, real_value_percentage: float):
+    real_value_percentage = round(real_value_percentage, 5)
     square_p0_x = pos_x - ((2 * sensor_max_distance) ** 2) / 4
     square_p0_y = pos_y - ((2 * sensor_max_distance) ** 2) / 4
     square_p1_x = pos_x + ((2 * sensor_max_distance) ** 2) / 4
     square_p1_y = pos_y + ((2 * sensor_max_distance) ** 2) / 4
-    # TODO mach das AutumnSpark1226
+    database.execute(
+        "INSERT INTO " + divide_conquer_table_name + "(SQUARE_P0_X, SQUARE_P0_Y, SQUARE_P1_X, SQUARE_P1_Y, "
+                                                     "REAL_VALUE_PERCENTAGE) VALUES(" + square_p0_x + ", " +
+        square_p0_y + ", " + square_p1_x + ", " + square_p1_y + ", " + str(
+            real_value_percentage) + ")")
 
 
 def write_line(p1, p2, degrees):
