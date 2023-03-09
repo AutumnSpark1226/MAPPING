@@ -1,3 +1,2 @@
 mariadb==1.1.6
-matplotlib==3.7.1
 pybricks==3.2.0
