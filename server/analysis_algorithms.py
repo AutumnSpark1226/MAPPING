@@ -2,7 +2,7 @@ import math
 import threading
 from time import sleep
 
-import database
+import lib.database
 import db_operations
 from lib.logging import log
 
