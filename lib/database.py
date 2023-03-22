@@ -1,10 +1,7 @@
 import mariadb  # pip install mariadb
 
-# TODO replace after updating mariadb
-# _db: mariadb.connections.Connection
-# _cursor: mariadb.connections.Connection.cursor
-_db: mariadb.connection
-_cursor: mariadb.connection.cursor
+_db: mariadb.connections.Connection
+_cursor: mariadb.connections.Connection.cursor
 
 """
 not further explanation needed
