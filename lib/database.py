@@ -4,7 +4,7 @@ _db: mariadb.connections.Connection
 _cursor: mariadb.connections.Connection.cursor
 
 """
-not further explanation needed
+no further explanation needed
 """
 
 
