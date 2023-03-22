@@ -2,8 +2,8 @@ import math
 import threading
 from time import sleep
 
-import database
 import db_operations
+import lib.database as db
 from lib.logging import log
 
 
@@ -112,19 +112,19 @@ def primary_analysis(pos_x: int, pos_y: int, degrees: int, distance: int, sensor
 def detect_noise():  # TODO testing required
     while not thread0.analysis_finished:
         sleep(0.5)
-    entries_count = database.fetch("SELECT COUNT(ID) FROM " + db_operations.objects_table_name)[0][0]
+    entries_count = db.fetch("SELECT COUNT(ID) FROM " + db_operations.objects_table_name)[0][0]
     # Compute the mean of the x-coordinates and y-coordinates
-    x_mean = database.fetch("SELECT SUM(POS_X) FROM " + db_operations.objects_table_name)[0][0] / entries_count
-    y_mean = database.fetch("SELECT SUM(POS_Y) FROM " + db_operations.objects_table_name)[0][0] / entries_count
+    x_mean = db.fetch("SELECT SUM(POS_X) FROM " + db_operations.objects_table_name)[0][0] / entries_count
+    y_mean = db.fetch("SELECT SUM(POS_Y) FROM " + db_operations.objects_table_name)[0][0] / entries_count
     # Compute the standard deviation of the x-coordinates and y-coordinates
-    standard_deviation_x = int((database.fetch(
+    standard_deviation_x = int((db.fetch(
         "SELECT SUM(POWER((POS_X - " + x_mean + "), 2)) FROM " + db_operations.objects_table_name)[0][
                                     0] / entries_count) ** 0.5)
-    standard_deviation_y = int((database.fetch(
+    standard_deviation_y = int((db.fetch(
         "SELECT SUM(POWER((POS_Y - " + y_mean + "), 2)) FROM " + db_operations.objects_table_name)[0][
                                     0] / entries_count) ** 0.5)
     # Find the coordinates that are more than 3 standard deviations away from the mean
-    outliers = database.fetch(
+    outliers = db.fetch(
         "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + db_operations.objects_table_name + " WHERE ABS(POS_X - " + x_mean +
         ") > " + str(
             3 * standard_deviation_x) + " OR ABS(POS_Y - " + y_mean + ") > " + str(3 * standard_deviation_y))
