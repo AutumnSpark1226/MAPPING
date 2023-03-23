@@ -5,8 +5,8 @@ import db_operations
 import main
 from lib.logging import log
 
-robot_pos = [0, 0]
-robot_rot = 0
+robot_position = [0, 0]
+robot_rotation = 0
 critical_distance = False
 sensor_max_distance = 2500
 
@@ -29,14 +29,15 @@ def crit_distance(crit_value: int):
 
 
 def move_to(x, y):
-    global robot_pos
-    dx = x - robot_pos[0]
-    dy = y - robot_pos[1]
+    global robot_position
+    dx = x - robot_position[0]
+    dy = y - robot_position[1]
     distance = math.sqrt(dx ** 2 + dy ** 2)
-    degrees = math.atan(dy / dx) - robot_rot
+    degrees = math.atan(dy / dx) - robot_rotation
     main.rotate(int(degrees))
     main.drive_forward(int(distance))
-    robot_pos = [x, y]
+    main.validate_position()
+    robot_position = [x, y]
 
 
 def drive_randomly():
@@ -44,14 +45,14 @@ def drive_randomly():
     main.drive_forward(random.randint(0, 50))
 
 
-def change_position(amount):
-    robot_pos[0] = robot_pos[0] + amount * math.sin(robot_rot)
-    robot_pos[1] = robot_pos[1] + amount * math.cos(robot_rot)
+def change_position(amount):  # FIXME no difference in argument between x and y ??
+    robot_position[0] = robot_position[0] + amount * math.sin(robot_rotation)
+    robot_position[1] = robot_position[1] + amount * math.cos(robot_rotation)
 
 
-def change_rotation(amount):
-    global robot_rot
-    robot_rot += amount
+def change_rotation(degrees: int):
+    global robot_rotation
+    robot_rotation += degrees
 
 
 def divide_and_conquer(size_x=0, size_y=0):
@@ -70,8 +71,8 @@ def divide_and_conquer(size_x=0, size_y=0):
         else:
             main.measure()
             main.drive_forward(-10)  # FIXME only 1cm??
-            main.rotate(robot_rot - db_operations.get_line_degrees())  # FIXME
-            change_rotation(robot_rot - db_operations.get_line_degrees())  # FIXME
+            main.rotate(robot_rotation - db_operations.get_line_degrees())  # FIXME
+            change_rotation(robot_rotation - db_operations.get_line_degrees())  # FIXME
     else:
         log("WIP", "driving_algorithm.divide_and_conquer()")
         # TODO split room in small enough squares and do the same as before

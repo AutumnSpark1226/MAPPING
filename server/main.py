@@ -220,7 +220,7 @@ def run():
     start()
     log('ready', "main.run()")
     validate_position()
-    measure()
+    measure_at_current_position()
     # TODO create the map
     log('shutdown', "main.run()")
     stop()

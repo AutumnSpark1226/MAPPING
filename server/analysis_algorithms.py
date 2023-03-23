@@ -77,7 +77,7 @@ class AnalysisThread1(threading.Thread):  # secondary analysis: find groups of o
                         log("P1: " + str(point1), self.thread_name)
                         log("P2: " + str(point2), self.thread_name)
                         # TODO calculate degrees
-                        # TODO write to db
+                        db_operations.write_line(point1, point2, 0)  # TODO
                 id0 += 1
                 id1 = id0 + 1
             else:
@@ -100,7 +100,7 @@ def primary_analysis(pos_x: int, pos_y: int, degrees: int, distance: int, sensor
         log("distance is -1", "analysis_algorithms.primary_analysis()")
         raise Exception("distance is -1")
     # TODO do some magic: error correction!!!! (depending on sensor type)
-    if distance != 2550 and sensor_type == "US":
+    if distance != 2550 and sensor_type == "US":  # currently no support for other sensors implemented
         dy = distance * math.sin(math.radians(degrees))
         x = int(math.sqrt((distance ** 2) - (dy ** 2)) + pos_x)
         y = int(dy + pos_y)

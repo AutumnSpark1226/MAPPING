@@ -5,7 +5,7 @@ _server_socket: socket
 
 """
 the communication client
-not further explanation needed
+no further explanation needed
 """
 
 

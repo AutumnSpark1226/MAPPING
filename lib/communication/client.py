@@ -1,11 +1,11 @@
 import socket
 
-_client_socket = None #: socket
+_client_socket: socket
 _client_initialized = False
 
 """
 the communication client
-not further explanation needed
+no further explanation needed
 """
 
 

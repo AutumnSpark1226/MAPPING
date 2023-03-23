@@ -12,10 +12,12 @@ import analysis_algorithms
 from driving_algorithm import sensor_max_distance
 from lib import database
 
+# table names
 raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
 divide_conquer_table_name: str
+# table locks
 _raw_data_table_locked = False
 _objects_table_locked = False
 _object_groups_table_locked = False
@@ -86,7 +88,7 @@ def clean():  # clean data from previous runs
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
-def lock_raw_data_table():  # lock read operations to tables with high usage
+def lock_raw_data_table():  # lock read operations
     global _raw_data_table_locked
     _raw_data_table_locked = True
 
@@ -96,7 +98,7 @@ def unlock_raw_data_table():  # unlock read operations
     _raw_data_table_locked = False
 
 
-def lock_objects_table():  # lock read operations to tables with high usage
+def lock_objects_table():  # lock read operations
     global _objects_table_locked
     _objects_table_locked = True
 
@@ -106,7 +108,7 @@ def unlock_objects_table():  # unlock read operations
     _objects_table_locked = False
 
 
-def lock_object_groups_table():  # lock read operations to tables with high usage
+def lock_object_groups_table():  # lock read operations
     global _object_groups_table_locked
     _object_groups_table_locked = True
 
@@ -155,7 +157,7 @@ def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, dista
         analysis_algorithms.complete_primary_analysis()
 
 
-def get_raw_data(entry_id: int):
+def get_raw_data(entry_id: int) -> [int, int, int, int, int, str]:
     while _raw_data_table_locked:
         sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name \
@@ -163,18 +165,18 @@ def get_raw_data(entry_id: int):
     return database.fetch(sql_statement)[0]
 
 
-def count_raw_data_entries():
+def count_raw_data_entries() -> int:
     while _raw_data_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])
 
 
-def write_object(pos_x: int, pos_y: int, object_type="undefined"):
+def write_object(pos_x: int, pos_y: int, object_type="undefined") -> None:
     database.execute("INSERT INTO " + objects_table_name + " (POS_X, POS_Y, OBJECT_TYPE) VALUES (" + str(pos_x) +
                      ", " + str(pos_y) + ", '" + object_type + "')")
 
 
-def get_object(entry_id: int):
+def get_object(entry_id: int) -> [int, int, str]:
     while _objects_table_locked:
         sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + objects_table_name + " WHERE ID=" + str(entry_id)
@@ -200,7 +202,7 @@ def write_scan_area(pos_x: int, pos_y: int, real_value_percentage: float):
             real_value_percentage) + ")")
 
 
-def write_line(p1, p2, degrees):
+def write_line(p1, p2, degrees) -> None:
     print("WIP")
     # TODO WIP
 
