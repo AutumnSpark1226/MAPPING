@@ -17,8 +17,9 @@ raw_data_table_name: str
 objects_table_name: str
 object_groups_table_name: str
 divide_conquer_table_name: str
+noisy_regions_table_name: str
 # table locks
-_raw_data_table_locked = False
+raw_data_table_locked = False
 _objects_table_locked = False
 _object_groups_table_locked = False
 _divide_conquer_table_locked = False
@@ -50,13 +51,13 @@ def setup_database():
         # insert raw_data_table_count
         database.execute("INSERT INTO GENERAL (NAME, VALUE) VALUES ('raw_data_table_count', '0')")
     create_raw_data_table()
-    global objects_table_name, object_groups_table_name, divide_conquer_table_name
-    objects_table_name = 'OBJECTS_' + date.today().strftime("%Y%m%d") + '_' + str(
+    global objects_table_name, object_groups_table_name, divide_conquer_table_name, noisy_regions_table_name
+    suffix = date.today().strftime("%Y%m%d") + '_' + str(
         database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
-    object_groups_table_name = 'OBJECT_GROUPS_' + date.today().strftime("%Y%m%d") + '_' + str(
-        database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
-    divide_conquer_table_name = 'DIVIDE_CONQUER_' + date.today().strftime("%Y%m%d") + '_' + str(
-        database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][0])
+    objects_table_name = 'OBJECTS_' + suffix
+    object_groups_table_name = 'OBJECT_GROUPS_' + suffix
+    divide_conquer_table_name = 'DIVIDE_CONQUER_' + suffix
+    noisy_regions_table_name = 'NOISY_REGIONS_' + suffix
     if not database.does_table_exist(objects_table_name):
         database.execute('CREATE TABLE ' + objects_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
                                                                 ' POS_Y int NOT NULL, OBJECT_TYPE varchar(64), TIME '
@@ -73,6 +74,12 @@ def setup_database():
                                                           'SQUARE_P1_Y int NOT NULL, REAL_VALUE_PERCENTAGE double(6, '
                                                           '5), TIME timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, '
                                                           'PRIMARY KEY (ID))')
+    if not database.does_table_exist(noisy_regions_table_name):
+        database.execute(
+            'CREATE TABLE ' + noisy_regions_table_name + ' (ID int NOT NULL AUTO_INCREMENT, POS_X int NOT NULL,'
+                                                         ' POS_Y int NOT NULL, OBJECT_TYPE varchar(64), TIME '
+                                                         'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, '
+                                                         'PRIMARY KEY (ID))')
     # update run_count
     database.execute("UPDATE GENERAL SET VALUE = '" + str(
         int(database.fetch("SELECT VALUE FROM GENERAL WHERE NAME='run_count'")[0][
@@ -89,13 +96,13 @@ def clean():  # clean data from previous runs
 
 
 def lock_raw_data_table():  # lock read operations
-    global _raw_data_table_locked
-    _raw_data_table_locked = True
+    global raw_data_table_locked
+    raw_data_table_locked = True
 
 
 def unlock_raw_data_table():  # unlock read operations
-    global _raw_data_table_locked
-    _raw_data_table_locked = False
+    global raw_data_table_locked
+    raw_data_table_locked = False
 
 
 def lock_objects_table():  # lock read operations
@@ -158,7 +165,7 @@ def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, dista
 
 
 def get_raw_data(entry_id: int) -> [int, int, int, int, int, str]:
-    while _raw_data_table_locked:
+    while raw_data_table_locked:
         sleep(0.5)
     sql_statement = "SELECT POS_X, POS_Y, DEGREES, DISTANCE_S1, DISTANCE_S2, SENSOR_TYPE FROM " + raw_data_table_name \
                     + " WHERE ID=" + str(entry_id)
@@ -166,7 +173,7 @@ def get_raw_data(entry_id: int) -> [int, int, int, int, int, str]:
 
 
 def count_raw_data_entries() -> int:
-    while _raw_data_table_locked:
+    while raw_data_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + raw_data_table_name)[0][0])
 
@@ -207,14 +214,27 @@ def write_line(p1, p2, degrees) -> None:
     # TODO WIP
 
 
-def get_line(entry_id: int):
+def get_line(entry_id: int) -> [[int, int], [int, int], int]:
     print("WIP")
     # TODO WIP
     # return [p0_x, p0_y], [p1_x, p1_y], degrees
     return [0, 0], [0, 0], 0
 
 
-def get_line_degrees(entry_id: int):
+def get_line_degrees(entry_id: int) -> int:
     print("WIP")
     # TODO WIP
     return 0
+
+
+def write_noisy_region(pos_x: int, pos_y: int, object_type: str) -> None:
+    database.execute("INSERT INTO " + noisy_regions_table_name + "(POS_X, POS_Y, OBJECT_TYPE) VALUES (" +
+                     str(pos_x) + ", " + str(pos_y) + ", '" + object_type + "')")
+
+
+def get_noisy_region() -> [int, int, str]:
+    return database.fetch("SELECT POS_X, POS_Y, OBJECT_TYPE FORM " + noisy_regions_table_name + " LIMIT 1")[0]
+
+
+def clear_noisy_regions() -> None:
+    database.execute("DELETE FROM " + noisy_regions_table_name)

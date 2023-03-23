@@ -110,7 +110,9 @@ def primary_analysis(pos_x: int, pos_y: int, degrees: int, distance: int, sensor
 
 
 def detect_noise():  # TODO testing required
-    while not thread0.analysis_finished:
+    # clear old data and regenerate it
+    db_operations.clear_noisy_regions()
+    while not (thread0.analysis_finished and db_operations.raw_data_table_locked):
         sleep(0.5)
     entries_count = db.fetch("SELECT COUNT(ID) FROM " + db_operations.objects_table_name)[0][0]
     # Compute the mean of the x-coordinates and y-coordinates
@@ -128,7 +130,9 @@ def detect_noise():  # TODO testing required
         "SELECT POS_X, POS_Y, OBJECT_TYPE FROM " + db_operations.objects_table_name + " WHERE ABS(POS_X - " + x_mean +
         ") > " + str(
             3 * standard_deviation_x) + " OR ABS(POS_Y - " + y_mean + ") > " + str(3 * standard_deviation_y))
-    return outliers  # TODO write to DB??
+    # TODO merge similar results; try to get main object type there
+    for region in outliers:
+        db_operations.write_noisy_region(region[0], region[1], region[2])
 
 
 def start():

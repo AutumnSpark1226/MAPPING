@@ -1,6 +1,7 @@
 import math
 import random
 
+import analysis_algorithms
 import db_operations
 import main
 from lib.logging import log
@@ -36,8 +37,8 @@ def move_to(x, y):
     degrees = math.atan(dy / dx) - robot_rotation
     main.rotate(int(degrees))
     main.drive_forward(int(distance))
-    main.validate_position()
     robot_position = [x, y]
+    main.validate_position()
 
 
 def drive_randomly():
@@ -79,6 +80,8 @@ def divide_and_conquer(size_x=0, size_y=0):
 
 
 def prioritise_locations():
-    # TODO find the locations where the most noise was and drive there
-    # fix the map lol
-    move_to(0, 0)
+    # find the locations where the most noise was and drive there
+    analysis_algorithms.detect_noise()
+    # TODO find multiple nearby regions with high noise
+    noisy_region = db_operations.get_noisy_region()
+    move_to(noisy_region[0], noisy_region[1])
