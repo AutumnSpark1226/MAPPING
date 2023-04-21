@@ -63,7 +63,7 @@ def stop():
     print("[mapping1/main.py] disconnected")
 
 def status():
-    # TODO add checks
+    # TODO add checks (battery > 7V)
     client.send_text('ok')
 
 def run():

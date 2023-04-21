@@ -9,7 +9,7 @@ from lib.logging import log
 robot_position = [0, 0]
 robot_rotation = 0
 critical_distance = False
-sensor_max_distance = 2500
+sensor_max_distance = 2500  # limit maximum to improve accuracy
 
 
 def crit_distance(crit_value: int):
@@ -60,18 +60,18 @@ def divide_and_conquer(size_x=0, size_y=0):
     global sensor_max_distance
     sensor_max_distance = 2550  # FIXME why overwrite the standard value??
     stage = 0
-    if size_x and size_y == 0:  # FIXME you mean: "size_x == 0 and size_y == 0"??
+    if size_x == 0 and size_y == 0:
         if not critical_distance:
+            main.measure()
             while not critical_distance:
                 for i in range(2):
                     for j in range(stage + 1):
-                        main.measure()
                         main.drive_forward((((2 * sensor_max_distance) ** 2) / 4) * 2)
                         main.measure()  # FIXME measure two times??
                 main.rotate(90)
         else:
             main.measure()
-            main.drive_forward(-10)  # FIXME only 1cm??
+            main.drive_forward(-10)
             main.rotate(robot_rotation - db_operations.get_line_degrees())  # FIXME
             change_rotation(robot_rotation - db_operations.get_line_degrees())  # FIXME
     else:
