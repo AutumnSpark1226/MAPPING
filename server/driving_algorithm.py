@@ -12,6 +12,8 @@ critical_distance = False
 sensor_max_distance = 2500  # limit maximum to improve accuracy
 
 
+# TODO use these functions
+
 def crit_distance(crit_value: int):
     i = 0
     while id < db_operations.count_object_entries():

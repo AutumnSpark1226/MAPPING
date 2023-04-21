@@ -2,7 +2,7 @@
 
 ### Version: `20221222` (working)
 
-### β: `20230129_beta`  (not tested)
+### β: `X`  (not available)
 
 ## TODO
 

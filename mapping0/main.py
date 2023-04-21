@@ -16,6 +16,7 @@ ev3 = EV3Brick()
 ultrasonic_s1 = UltrasonicSensor(Port.S1)
 infrared_s2 = InfraredSensor(Port.S2)
 gyro_s3 = GyroSensor(Port.S3)
+rotator = None
 
 distance_sensor_type = "S1.US,S2.IR"
 
@@ -28,12 +29,18 @@ def measure():
         degrees = gyro_s3.angle()
         s1_value = ultrasonic_s1.distance()
         s2_value = infrared_s2.distance()
+        # send measurements
         client.send_text(str(degrees))
         client.send_text(str(s1_value))
         client.send_text(str(s2_value))
         if not client.receive_text() == "ok":
             raise Exception("Error (server did not respond correctly)")
     client.send_text("finished")
+
+
+def rotate_tower(degrees: int):
+    # TODO WIP
+    client.send_text("ok")
 
 
 def start():
@@ -51,9 +58,13 @@ def stop():
     client.disconnect()
     print("[mapping0/main.py] disconnected")
 
-def status():
-    # TODO add checks
-    client.send_text('ok')
+
+def status_check():
+    if ev3.battery.voltage() < 7000:
+        client.send_text("batteryLow")
+    else:
+        client.send_text('ok')
+
 
 def run():
     print("[mapping0/main.py] starting")
@@ -63,8 +74,10 @@ def run():
         command = client.receive_text()
         if command == 'measure':
             measure()
+        elif command == 'rotate_tower':
+            rotate_tower(int(client.receive_text()))
         elif command == 'status_check':
-            status()
+            status_check()
         elif command == 'exit':
             break
     stop()

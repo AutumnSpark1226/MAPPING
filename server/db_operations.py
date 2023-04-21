@@ -27,18 +27,18 @@ _raw_data_table_entry_counter = 0
 
 
 def connect(address="localhost", username="MAPPING_server", password="$$getFromFile$$",
-            database_name='MAPPING'):  #
+            database_name='MAPPING', txt='DBPassword.txt') -> None:  #
     # do NOT use $$getFromFile as your password (please, I don't know what else to put here)
     if compare_digest(password, "$$getFromFile$$"):
-        password = open(os.getcwd() + '/server/DBPassword.txt', 'r').readline().rstrip()
+        password = open(os.getcwd() + '/server/' + txt, 'r').readline().rstrip()
     database.connect(address, username, password, database_name)
 
 
-def disconnect():
+def disconnect() -> None:
     database.disconnect()
 
 
-def setup_database():
+def setup_database() -> None:
     if not database.does_table_exist('GENERAL'):
         # create table GENERAL
         database.execute(
@@ -86,7 +86,7 @@ def setup_database():
                 0]) + 1) + "' WHERE NAME='run_count'")
 
 
-def clean():  # clean data from previous runs
+def clean() -> None:  # clean data from previous runs
     tables = database.fetch("SHOW TABLES")
     for table in tables:
         if table[0].startswith('RAW_DATA_') or table[0].startswith('OBJECTS_') or table[0].startswith('OBJECT_GROUPS_'):
@@ -95,37 +95,37 @@ def clean():  # clean data from previous runs
         database.execute("UPDATE GENERAL SET VALUE = '0' WHERE NAME='run_count' OR NAME='raw_data_table_count'")
 
 
-def lock_raw_data_table():  # lock read operations
+def lock_raw_data_table() -> None:  # lock read operations
     global raw_data_table_locked
     raw_data_table_locked = True
 
 
-def unlock_raw_data_table():  # unlock read operations
+def unlock_raw_data_table() -> None:  # unlock read operations
     global raw_data_table_locked
     raw_data_table_locked = False
 
 
-def lock_objects_table():  # lock read operations
+def lock_objects_table() -> None:  # lock read operations
     global _objects_table_locked
     _objects_table_locked = True
 
 
-def unlock_objects_table():  # unlock read operations
+def unlock_objects_table() -> None:  # unlock read operations
     global _objects_table_locked
     _objects_table_locked = False
 
 
-def lock_object_groups_table():  # lock read operations
+def lock_object_groups_table() -> None:  # lock read operations
     global _object_groups_table_locked
     _object_groups_table_locked = True
 
 
-def unlock_object_groups_table():  # unlock read operations
+def unlock_object_groups_table() -> None:  # unlock read operations
     global _object_groups_table_locked
     _object_groups_table_locked = False
 
 
-def create_raw_data_table():
+def create_raw_data_table() -> None:
     # update raw_data_table_name
     global raw_data_table_name
     raw_data_table_name = 'RAW_DATA_' + date.today().strftime("%Y%m%d") + '_' + str(
@@ -148,7 +148,7 @@ def create_raw_data_table():
                                                 ' NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY (ID))')
 
 
-def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, distance_s1=-1, distance_s2=-1):
+def write_raw_data(pos_x: int, pos_y: int, degrees: int, sensor_type: str, distance_s1=-1, distance_s2=-1) -> None:
     if distance_s1 == distance_s2 == -1:
         raise Exception("no value given")
     database.execute(
@@ -190,13 +190,13 @@ def get_object(entry_id: int) -> [int, int, str]:
     return database.fetch(sql_statement)[0]
 
 
-def count_object_entries():
+def count_object_entries() -> int:
     while _objects_table_locked:
         sleep(0.5)
     return int(database.fetch("SELECT COUNT(ID) FROM " + objects_table_name)[0][0])
 
 
-def write_scan_area(pos_x: int, pos_y: int, real_value_percentage: float):
+def write_scan_area(pos_x: int, pos_y: int, real_value_percentage: float) -> None:
     real_value_percentage = round(real_value_percentage, 5)
     square_p0_x = pos_x - ((2 * sensor_max_distance) ** 2) / 4
     square_p0_y = pos_y - ((2 * sensor_max_distance) ** 2) / 4

@@ -42,11 +42,6 @@ def rotate(degrees: int):
     client.send_text("ok")
 
 
-def rotate_tower(degrees: int):
-    # TODO WIP
-    client.send_text("ok")
-
-
 def start():
     host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()  # TODO add relative path
     print("[mapping1/main.py] connecting...")
@@ -62,9 +57,13 @@ def stop():
     client.disconnect()
     print("[mapping1/main.py] disconnected")
 
-def status():
-    # TODO add checks (battery > 7V)
-    client.send_text('ok')
+
+def status_check():
+    if ev3.battery.voltage() < 7000:
+        client.send_text("batteryLow")
+    else:
+        client.send_text('ok')
+
 
 def run():
     print("[mapping1/main.py] starting")
@@ -73,13 +72,11 @@ def run():
     while True:
         command = client.receive_text()
         if command == 'status_check':
-            status()
+            status_check()
         elif command == 'drive_forward':
             drive_forward(int(client.receive_text()))
         elif command == 'rotate':
             rotate(int(client.receive_text()))
-        elif command == 'rotate_tower':
-            rotate_tower(int(client.receive_text()))
         elif command == 'exit':
             break
     stop()

@@ -1,6 +1,6 @@
 import socket
 
-_client_socket = None #: socket # FIXME
+_client_socket: socket.socket
 _client_initialized = False
 
 """

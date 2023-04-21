@@ -108,6 +108,7 @@ def wait_for_connections():
     while not (mapping0_initialized and mapping1_initialized):
         sleep(0.5)
 
+
 def status_check():
     server.send_text(mapping0_connection, 'status_check')
     mapping0_status = server.receive_text(mapping0_connection)
@@ -118,9 +119,8 @@ def status_check():
         print('mapping1: ' + mapping1_status)
         stop()
     validate_position()
-    
 
-        
+
 def validate_position():
     position_validity = True
     log("WIP", "main.validate_position()")
@@ -231,7 +231,7 @@ def run():
     log('starting...', "main.run()")
     start()
     log('ready', "main.run()")
-    validate_position()
+    status_check()
     measure_at_current_position()
     # TODO create the map
     log('shutdown', "main.run()")
