@@ -62,6 +62,9 @@ def stop():
     client.disconnect()
     print("[mapping1/main.py] disconnected")
 
+def status():
+    # TODO add checks
+    client.send_text('ok')
 
 def run():
     print("[mapping1/main.py] starting")
@@ -69,7 +72,9 @@ def run():
     print("[mapping1/main.py] ready")
     while True:
         command = client.receive_text()
-        if command == 'drive_forward':
+        if command == 'status_check':
+            status()
+        elif command == 'drive_forward':
             drive_forward(int(client.receive_text()))
         elif command == 'rotate':
             rotate(int(client.receive_text()))

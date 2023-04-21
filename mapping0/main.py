@@ -51,6 +51,9 @@ def stop():
     client.disconnect()
     print("[mapping0/main.py] disconnected")
 
+def status():
+    # TODO add checks
+    client.send_text('ok')
 
 def run():
     print("[mapping0/main.py] starting")
@@ -60,6 +63,8 @@ def run():
         command = client.receive_text()
         if command == 'measure':
             measure()
+        elif command == 'status_check':
+            status()
         elif command == 'exit':
             break
     stop()

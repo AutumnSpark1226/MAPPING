@@ -108,7 +108,19 @@ def wait_for_connections():
     while not (mapping0_initialized and mapping1_initialized):
         sleep(0.5)
 
+def status_check():
+    server.send_text(mapping0_connection, 'status_check')
+    mapping0_status = server.receive_text(mapping0_connection)
+    server.send_text(mapping1_connection, 'status_check')
+    mapping1_status = server.receive_text(mapping1_connection)
+    if not (mapping0_status == 'ok' and mapping1_status == 'ok'):
+        print('mapping0: ' + mapping0_status)
+        print('mapping1: ' + mapping1_status)
+        stop()
+    validate_position()
+    
 
+        
 def validate_position():
     position_validity = True
     log("WIP", "main.validate_position()")
