@@ -4,28 +4,29 @@ HOSTNAME=$(cat /etc/hostname)
 PROGRAM="?"
 
 if [ "$#" -eq "1" ]; then
-  PROGRAM=$1
+    PROGRAM=$1
 else
   if [ "$HOSTNAME" = "laptop" ]; then
-    PROGRAM="server"
+      PROGRAM="server"
   elif [ "$HOSTNAME" = "mapping0" ]; then
-    PROGRAM="mapping0"
+      PROGRAM="mapping0"
   elif [ "$HOSTNAME" = "mapping1" ]; then
-    PROGRAM="mapping1"
+      PROGRAM="mapping1"
   else
-    echo "Choose a program [server, mapping0, mapping1, server_recovery]"
-    read -r PROGRAM
+      echo "Choose a program [server, mapping0, mapping1, server_recovery]"
+      read -r PROGRAM
   fi
 fi
 
 if [ "$PROGRAM" = "server" ]; then
-  ./server/main.py
+    ./server/main.py
 elif [ "$PROGRAM" = "server_recovery" ]; then
-  ./server/recovery_console.py
+    ./server/recovery_console.py
 elif [ "$PROGRAM" = "mapping0" ]; then
-  brickrun -r "./mapping0/main.py"
+    brickrun -r "./mapping0/main.py"
 elif [ "$PROGRAM" = "mapping1" ]; then
-  brickrun -r "./mapping1/main.py"
+    brickrun -r "./mapping1/main.py"
 else
-  echo "Program not found"
+    echo "Program not found"
+    exit 1
 fi
