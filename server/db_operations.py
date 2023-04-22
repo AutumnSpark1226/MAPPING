@@ -27,7 +27,7 @@ _raw_data_table_entry_counter = 0
 
 
 def connect(address="localhost", username="MAPPING_server", password="$$getFromFile$$",
-            database_name='MAPPING', txt='DBPassword.txt') -> None:  #
+            database_name='MAPPING', txt='DBPassword.txt') -> None:
     # do NOT use $$getFromFile as your password (please, I don't know what else to put here)
     if compare_digest(password, "$$getFromFile$$"):
         password = open(os.getcwd() + '/server/' + txt, 'r').readline().rstrip()
