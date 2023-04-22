@@ -13,18 +13,20 @@ read -r UNUSED
 MYSQL_ROOT="$(pwd)/test/test_files/database"
 if [ ! -d "${MYSQL_ROOT}" ]; then
   mkdir -p "${MYSQL_ROOT}"
-  mysql_install_db "--datadir=${MYSQL_ROOT}" "--basedir=/usr/"
+  mysql_install_db "--datadir=${MYSQL_ROOT}" "--basedir=$(pwd)/test/mariadb_10.6.11_basedir"
 fi
-mysqld "--datadir=${MYSQL_ROOT}" &
+mysqld "--datadir=${MYSQL_ROOT}" --port 3306 &
 MYSQL_PID="$!"
+sleep 3
+exit 1
 # backup original database password
 mv ./server/DBPassword.txt ./server/DBPassword.txt.backup
 # create new random database password
 cat /proc/sys/kernel/random/uuid > ./server/DBPassword.txt
-echo "CREATE OR REPLACE DATABASE MAPPING" | mariadb -u root
-echo "CREATE USER MAPPING_server@localhost IDENTIFIED BY '$(cat ./server/DBPassword.txt)'" | mariadb -u root
-echo "GRANT ALL PRIVILEGES ON MAPPING.* TO MAPPING_server@localhost"  | mariadb -u root
-echo "FLUSH PRIVILEGES" | mariadb -u root
+echo "CREATE OR REPLACE DATABASE MAPPING" | mariadb -u root --socket /run/mysqld/mysqld.sock
+echo "CREATE USER MAPPING_server@localhost IDENTIFIED BY '$(cat ./server/DBPassword.txt)'" | mariadb -u root --socket /run/mysqld/mysqld.sock
+echo "GRANT ALL PRIVILEGES ON MAPPING.* TO MAPPING_server@localhost"  | mariadb -u root --socket /run/mysqld/mysqld.sock
+echo "FLUSH PRIVILEGES" | mariadb -u root --socket /run/mysqld/mysqld.sock
 # start a MAPPING server
 ./server/main.py &
 MAPPING_SERVER_PID="$!"
