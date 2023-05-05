@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
 # run custom tests
 # (who needs a testing database anyway)
 rm "$(pwd)/test/logs/*"  # clear old logs

@@ -30,11 +30,7 @@ class EV3Connect(threading.Thread):
         server.start(6666)
         log('server started', self.thread_name)
         global mapping0_connection, mapping0_initialized, mapping1_connection, mapping1_initialized
-        while True:
-            if mapping0_initialized and mapping1_initialized:
-                break
-                # TODO periodically check if the clients are still available
-            else:
+        while not (mapping0_initialized and mapping1_initialized):
                 con, address = server.accept_client()
                 # yes, this is a security risk
                 # TODO find a better way to verify the client
@@ -232,6 +228,8 @@ def run():
     start()
     log('ready', "main.run()")
     status_check()
+    log('status check successfull', 'main.run()')
+    # TODO segfaul somewhere here
     measure_at_current_position()
     # TODO create the map
     log('shutdown', "main.run()")
