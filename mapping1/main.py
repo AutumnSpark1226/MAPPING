@@ -43,7 +43,7 @@ def rotate(degrees: int):
 
 
 def start():
-    host = open('/home/robot/MAPPING/host.txt', 'r').readline().rstrip()  # TODO add relative path
+    host = open('./host.txt', 'r').readline().rstrip()  # TODO add relative path
     print("[mapping1/main.py] connecting...")
     client.connect(host, 6666)
     print("[mapping1/main.py] connected")
